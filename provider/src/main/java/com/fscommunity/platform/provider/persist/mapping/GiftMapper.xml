@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.provider.persist.dao.GiftMapper">
+  <resultMap id="BaseResultMap" type="com.fscommunity.platform.provider.persist.pojo.Gift">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="available" jdbcType="INTEGER" property="available" />
+    <result column="puton_time" jdbcType="TIMESTAMP" property="putonTime" />
+    <result column="pulloff_time" jdbcType="TIMESTAMP" property="pulloffTime" />
+    <result column="pay_method" jdbcType="INTEGER" property="payMethod" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="is_pulloffed" jdbcType="INTEGER" property="isPulloffed" />
+  </resultMap>
+  <insert id="insert" parameterType="com.fscommunity.platform.provider.persist.pojo.Gift">
+    insert into gift (id, pic, name, 
+      content, available, puton_time, 
+      pulloff_time, pay_method, cost, 
+      is_pulloffed)
+    values (#{id,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{available,jdbcType=INTEGER}, #{putonTime,jdbcType=TIMESTAMP}, 
+      #{pulloffTime,jdbcType=TIMESTAMP}, #{payMethod,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, 
+      #{isPulloffed,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fscommunity.platform.provider.persist.pojo.Gift">
+    insert into gift
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="available != null">
+        available,
+      </if>
+      <if test="putonTime != null">
+        puton_time,
+      </if>
+      <if test="pulloffTime != null">
+        pulloff_time,
+      </if>
+      <if test="payMethod != null">
+        pay_method,
+      </if>
+      <if test="cost != null">
+        cost,
+      </if>
+      <if test="isPulloffed != null">
+        is_pulloffed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        #{available,jdbcType=INTEGER},
+      </if>
+      <if test="putonTime != null">
+        #{putonTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pulloffTime != null">
+        #{pulloffTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payMethod != null">
+        #{payMethod,jdbcType=INTEGER},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="isPulloffed != null">
+        #{isPulloffed,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.fscommunity.platform.provider.persist.pojo.Gift">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="available" jdbcType="INTEGER" property="available" />
+    <result column="puton_time" jdbcType="TIMESTAMP" property="putonTime" />
+    <result column="pulloff_time" jdbcType="TIMESTAMP" property="pulloffTime" />
+    <result column="pay_method" jdbcType="INTEGER" property="payMethod" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="is_pulloffed" jdbcType="INTEGER" property="isPulloffed" />
+  </resultMap>
+  <insert id="insert" parameterType="com.fscommunity.platform.provider.persist.pojo.Gift">
+    insert into gift (id, pic, name, 
+      content, available, puton_time, 
+      pulloff_time, pay_method, cost, 
+      is_pulloffed)
+    values (#{id,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{available,jdbcType=INTEGER}, #{putonTime,jdbcType=TIMESTAMP}, 
+      #{pulloffTime,jdbcType=TIMESTAMP}, #{payMethod,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, 
+      #{isPulloffed,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fscommunity.platform.provider.persist.pojo.Gift">
+    insert into gift
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="available != null">
+        available,
+      </if>
+      <if test="putonTime != null">
+        puton_time,
+      </if>
+      <if test="pulloffTime != null">
+        pulloff_time,
+      </if>
+      <if test="payMethod != null">
+        pay_method,
+      </if>
+      <if test="cost != null">
+        cost,
+      </if>
+      <if test="isPulloffed != null">
+        is_pulloffed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="available != null">
+        #{available,jdbcType=INTEGER},
+      </if>
+      <if test="putonTime != null">
+        #{putonTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pulloffTime != null">
+        #{pulloffTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payMethod != null">
+        #{payMethod,jdbcType=INTEGER},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="isPulloffed != null">
+        #{isPulloffed,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>
