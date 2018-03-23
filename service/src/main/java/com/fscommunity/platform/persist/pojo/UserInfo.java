@@ -1,9 +1,9 @@
 package com.fscommunity.platform.persist.pojo;
 
-import com.fscommunity.platform.common.BloodType;
-import com.fscommunity.platform.common.IDCardType;
-import com.fscommunity.platform.common.NationalityType;
-import com.fscommunity.platform.common.Sex;
+import com.fscommunity.platform.common.constant.BloodType;
+import com.fscommunity.platform.common.constant.IDCardType;
+import com.fscommunity.platform.common.constant.NationalityType;
+import com.fscommunity.platform.common.constant.Sex;
 import java.util.Date;
 
 /**
@@ -36,6 +36,19 @@ public class UserInfo {
      * 电子邮箱
      */
     private String email;
+
+
+    /**
+     * 公众号openid
+     */
+    private String openId;
+
+    private UserLevel level;
+
+    /**
+     * 审核状态
+     */
+    private UserAuditStatus auditStatus;
 
     /**
      * 证件类型
@@ -114,6 +127,8 @@ public class UserInfo {
     private UserBaseinfo baseinfo;
 
     private UserAddressInfo addressInfo;
+
+    private UserBizInfo bizInfo;
 
     private Date createTime;
 
@@ -310,5 +325,37 @@ public class UserInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public UserBizInfo getBizInfo() {
+        return bizInfo;
+    }
+
+    public void setBizInfo(UserBizInfo bizInfo) {
+        this.bizInfo = bizInfo;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public UserAuditStatus getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(UserAuditStatus auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public UserLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(UserLevel level) {
+        this.level = level;
     }
 }

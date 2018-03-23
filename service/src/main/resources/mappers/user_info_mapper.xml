@@ -8,6 +8,9 @@
         cell_phone AS cellPhone,
         phone,
         email,
+        open_id AS openId,
+        level,
+        audit_status AS auditStatus,
         id_card_type AS idCardType,
         id_no AS idNo,
         sex,
@@ -24,17 +27,21 @@
         military_service AS militaryService,
         remark,
         baseinfo,
-        addressinfo AS addressInfo,
+        biz_info AS bizInfo,
+        address_info AS addressInfo,
         create_time AS createTime,
         update_time AS updateTime
     </sql>
 
-    <insert id="saveLog" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <insert id="saveUser" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
         INSERT INTO user_info(
         real_name,
         cell_phone,
         phone,
         email,
+        open_id,
+        level,
+        audit_status,
         id_card_type,
         id_no,
         sex,
@@ -51,7 +58,8 @@
         military_service,
         remark,
         baseinfo,
-        addressinfo,
+        biz_info,
+        address_info,
         create_time,
         update_time
         ) VALUES (
@@ -59,25 +67,29 @@
         #{cellPhone},
         #{phone},
         #{email},
-        #{id_card_type},
-        #{id_no},
+        #{openId},
+        #{level},
+        #{auditStatus},
+        #{idCardType},
+        #{idNo},
         #{sex},
         #{birthday},
         #{age},
         #{nation},
-        #{politice_status},
-        #{register_type},
-        #{native_place},
-        #{marital_status},
+        #{politiceStatus},
+        #{registerType},
+        #{nativePlace},
+        #{maritalStatus},
         #{height},
-        #{partymem_of_community},
-        #{blood_type},
-        #{military_service},
+        #{partyMemOfCommunity},
+        #{bloodType},
+        #{militaryService},
         #{remark},
         #{baseinfo},
-        #{addressinfo},
-        #{create_time},
-        #{update_time}
+        #{bizInfo},
+        #{addressInfo},
+        #{createTime},
+        #{updateTime}
         )
     </insert>
 
@@ -85,6 +97,20 @@
         SELECT
         <include refid="fields"/>
         FROM user_info
-        WHERE real_name LIKE CONCAT('%', #{realName}, '%')
+        WHERE real_name LIKE CONCAT('%', #{fuzzyName}, '%')
+    </select>
+
+    <select id="queryByUserId" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE id=#{id}
+    </select>
+
+    <select id="queryByRealName" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE real_name=#{realName}
     </select>
 </mapper>

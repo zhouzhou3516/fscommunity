@@ -1,4 +1,4 @@
-package com.fscommunity.platform.common;
+package com.fscommunity.platform.common.constant;
 
 /**
  * @author lixiaoxiong
