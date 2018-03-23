@@ -76,10 +76,11 @@ public class WxTokenService {
         preCheck(token);
         return wxCodeDao.updateTicketToken(JsonUtil.of(token), YSGH);
     }
+
     public String queryInterfaceToken() {
-        WxToken token = wxCodeDao.queryToken(YSGH);
+        WxToken token = queryWxToken();
         if (token == null) {
-            return null;
+            throw new BizException("查询不到有效的token");
         }
 
         WxTokenItem interfaceToken = token.getInterfaceToken();
@@ -91,5 +92,29 @@ public class WxTokenService {
         }
 
         return interfaceToken.getValue();
+    }
+
+    public String queryRefreshToken() {
+        WxToken token = queryWxToken();
+        if (token == null) {
+            throw new BizException("查询不到有效的token");
+        }
+
+        WxTokenItem refreshToken = token.getWebAuthRefreshToken();
+        Date current = new Date();
+        if (current.compareTo(refreshToken.getExpireTime()) > 0) {
+            logger.info("current time:{}, expire time:{}", DateFormatUtil.format4y2M2d2h2m2s(current),
+                    DateFormatUtil.format4y2M2d2h2m(refreshToken.getExpireTime()));
+            throw new BizException("微信接口访问token过期");
+        }
+        return refreshToken.getValue();
+    }
+
+    private WxToken queryWxToken() {
+        WxToken token = wxCodeDao.queryToken(YSGH);
+        if (token == null) {
+            return null;
+        }
+        return token;
     }
 }

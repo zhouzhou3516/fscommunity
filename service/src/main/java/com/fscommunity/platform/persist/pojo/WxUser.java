@@ -1,4 +1,4 @@
-package com.fscommunity.platform.common.pojo;
+package com.fscommunity.platform.persist.pojo;
 
 /**
  * @author lixiaoxiong

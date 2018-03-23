@@ -2,12 +2,18 @@ package com.fscommunity.platform.provider.wechat.controller;
 
 import com.fscommunity.platform.common.pojo.JsSignature;
 import com.fscommunity.platform.common.pojo.WxWebAuthToken;
+import com.fscommunity.platform.common.web.AccessTokenCache;
+import com.fscommunity.platform.common.web.CookieManager;
 import com.fscommunity.platform.common.web.JsSignatureBuilder;
+import com.fscommunity.platform.common.web.LocalOpenidCache;
 import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.common.web.WxInvoker;
+import com.fscommunity.platform.persist.pojo.WxUser;
 import com.fscommunity.platform.provider.wechat.vo.AuthInfo;
+import com.fscommunity.platform.service.WxUserService;
 import com.google.common.base.Strings;
 import com.lxx.app.common.util.Base64Util;
+import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import java.io.IOException;
 import javax.annotation.Resource;
@@ -45,7 +51,7 @@ public class WxAuthController {
     AccessTokenCache accessTokenCache;
 
     @Resource
-    LocalCache localCache;
+    LocalOpenidCache localOpenidCache;
 
     @Value("${appid}")
     private String appId;
@@ -58,12 +64,17 @@ public class WxAuthController {
         String redirectUrl = Base64Util.decode(request.getParameter("state"));
         logger.info("收到回调请求, code:{}, state:{}", code, redirectUrl);
 
-        //2. 获取openid todo 放到数据库持久化吧
+        //2. 获取openid
         WxWebAuthToken wxWebAuthToken = wxInvoker.queryOpenId(code);
-        accessTokenCache.updateWebToken(wxWebAuthToken.getAccessToken());
-        accessTokenCache.updateWebRefreshToken(wxWebAuthToken.getRefreshToken());
-        localCache.setValue(wxWebAuthToken.getOpenid(), wxWebAuthToken.getOpenid());
         logger.info("获取openid:{}",JsonUtil.of(wxWebAuthToken));
+
+        //2.1 更新web access token
+        accessTokenCache.updateWebToken(wxWebAuthToken.getAccessToken(), wxWebAuthToken.getExpire());
+        //2.2 更新refres token
+        accessTokenCache.updateWebRefreshToken(wxWebAuthToken.getRefreshToken());
+
+        //3. 相当于保存session, 缓存失效,则登录失效
+        localOpenidCache.storeOpenId(wxWebAuthToken.getOpenid(), wxWebAuthToken.getOpenid());
 
         //3. 拉取用户信息
         WxUser wxUser = wxInvoker

@@ -3,11 +3,11 @@ package com.fscommunity.platform.common.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fscommunity.platform.common.pojo.WxAccessToken;
 import com.fscommunity.platform.common.pojo.WxJsapiTicket;
-import com.fscommunity.platform.common.pojo.WxUser;
 import com.fscommunity.platform.common.pojo.WxUserExt;
 import com.fscommunity.platform.common.pojo.WxWebAuthErrorResp;
 import com.fscommunity.platform.common.pojo.WxWebAuthToken;
 import com.fscommunity.platform.common.util.HttpClientUtil;
+import com.fscommunity.platform.persist.pojo.WxUser;
 import com.fscommunity.platform.service.WxTokenService;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
@@ -42,6 +42,7 @@ public class WxInvoker {
     private final static String WX_USER_EXT_INFO_URL = "/cgi-bin/user/info";
     private final static String JSAPI_TICKET_TOKEN_URL = "/cgi-bin/ticket/getticket";
     private final static String WEB_ACCESS_TOKEN_URL = "/sns/oauth2/access_token";
+    private final static String WEB_ACCESS_REFRESH_TOKEN_URL = "/sns/oauth2/refresh_token";
     private final static String OPEN_BASE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize";
     private final static String URL_SEP = "?";
     private final static String URL_PARAM_SEP = "&";
@@ -69,6 +70,8 @@ public class WxInvoker {
                     }
                 });
     }
+
+
 
     public boolean checkSubcribe(String openId) {
         String token = wxTokenService.queryInterfaceToken();
@@ -113,9 +116,33 @@ public class WxInvoker {
                         try {
                             return decodeWebToken(input, tokenUrl.toString());
                         } catch (Exception e) {
+                            logger.error("请求web auth token异常", e);
                             return null;
                         }
 
+                    }
+                });
+    }
+
+    public ListenableFuture<WxWebAuthToken> queryWebAccessTokenByRefreshToken(String refreshToken) {
+        StringBuilder tokenUrl = new StringBuilder();
+        tokenUrl.append(TOKEN_BASE_URL).append(WEB_ACCESS_REFRESH_TOKEN_URL).append(URL_SEP)
+                .append("appid=").append(APP_ID).append(URL_PARAM_SEP)
+                .append("grant_type=refresh_token").append(URL_PARAM_SEP)
+                .append("refresh_token=").append(refreshToken);
+        ListenableFuture<AsyncHttpResponse> listenableFuture = httpClientUtil
+                .syncGet(tokenUrl.toString());
+
+        return Futures.transform(listenableFuture,
+                new Function<AsyncHttpResponse, WxWebAuthToken>() {
+                    @Override
+                    public WxWebAuthToken apply(AsyncHttpResponse input) {
+                        try {
+                            return decodeWebToken(input, "");
+                        } catch (Exception e) {
+                            logger.error("请求web auth token异常", e);
+                            return null;
+                        }
                     }
                 });
     }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.WxUserDao">
+
+    <sql id="fields">
+        id,
+        openid,
+        nickname,
+        sex,
+        province,
+        city,
+        country,
+        headimgurl,
+        unionid
+    </sql>
+
+    <insert id="saveWxUser" parameterType="com.fscommunity.platform.persist.pojo.WxUser">
+        INSERT INTO wx_user(
+        openid,
+        nickname,
+        sex,
+        province,
+        city,
+        country,
+        headimgurl,
+        unionid
+        ) VALUES (
+        #{openid},
+        #{nickname},
+        #{sex},
+        #{province},
+        #{city},
+        #{country},
+        #{headimgurl},
+        #{unionid}
+        ) ON DUPLICATE KEY UPDATE
+        nickname=VALUES(nickname),
+        sex=VALUES(sex),
+        province=VALUES(province),
+        city=VALUES(city),
+        country=VALUES(country),
+        headimgurl=VALUES(headimgurl),
+        unionid=VALUES(unionid)
+    </insert>
+
+    <select id="queryWxUserByOpenId" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.WxUser">
+        SELECT
+        <include refid="fields"/>
+        FROM wx_user
+        WHERE openid=#{openid}
+    </select>
+</mapper>

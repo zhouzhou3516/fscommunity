@@ -2,6 +2,7 @@ package com.fscommunity.platform.common.web;
 
 import com.fscommunity.platform.common.pojo.WxAccessToken;
 import com.fscommunity.platform.common.pojo.WxJsapiTicket;
+import com.fscommunity.platform.common.pojo.WxWebAuthToken;
 import com.fscommunity.platform.persist.pojo.WxTokenItem;
 import com.fscommunity.platform.service.WxTokenService;
 import com.google.common.util.concurrent.FutureCallback;
@@ -60,12 +61,22 @@ public class AccessTokenCache {
         tokenMap.put(TOKEN_KEY, token);
     }
 
-    public void updateWebToken(String token) {
+    public void updateWebToken(String token, int expire) {
         webAuthTokenMap.put(WEB_AUTH_TOKEN, token);
+
+        WxTokenItem webAuthToken = new WxTokenItem();
+        webAuthToken.setValue(token);
+        webAuthToken.setExpireTime(DateUtils.addSeconds(new Date(), expire));
+        wxTokenService.updateWebToken(webAuthToken);
     }
 
     public void updateWebRefreshToken(String token) {
         webAuthRefreshTokenMap.put(WEB_AUTH_REFRESH_TOKEN, token);
+        //refresh token有效期为30天
+        WxTokenItem refreshToken = new WxTokenItem();
+        refreshToken.setValue(token);
+        refreshToken.setExpireTime(DateUtils.addDays(new Date(), 30));
+        wxTokenService.updateWebRefreshToken(refreshToken);
     }
 
     @PostConstruct
@@ -90,6 +101,24 @@ public class AccessTokenCache {
             @Override
             public void onFailure(Throwable t) {
                 logger.info("请求wx获取accesstoken失败", t);
+            }
+        });
+    }
+
+    public void refreshWebAuthToken(String refreshToken) {
+        ListenableFuture<WxWebAuthToken> byRefreshToken = wxInvoker
+                .queryWebAccessTokenByRefreshToken(refreshToken);
+        Futures.addCallback(byRefreshToken, new FutureCallback<WxWebAuthToken>() {
+            @Override
+            public void onSuccess(WxWebAuthToken result) {
+                logger.info("请求wx获取webAccesstoken:{}, expire:{}",
+                        result.getAccessToken(), result.getExpire());
+                updateWebToken(result.getAccessToken(), result.getExpire());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                logger.info("请求wx获取webAccesstoken失败", t);
             }
         });
     }

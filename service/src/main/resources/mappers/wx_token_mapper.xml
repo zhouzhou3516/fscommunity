@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ysgh.pro.service.dao.WxCodeDao">
+<mapper namespace="com.fscommunity.platform.persist.dao.WxCodeDao">
 
     <sql id="fields">
         id,
@@ -13,7 +13,7 @@
         update_time AS updateTime
     </sql>
 
-    <insert id="saveWxToken" parameterType="com.ysgh.pro.service.bean.WxToken">
+    <insert id="saveWxToken" parameterType="com.fscommunity.platform.persist.pojo.WxToken">
         INSERT INTO wx_token(
         wx_code,
         interface_token,
@@ -39,7 +39,7 @@
         update_time=now()
     </insert>
 
-    <select id="queryToken" parameterType="java.lang.String" resultType="com.ysgh.pro.service.bean.WxToken">
+    <select id="queryToken" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.WxToken">
         SELECT
         <include refid="fields"/>
         FROM wx_token
