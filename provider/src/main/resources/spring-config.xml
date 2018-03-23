@@ -26,4 +26,5 @@
     <import resource="classpath*:spring/spring-bean.xml"/>
     <import resource="classpath*:spring/spring-web.xml"/>
     <import resource="classpath*:spring/spring-filter.xml"/>
+    <import resource="classpath*:spring/spring-datasource.xml"/>
 </beans>

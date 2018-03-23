@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.UserInfoDao">
+
+    <sql id="fields">
+        id,
+        real_name AS realName,
+        cell_phone AS cellPhone,
+        phone,
+        email,
+        id_card_type AS idCardType,
+        id_no AS idNo,
+        sex,
+        birthday,
+        age,
+        nation,
+        politice_status AS politiceStatus,
+        register_type AS registerType,
+        native_place AS nativePlace,
+        marital_status AS maritalStatus,
+        height,
+        partymem_of_community AS partyMemOfCommunity,
+        blood_type AS bloodType,
+        military_service AS militaryService,
+        remark,
+        baseinfo,
+        addressinfo AS addressInfo,
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+    <insert id="saveLog" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
+        INSERT INTO user_info(
+        real_name,
+        cell_phone,
+        phone,
+        email,
+        id_card_type,
+        id_no,
+        sex,
+        birthday,
+        age,
+        nation,
+        politice_status,
+        register_type,
+        native_place,
+        marital_status,
+        height,
+        partymem_of_community,
+        blood_type,
+        military_service,
+        remark,
+        baseinfo,
+        addressinfo,
+        create_time,
+        update_time
+        ) VALUES (
+        #{realName},
+        #{cellPhone},
+        #{phone},
+        #{email},
+        #{id_card_type},
+        #{id_no},
+        #{sex},
+        #{birthday},
+        #{age},
+        #{nation},
+        #{politice_status},
+        #{register_type},
+        #{native_place},
+        #{marital_status},
+        #{height},
+        #{partymem_of_community},
+        #{blood_type},
+        #{military_service},
+        #{remark},
+        #{baseinfo},
+        #{addressinfo},
+        #{create_time},
+        #{update_time}
+        )
+    </insert>
+
+    <select id="queryByFuzzyName" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE real_name LIKE CONCAT('%', #{realName}, '%')
+    </select>
+</mapper>
