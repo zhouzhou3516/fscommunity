@@ -1,6 +1,6 @@
-package com.fscommunity.platform.provider.persist.dao;
+package com.fscommunity.platform.persist.dao;
 
-import com.fscommunity.platform.provider.persist.pojo.OpLog;
+import com.fscommunity.platform.persist.pojo.OpLog;
 
 public interface OpLogMapper {
     int deleteByPrimaryKey(Integer opId);

@@ -1,6 +1,6 @@
-package com.fscommunity.platform.provider.persist.dao;
+package com.fscommunity.platform.persist.dao;
 
-import com.fscommunity.platform.provider.persist.pojo.User;
+import com.fscommunity.platform.persist.pojo.User;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);

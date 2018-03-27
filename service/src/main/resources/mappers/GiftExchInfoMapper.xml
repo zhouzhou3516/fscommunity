@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.GiftExchInfoMapper">
+  <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.GiftExchInfo">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="gift_id" jdbcType="INTEGER" property="giftId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="exch_state" jdbcType="INTEGER" property="exchState" />
+    <result column="obtain_time" jdbcType="TIMESTAMP" property="obtainTime" />
+  </resultMap>
+  <sql id="fields">
+    id,
+    gift_id AS giftId,
+    user_id AS userId,
+    user_name AS userName,
+    apply_time AS applyTime,
+    exch_state AS exchState,
+    obtain_time AS obtainTime
+  </sql>
+  <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
+    insert into gift_exch_info (id, gift_id, user_id, 
+      user_name, apply_time, exch_state, 
+      obtain_time)
+    values (#{id,jdbcType=INTEGER}, #{giftId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{userName,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{exchState,jdbcType=INTEGER}, 
+      #{obtainTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
+    insert into gift_exch_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="giftId != null">
+        gift_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="applyTime != null">
+        apply_time,
+      </if>
+      <if test="exchState != null">
+        exch_state,
+      </if>
+      <if test="obtainTime != null">
+        obtain_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="giftId != null">
+        #{giftId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null">
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exchState != null">
+        #{exchState,jdbcType=INTEGER},
+      </if>
+      <if test="obtainTime != null">
+        #{obtainTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="fields"/>
+    from gift_exch_info
+    <if test="condition != null and condition !=''">
+      where user_name like concat('%',#{condition},'%') or apply_time like concat('%',#{condition},'%')
+    </if>
+  </select>
+  <select id="selectById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
+    SELECT
+    <include refid="fields"/>
+    FROM gift_exch_info
+    WHERE id = #{id}
+  </select>
+  <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
+    UPDATE gift_exch_info SET
+    gift_id=#{gift_id},
+    user_id=#{user_id},
+    user_name=#{user_name},
+    apply_time=#{apply_time},
+    exch_state=#{exch_state},
+    obtain_time=#{obtain_time}
+  </update>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    DELETE FROM gift_exch_info WHERE id= #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

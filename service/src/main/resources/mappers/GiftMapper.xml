@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.GiftMapper">
+    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.Gift">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pic" jdbcType="VARCHAR" property="pic"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="available" jdbcType="INTEGER" property="available"/>
+        <result column="puton_time" jdbcType="TIMESTAMP" property="putonTime"/>
+        <result column="pulloff_time" jdbcType="TIMESTAMP" property="pulloffTime"/>
+        <result column="pay_method" jdbcType="INTEGER" property="payMethod"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="is_pulloffed" jdbcType="INTEGER" property="isPulloffed"/>
+    </resultMap>
+    <sql id="fields">
+    id,
+    pic,
+    name,
+    available,
+    puton_time AS putonTime,
+    pulloff_time AS pulloffTime,
+    pay_method AS payMethod,
+    cost,
+    is_pulloffed AS isPulloffed
+  </sql>
+    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Gift">
+    insert into gift (pic, name,
+      content, available, puton_time, 
+      pulloff_time, pay_method, cost, 
+      is_pulloffed)
+    values (#{pic,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR}, #{available,jdbcType=INTEGER}, #{putonTime,jdbcType=TIMESTAMP}, 
+      #{pulloffTime,jdbcType=TIMESTAMP}, #{payMethod,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, 
+      #{isPulloffed,jdbcType=INTEGER})
+      ON DUPLICATE KEY UPDATE
+      pic=VALUES(pic),
+      name=VALUES(name),
+      content=VALUES(content),
+      available=VALUES(available),
+      puton_time=VALUES(puton_time),
+      pulloff_time=VALUES(pulloff_time),
+      pay_method=VALUES(pay_method),
+      cost=VALUES(cost),
+      is_pulloffed=VALUES(is_pulloffed)
+  </insert>
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="fields"/>
+        from gift
+        <if test="condition != null and condition !=''">
+            where name like concat('%',#{condition},'%') or content like concat('%',#{condition},'%')
+        </if>
+    </select>
+    <select id="selectById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.Gift">
+        SELECT
+        <include refid="fields"/>
+        FROM gift
+        WHERE id = #{id}
+    </select>
+    <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Gift">
+      UPDATE gift SET
+      pic=#{pic,jdbcType=VARCHAR},
+      name=#{name,jdbcType=VARCHAR},
+      content=#{content,jdbcType=VARCHAR},
+      available=#{available,jdbcType=INTEGER},
+      puton_time=#{putonTime,jdbcType=TIMESTAMP},
+      pulloff_time=#{pulloffTime,jdbcType=TIMESTAMP},
+      pay_method=#{payMethod,jdbcType=INTEGER},
+      cost=#{cost,jdbcType=DECIMAL},
+      is_pulloffed=#{isPulloffed,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+    DELETE FROM gift WHERE id= #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

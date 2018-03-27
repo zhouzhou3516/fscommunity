@@ -1,4 +1,4 @@
-package com.fscommunity.platform.provider.persist.pojo;
+package com.fscommunity.platform.persist.pojo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

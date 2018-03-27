@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fscommunity.platform.provider.persist.dao.IMMapper">
-  <resultMap id="BaseResultMap" type="com.fscommunity.platform.provider.persist.pojo.IM">
+<mapper namespace="com.fscommunity.platform.persist.dao.IMMapper">
+  <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.IM">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="content" jdbcType="VARCHAR" property="content" />
@@ -11,7 +11,7 @@
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="has_read" jdbcType="VARCHAR" property="hasRead" />
   </resultMap>
-  <insert id="insert" parameterType="com.fscommunity.platform.provider.persist.pojo.IM">
+  <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.IM">
     insert into im (id, type, content, 
       send_uid, recv_uid, is_admin, 
       createtime, has_read)
@@ -19,7 +19,7 @@
       #{sendUid,jdbcType=INTEGER}, #{recvUid,jdbcType=INTEGER}, #{isAdmin,jdbcType=VARCHAR}, 
       #{createtime,jdbcType=TIMESTAMP}, #{hasRead,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.fscommunity.platform.provider.persist.pojo.IM">
+  <insert id="insertSelective" parameterType="com.fscommunity.platform.persist.pojo.IM">
     insert into im
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -74,7 +74,7 @@
       </if>
     </trim>
   </insert>
-  <resultMap id="BaseResultMap" type="com.fscommunity.platform.provider.persist.pojo.IM">
+  <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.IM">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="content" jdbcType="VARCHAR" property="content" />
@@ -84,7 +84,7 @@
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="has_read" jdbcType="VARCHAR" property="hasRead" />
   </resultMap>
-  <insert id="insert" parameterType="com.fscommunity.platform.provider.persist.pojo.IM">
+  <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.IM">
     insert into im (id, type, content, 
       send_uid, recv_uid, is_admin, 
       createtime, has_read)
@@ -92,7 +92,7 @@
       #{sendUid,jdbcType=INTEGER}, #{recvUid,jdbcType=INTEGER}, #{isAdmin,jdbcType=VARCHAR}, 
       #{createtime,jdbcType=TIMESTAMP}, #{hasRead,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.fscommunity.platform.provider.persist.pojo.IM">
+  <insert id="insertSelective" parameterType="com.fscommunity.platform.persist.pojo.IM">
     insert into im
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
