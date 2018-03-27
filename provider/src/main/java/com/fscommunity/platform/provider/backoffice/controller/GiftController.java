@@ -48,8 +48,9 @@ public class GiftController {
 
     @RequestMapping("/edit")
     @JsonBody
-    public Gift edit() {
+    public Gift edit(HttpServletRequest request) {
         logger.info("edit");
+        return giftService.selectById(request.getParameter("id"));
     }
 
     @RequestMapping("/update")
