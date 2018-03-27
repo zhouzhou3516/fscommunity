@@ -113,4 +113,16 @@
         FROM user_info
         WHERE real_name=#{realName}
     </select>
+
+    <update id="updateBizInfo" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
+        UPDATE user_info
+        SET biz_info=#{bizInfo}
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateLevelByUserId" parameterType="java.util.Map">
+        UPDATE user_info
+        SET level=#{level}
+        WHERE id=#{id}
+    </update>
 </mapper>

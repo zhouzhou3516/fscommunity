@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.UserSignDao">
+
+    <sql id="fields">
+        id,
+        user_id AS userId,
+        day_time AS dayTime,
+        continuous,
+        finish_continue_days AS finishConDays,
+        earn_integral AS earnIntegral,
+        create_time AS createTime,
+        update_time as updateTime
+    </sql>
+
+    <insert id="saveUserSign" parameterType="com.fscommunity.platform.persist.pojo.UserSignInfo">
+        INSERT INTO user_sign(
+        user_id,
+        day_time,
+        continuous,
+        finish_continue_days,
+        earn_integral,
+        create_time,
+        update_time
+        ) VALUES (
+        #{userId},
+        #{dayTime},
+        #{continuous},
+        #{finishConDays},
+        #{earnIntegral},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+
+    <select id="querySignInfo" parameterType="java.util.Map" resultType="com.fscommunity.platform.persist.pojo.UserSignInfo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_sign
+        WHERE user_id=#{userId}
+        AND day_time=#{dayTime}
+    </select>
+
+    <select id="countUserSign" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user_sign
+        WHERE user_id=#{userId}
+    </select>
+</mapper>

@@ -1,6 +1,7 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.UserInfo;
+import com.fscommunity.platform.persist.pojo.UserLevel;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,9 @@ public interface UserInfoDao {
 
     UserInfo queryByUserId(int id);
 
-    UserInfo queryByRealName(String realName);
+    List<UserInfo> queryByRealName(String realName);
+
+    int updateBizInfo(UserInfo userInfo);
+
+    int updateLevelByUserId(int id, UserLevel level);
 }
