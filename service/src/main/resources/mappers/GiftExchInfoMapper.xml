@@ -10,14 +10,14 @@
     <result column="exch_state" jdbcType="INTEGER" property="exchState" />
     <result column="obtain_time" jdbcType="TIMESTAMP" property="obtainTime" />
   </resultMap>
-  <sql id="fields">
+  <sql id="Base_Column_List">
     id,
-    gift_id AS giftId,
-    user_id AS userId,
-    user_name AS userName,
-    apply_time AS applyTime,
-    exch_state AS exchState,
-    obtain_time AS obtainTime
+    gift_id,
+    user_id,
+    user_name,
+    apply_time,
+    exch_state,
+    obtain_time
   </sql>
   <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
     insert into gift_exch_info (id, gift_id, user_id, 
@@ -78,7 +78,7 @@
   </insert>
   <select id="list" resultMap="BaseResultMap">
     select
-    <include refid="fields"/>
+    <include refid="Base_Column_List"/>
     from gift_exch_info
     <if test="condition != null and condition !=''">
       where user_name like concat('%',#{condition},'%') or apply_time like concat('%',#{condition},'%')
@@ -86,7 +86,7 @@
   </select>
   <select id="selectById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
     SELECT
-    <include refid="fields"/>
+    <include refid="Base_Column_List"/>
     FROM gift_exch_info
     WHERE id = #{id}
   </select>

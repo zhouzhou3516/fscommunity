@@ -4,18 +4,39 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class GiftExchInfo implements Serializable {
+    /**
+     * 主键id
+     */
     private Integer id;
 
+    /**
+     * gift id
+     */
     private Integer giftId;
 
+    /**
+     * user id
+     */
     private Integer userId;
 
+    /**
+     * 用户姓名
+     */
     private String userName;
 
+    /**
+     * 申请兑换时间
+     */
     private Date applyTime;
 
+    /**
+     * 兑换状态：0已兑换，1未兑换
+     */
     private Integer exchState;
 
+    /**
+     * 实现兑换日期
+     */
     private Date obtainTime;
 
     private static final long serialVersionUID = 1L;

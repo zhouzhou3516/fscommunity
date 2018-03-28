@@ -1,6 +1,8 @@
 package com.fscommunity.platform.provider.backoffice.controller;
 
 import com.fscommunity.platform.persist.pojo.Gift;
+import com.fscommunity.platform.persist.pojo.GiftExchInfo;
+import com.fscommunity.platform.service.GiftExchService;
 import com.fscommunity.platform.service.GiftService;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import org.slf4j.Logger;
@@ -26,6 +28,9 @@ public class GiftController {
     @Resource
     GiftService giftService;
 
+    @Resource
+    GiftExchService giftExchService;
+
     @RequestMapping("/list")
     @JsonBody
     public List<Gift> list(HttpServletRequest request) {
@@ -46,13 +51,6 @@ public class GiftController {
         return giftService.selectById(request.getParameter("id"));
     }
 
-    @RequestMapping("/edit")
-    @JsonBody
-    public Gift edit(HttpServletRequest request) {
-        logger.info("edit");
-        return giftService.selectById(request.getParameter("id"));
-    }
-
     @RequestMapping("/update")
     @JsonBody
     public void update(@RequestBody Gift gift) {
@@ -68,37 +66,44 @@ public class GiftController {
     }
     @RequestMapping("/exchange/list")
     @JsonBody
-    public void exchList() {
+    public void exchList(HttpServletRequest request) {
         logger.info("exchList");
+        giftExchService.list(request.getParameter("condition"));
     }
 
     @RequestMapping("/exchange/info")
     @JsonBody
-    public void exchInfo() {
+    public GiftExchInfo exchInfo(HttpServletRequest request) {
         logger.info("exchInfo");
+        return giftExchService.selectById(request.getParameter("id"));
     }
 
-    @RequestMapping("/exchange/edit")
+    @RequestMapping("/exchange/update")
     @JsonBody
-    public void exchEdit() {
-        logger.info("exchEdit");
+    public void exchUpdate(@RequestBody GiftExchInfo giftExchInfo) {
+        logger.info("exchUpdate");
+        giftExchService.updateById(giftExchInfo);
     }
 
     @RequestMapping("/exchange/comfirm")
     @JsonBody
-    public void exchComfirm() {
-        logger.info("exchComfirm");
+    public void exchConfirm(HttpServletRequest request) {
+        logger.info("exchConfirm");
+        giftExchService.exchConfirm(request.getParameter("id"));
     }
+
     @RequestMapping("/exchange/del")
     @JsonBody
-    public void exchDel() {
+    public void exchDel(HttpServletRequest request) {
         logger.info("exchDel");
+        giftExchService.delById(request.getParameter("id"));
     }
 
     @RequestMapping("/exchange/auto")
     @JsonBody
-    public void exchAuto() {
-        logger.info("exchAuto");
+    public void exchBizAuto(HttpServletRequest request) {
+        logger.info("exchBizAuto");
+        giftExchService.exchBizAuto(request.getParameter("id"));
     }
 
     @RequestMapping("/im/send")
