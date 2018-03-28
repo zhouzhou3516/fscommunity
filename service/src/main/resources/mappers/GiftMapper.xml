@@ -70,6 +70,7 @@
       pay_method=#{payMethod,jdbcType=INTEGER},
       cost=#{cost,jdbcType=INTEGER},
       is_pulloffed=#{isPulloffed,jdbcType=INTEGER}
+      WHERE id=#{id,jdbcType=INTEGER}
     </update>
     <delete id="deleteById" parameterType="java.lang.Integer">
     DELETE FROM gift WHERE id= #{id,jdbcType=INTEGER}

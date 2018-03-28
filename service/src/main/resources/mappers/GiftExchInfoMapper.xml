@@ -7,7 +7,8 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
-    <result column="exch_state" jdbcType="INTEGER" property="exchState" />
+    <result column="exch_state" jdbcType="INTEGER" property="exchSum" />
+    <result column="exch_sum" jdbcType="INTEGER" property="exchState" />
     <result column="obtain_time" jdbcType="TIMESTAMP" property="obtainTime" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -16,16 +17,17 @@
     user_id,
     user_name,
     apply_time,
+    exch_sum,
     exch_state,
     obtain_time
   </sql>
   <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
     insert into gift_exch_info (id, gift_id, user_id, 
-      user_name, apply_time, exch_state, 
+      user_name, apply_time, exch_state, exch_sum
       obtain_time)
     values (#{id,jdbcType=INTEGER}, #{giftId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
-      #{userName,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{exchState,jdbcType=INTEGER}, 
-      #{obtainTime,jdbcType=TIMESTAMP})
+      #{userName,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{exchSum,jdbcType=INTEGER},
+      #{exchState,jdbcType=INTEGER},#{obtainTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
     insert into gift_exch_info
@@ -44,6 +46,9 @@
       </if>
       <if test="applyTime != null">
         apply_time,
+      </if>
+      <if test="exchSum != null">
+        exch_sum,
       </if>
       <if test="exchState != null">
         exch_state,
@@ -67,6 +72,9 @@
       </if>
       <if test="applyTime != null">
         #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exchSum != null">
+        #{exchSum,jdbcType=INTEGER},
       </if>
       <if test="exchState != null">
         #{exchState,jdbcType=INTEGER},
@@ -92,12 +100,14 @@
   </select>
   <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.GiftExchInfo">
     UPDATE gift_exch_info SET
-    gift_id=#{gift_id},
-    user_id=#{user_id},
-    user_name=#{user_name},
-    apply_time=#{apply_time},
-    exch_state=#{exch_state},
-    obtain_time=#{obtain_time}
+    gift_id=#{giftId,jdbcType=INTEGER},
+    user_id=#{userId,jdbcType=INTEGER},
+    user_name=#{userName,jdbcType=VARCHAR},
+    apply_time=#{applyTime,jdbcType=TIMESTAMP},
+    exch_sum=#{exchSum,jdbcType=INTEGER},
+    exch_state=#{exchState,jdbcType=INTEGER},
+    obtain_time=#{obtainTime,jdbcType=TIMESTAMP}
+    WHERE id=#{id,jdbcType=INTEGER}
   </update>
   <delete id="deleteById" parameterType="java.lang.Integer">
     DELETE FROM gift_exch_info WHERE id= #{id,jdbcType=INTEGER}

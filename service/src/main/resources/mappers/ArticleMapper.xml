@@ -58,6 +58,7 @@
       content=#{content,jdbcType=VARCHAR},
       publish_time=#{publishTime,jdbcType=TIMESTAMP},
       update_time=#{updateTime,jdbcType=TIMESTAMP}
+      WHERE id= #{id,jdbcType=INTEGER}
     </update>
 
     <delete id="deleteById" parameterType="java.lang.Integer">

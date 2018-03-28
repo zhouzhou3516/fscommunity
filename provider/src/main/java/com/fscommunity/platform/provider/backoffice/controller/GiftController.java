@@ -64,6 +64,14 @@ public class GiftController {
         logger.info("delete");
         giftService.delById(request.getParameter("id"));
     }
+
+    @RequestMapping("/apply")
+    @JsonBody
+    public void apply(@RequestBody GiftExchInfo giftExchInfo) {
+        logger.info("apply");
+        giftExchService.apply(giftExchInfo);
+    }
+
     @RequestMapping("/exchange/list")
     @JsonBody
     public void exchList(HttpServletRequest request) {
@@ -101,14 +109,15 @@ public class GiftController {
 
     @RequestMapping("/exchange/auto")
     @JsonBody
-    public void exchBizAuto(HttpServletRequest request) {
+    public void exchBizAuto(@RequestBody GiftExchInfo giftExchInfo) {
         logger.info("exchBizAuto");
-        giftExchService.exchBizAuto(request.getParameter("id"));
+        giftExchService.exchBizAuto(giftExchInfo);
     }
 
     @RequestMapping("/im/send")
     @JsonBody
     public void imSend() {
+        //TODO
         logger.info("imSend");
     }
 }

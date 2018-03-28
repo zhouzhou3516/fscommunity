@@ -42,4 +42,5 @@ public class GiftService {
         Preconditions.checkNotNull(gift);
         giftMapper.updateById(gift);
     }
+
 }

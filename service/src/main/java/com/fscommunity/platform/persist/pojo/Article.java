@@ -12,7 +12,7 @@ public class Article implements Serializable {
     /**
      * 作者id
      */
-    private String userId;
+    private Integer userId;
 
     /**
      * 文章名称
@@ -78,9 +78,9 @@ public class Article implements Serializable {
 
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
-    public String getUserId() { return userId; }
+    public Integer getUserId() { return userId; }
 
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setUserId(Integer userId) { this.userId = userId; }
 
     @Override
     public String toString() {
