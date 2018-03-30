@@ -1,6 +1,7 @@
 package com.fscommunity.platform.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fscommunity.platform.persist.pojo.WxUser;
 
 /**
  * @author lixiaoxiong

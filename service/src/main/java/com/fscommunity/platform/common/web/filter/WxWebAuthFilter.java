@@ -43,7 +43,7 @@ public class WxWebAuthFilter implements HandlerInterceptor{
             JsonUtil.instance().writeValue(response.getWriter(), APIResponse.error(102, "该用户未审核成功"));
             return false;
         }
-        sessionHolder.setSession(cookieValue, staffInfoService.queryStaffByOpenid(cookieValue));
+        //sessionHolder.setSession(cookieValue, staffInfoService.queryStaffByOpenid(cookieValue));
         return true;
     }
 
@@ -56,7 +56,7 @@ public class WxWebAuthFilter implements HandlerInterceptor{
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
             Object handler, Exception ex) throws Exception {
-        sessionHolder.removeSession();
-        sessionHolder.removeOpenid();
+        //sessionHolder.removeSession();
+        //sessionHolder.removeOpenid();
     }
 }

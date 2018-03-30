@@ -53,7 +53,8 @@ public class UserCenterController {
     @JsonBody
     public SignResultVo userSign() {
         //todo 从上下文中获取当前用户
-        UserInfo info = sessionUserHolder.currentStaff();
+        //UserInfo info = sessionUserHolder.currentStaff();
+        UserInfo info = null;
         //1. 校验今日签名是否完成
         UserSignInfo staffSignInfo = userSignInfoService
                 .queryStaffSign(1, DateFormatUtil.format4y2M2d(new Date()));
