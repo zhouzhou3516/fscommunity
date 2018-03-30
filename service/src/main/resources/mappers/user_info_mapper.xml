@@ -114,6 +114,13 @@
         WHERE real_name=#{realName}
     </select>
 
+    <select id="queryUserInfoByOpenId" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE open_id=#{openId}
+    </select>
+
     <update id="updateBizInfo" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
         UPDATE user_info
         SET biz_info=#{bizInfo}

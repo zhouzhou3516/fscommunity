@@ -115,4 +115,12 @@ public class UserInfoService {
         userInfo.getBizInfo().setGoldCoin(userInfo.getBizInfo().getGoldCoin() + count);
         return userInfoDao.updateBizInfo(userInfo);
     }
+
+    public UserInfo queryUserInfoByOpenId(String openId) {
+        if (Strings.isNullOrEmpty(openId)) {
+            return null;
+        }
+
+        return userInfoDao.queryUserByOpenId(openId);
+    }
 }
