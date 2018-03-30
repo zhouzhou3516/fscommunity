@@ -13,7 +13,7 @@ public interface GiftExchInfoMapper {
 
     GiftExchInfo selectById(Integer integer);
 
-    void deleteById(Integer integer);
+    int deleteById(Integer integer);
 
-    void updateById(GiftExchInfo gift);
+    int updateById(GiftExchInfo gift);
 }

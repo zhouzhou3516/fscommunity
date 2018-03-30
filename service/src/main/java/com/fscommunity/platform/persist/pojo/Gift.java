@@ -5,24 +5,59 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Gift implements Serializable {
+    /**
+     * 主键id
+     */
     private Integer id;
 
+    /**
+     * 图像url
+     */
     private String pic;
 
+    /**
+     * 礼品名称
+     */
     private String name;
 
+    /**
+     * 礼品描述
+     */
     private String content;
 
+    /**
+     * 礼品剩余数量
+     */
     private Integer available;
 
+    /**
+     * 礼品总数
+     */
+    private Integer total;
+
+    /**
+     * 上架时间
+     */
     private Date putonTime;
 
+    /**
+     * 下架时间
+     */
     private Date pulloffTime;
 
+    /**
+     * 支付方式：0积分，1金币
+     */
     private Integer payMethod;
 
-    private BigDecimal cost;
+    /**
+     * 兑换 积分/金币 数量
+     */
+    private Integer cost;
 
+    /**
+     * 是否下架：0已下架，1未下架
+     */
     private Integer isPulloffed;
 
     private static final long serialVersionUID = 1L;
@@ -91,11 +126,11 @@ public class Gift implements Serializable {
         this.payMethod = payMethod;
     }
 
-    public BigDecimal getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 
@@ -105,6 +140,14 @@ public class Gift implements Serializable {
 
     public void setIsPulloffed(Integer isPulloffed) {
         this.isPulloffed = isPulloffed;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 
     @Override
@@ -120,15 +163,15 @@ public class Gift implements Serializable {
         }
         Gift other = (Gift) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getPic() == null ? other.getPic() == null : this.getPic().equals(other.getPic()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
-            && (this.getAvailable() == null ? other.getAvailable() == null : this.getAvailable().equals(other.getAvailable()))
-            && (this.getPutonTime() == null ? other.getPutonTime() == null : this.getPutonTime().equals(other.getPutonTime()))
-            && (this.getPulloffTime() == null ? other.getPulloffTime() == null : this.getPulloffTime().equals(other.getPulloffTime()))
-            && (this.getPayMethod() == null ? other.getPayMethod() == null : this.getPayMethod().equals(other.getPayMethod()))
-            && (this.getCost() == null ? other.getCost() == null : this.getCost().equals(other.getCost()))
-            && (this.getIsPulloffed() == null ? other.getIsPulloffed() == null : this.getIsPulloffed().equals(other.getIsPulloffed()));
+                && (this.getPic() == null ? other.getPic() == null : this.getPic().equals(other.getPic()))
+                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+                && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
+                && (this.getAvailable() == null ? other.getAvailable() == null : this.getAvailable().equals(other.getAvailable()))
+                && (this.getPutonTime() == null ? other.getPutonTime() == null : this.getPutonTime().equals(other.getPutonTime()))
+                && (this.getPulloffTime() == null ? other.getPulloffTime() == null : this.getPulloffTime().equals(other.getPulloffTime()))
+                && (this.getPayMethod() == null ? other.getPayMethod() == null : this.getPayMethod().equals(other.getPayMethod()))
+                && (this.getCost() == null ? other.getCost() == null : this.getCost().equals(other.getCost()))
+                && (this.getIsPulloffed() == null ? other.getIsPulloffed() == null : this.getIsPulloffed().equals(other.getIsPulloffed()));
     }
 
     @Override
@@ -168,4 +211,6 @@ public class Gift implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+
 }

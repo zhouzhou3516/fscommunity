@@ -31,6 +31,16 @@ public class UserInfoService {
     }
 
     /**
+     * 更新用户BizInfo
+     * @param userInfo 用户
+     * @return 返回成功与否
+     */
+    public int updateBizInfo(UserInfo userInfo) {
+        Preconditions.checkNotNull(userInfo);
+        return userInfoDao.updateBizInfo(userInfo);
+    }
+
+    /**
      * 模糊查询
      * @param fuzzyName 名字的部分或者全部字符
      * @return 返回符合要求的用户列表, 可能为空
@@ -71,6 +81,21 @@ public class UserInfoService {
             return 0;
         }
         info.getBizInfo().setIntegral(intergral);
+        return userInfoDao.updateBizInfo(info);
+    }
+
+    /**
+     * 更新用户的金币
+     * @param id 用户id
+     * @param coins 新金币值
+     * @return 返回成功与否
+     */
+    public int updateGoldCoinByUserId(int id, int coins) {
+        UserInfo info = queryUserById(id);
+        if (info == null) {
+            return 0;
+        }
+        info.getBizInfo().setGoldCoin(coins);
         return userInfoDao.updateBizInfo(info);
     }
 

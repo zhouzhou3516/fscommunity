@@ -7,22 +7,23 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="available" jdbcType="INTEGER" property="available"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
         <result column="puton_time" jdbcType="TIMESTAMP" property="putonTime"/>
         <result column="pulloff_time" jdbcType="TIMESTAMP" property="pulloffTime"/>
         <result column="pay_method" jdbcType="INTEGER" property="payMethod"/>
-        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="cost" jdbcType="INTEGER" property="cost"/>
         <result column="is_pulloffed" jdbcType="INTEGER" property="isPulloffed"/>
     </resultMap>
-    <sql id="fields">
+    <sql id="Base_Column_List">
     id,
     pic,
     name,
     available,
-    puton_time AS putonTime,
-    pulloff_time AS pulloffTime,
-    pay_method AS payMethod,
+    puton_time,
+    pulloff_time,
+    pay_method,
     cost,
-    is_pulloffed AS isPulloffed
+    is_pulloffed
   </sql>
     <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Gift">
     insert into gift (pic, name,
@@ -31,7 +32,7 @@
       is_pulloffed)
     values (#{pic,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{content,jdbcType=VARCHAR}, #{available,jdbcType=INTEGER}, #{putonTime,jdbcType=TIMESTAMP}, 
-      #{pulloffTime,jdbcType=TIMESTAMP}, #{payMethod,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, 
+      #{pulloffTime,jdbcType=TIMESTAMP}, #{payMethod,jdbcType=INTEGER}, #{cost,jdbcType=INTEGER},
       #{isPulloffed,jdbcType=INTEGER})
       ON DUPLICATE KEY UPDATE
       pic=VALUES(pic),
@@ -46,7 +47,7 @@
   </insert>
     <select id="list" resultMap="BaseResultMap">
         select
-        <include refid="fields"/>
+        <include refid="Base_Column_List"/>
         from gift
         <if test="condition != null and condition !=''">
             where name like concat('%',#{condition},'%') or content like concat('%',#{condition},'%')
@@ -54,7 +55,7 @@
     </select>
     <select id="selectById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.Gift">
         SELECT
-        <include refid="fields"/>
+        <include refid="Base_Column_List"/>
         FROM gift
         WHERE id = #{id}
     </select>
@@ -67,8 +68,9 @@
       puton_time=#{putonTime,jdbcType=TIMESTAMP},
       pulloff_time=#{pulloffTime,jdbcType=TIMESTAMP},
       pay_method=#{payMethod,jdbcType=INTEGER},
-      cost=#{cost,jdbcType=DECIMAL},
+      cost=#{cost,jdbcType=INTEGER},
       is_pulloffed=#{isPulloffed,jdbcType=INTEGER}
+      WHERE id=#{id,jdbcType=INTEGER}
     </update>
     <delete id="deleteById" parameterType="java.lang.Integer">
     DELETE FROM gift WHERE id= #{id,jdbcType=INTEGER}

@@ -4,18 +4,39 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class GiftExchInfo implements Serializable {
+    /**
+     * 主键id
+     */
     private Integer id;
 
+    /**
+     * gift id
+     */
     private Integer giftId;
 
+    /**
+     * user id
+     */
     private Integer userId;
 
-    private String userName;
-
+    /**
+     * 申请兑换时间
+     */
     private Date applyTime;
 
+    /**
+     * 兑换数量
+     */
+    private Integer exchSum;
+
+    /**
+     * 兑换状态：0已兑换，1未兑换
+     */
     private Integer exchState;
 
+    /**
+     * 实现兑换日期
+     */
     private Date obtainTime;
 
     private static final long serialVersionUID = 1L;
@@ -28,13 +49,9 @@ public class GiftExchInfo implements Serializable {
         this.id = id;
     }
 
-    public Integer getGiftId() {
-        return giftId;
-    }
+    public Integer getGiftId() { return giftId; }
 
-    public void setGiftId(Integer giftId) {
-        this.giftId = giftId;
-    }
+    public void setGiftId(Integer giftId) { this.giftId = giftId; }
 
     public Integer getUserId() {
         return userId;
@@ -44,14 +61,6 @@ public class GiftExchInfo implements Serializable {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
-
     public Date getApplyTime() {
         return applyTime;
     }
@@ -59,6 +68,10 @@ public class GiftExchInfo implements Serializable {
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
     }
+
+    public Integer getExchSum() { return exchSum; }
+
+    public void setExchSum(Integer exchSum) { this.exchSum = exchSum; }
 
     public Integer getExchState() {
         return exchState;
@@ -77,41 +90,6 @@ public class GiftExchInfo implements Serializable {
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        GiftExchInfo other = (GiftExchInfo) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getGiftId() == null ? other.getGiftId() == null : this.getGiftId().equals(other.getGiftId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-            && (this.getApplyTime() == null ? other.getApplyTime() == null : this.getApplyTime().equals(other.getApplyTime()))
-            && (this.getExchState() == null ? other.getExchState() == null : this.getExchState().equals(other.getExchState()))
-            && (this.getObtainTime() == null ? other.getObtainTime() == null : this.getObtainTime().equals(other.getObtainTime()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getGiftId() == null) ? 0 : getGiftId().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
-        result = prime * result + ((getApplyTime() == null) ? 0 : getApplyTime().hashCode());
-        result = prime * result + ((getExchState() == null) ? 0 : getExchState().hashCode());
-        result = prime * result + ((getObtainTime() == null) ? 0 : getObtainTime().hashCode());
-        return result;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
@@ -120,7 +98,6 @@ public class GiftExchInfo implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", giftId=").append(giftId);
         sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
         sb.append(", applyTime=").append(applyTime);
         sb.append(", exchState=").append(exchState);
         sb.append(", obtainTime=").append(obtainTime);
