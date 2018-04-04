@@ -3,6 +3,7 @@ package com.fscommunity.platform.provider.gift;
 import com.fscommunity.platform.persist.dao.GiftMapper;
 import com.fscommunity.platform.persist.pojo.Gift;
 import com.fscommunity.platform.provider.BaseJunit;
+import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +22,7 @@ public class GiftTest extends BaseJunit {
 
     @Test
     public void blackBoardTest() {
-        List<Gift> gifts = giftMapper.list(null);
+        List<Gift> gifts = giftMapper.list(null,new RowBounds(0,2));
         for(Gift gift:gifts)
             System.out.println(gift.toString());
         assertTrue(gifts.size() > 0);

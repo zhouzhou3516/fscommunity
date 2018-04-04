@@ -1,7 +1,6 @@
 package com.fscommunity.platform.persist.pojo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class Gift implements Serializable {
@@ -56,9 +55,9 @@ public class Gift implements Serializable {
     private Integer cost;
 
     /**
-     * 是否下架：0已下架，1未下架
+     * 礼品状态：0已下架，1未下架
      */
-    private Integer isPulloffed;
+    private Integer giftState;
 
     private static final long serialVersionUID = 1L;
 
@@ -134,12 +133,12 @@ public class Gift implements Serializable {
         this.cost = cost;
     }
 
-    public Integer getIsPulloffed() {
-        return isPulloffed;
+    public Integer getGiftState() {
+        return giftState;
     }
 
-    public void setIsPulloffed(Integer isPulloffed) {
-        this.isPulloffed = isPulloffed;
+    public void setGiftState(Integer giftState) {
+        this.giftState = giftState;
     }
 
     public Integer getTotal() {
@@ -171,7 +170,7 @@ public class Gift implements Serializable {
                 && (this.getPulloffTime() == null ? other.getPulloffTime() == null : this.getPulloffTime().equals(other.getPulloffTime()))
                 && (this.getPayMethod() == null ? other.getPayMethod() == null : this.getPayMethod().equals(other.getPayMethod()))
                 && (this.getCost() == null ? other.getCost() == null : this.getCost().equals(other.getCost()))
-                && (this.getIsPulloffed() == null ? other.getIsPulloffed() == null : this.getIsPulloffed().equals(other.getIsPulloffed()));
+                && (this.getGiftState() == null ? other.getGiftState() == null : this.getGiftState().equals(other.getGiftState()));
     }
 
     @Override
@@ -187,7 +186,7 @@ public class Gift implements Serializable {
         result = prime * result + ((getPulloffTime() == null) ? 0 : getPulloffTime().hashCode());
         result = prime * result + ((getPayMethod() == null) ? 0 : getPayMethod().hashCode());
         result = prime * result + ((getCost() == null) ? 0 : getCost().hashCode());
-        result = prime * result + ((getIsPulloffed() == null) ? 0 : getIsPulloffed().hashCode());
+        result = prime * result + ((getGiftState() == null) ? 0 : getGiftState().hashCode());
         return result;
     }
 
@@ -206,7 +205,7 @@ public class Gift implements Serializable {
         sb.append(", pulloffTime=").append(pulloffTime);
         sb.append(", payMethod=").append(payMethod);
         sb.append(", cost=").append(cost);
-        sb.append(", isPulloffed=").append(isPulloffed);
+        sb.append(", giftState=").append(giftState);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

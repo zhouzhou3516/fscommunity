@@ -12,7 +12,7 @@
         <result column="pulloff_time" jdbcType="TIMESTAMP" property="pulloffTime"/>
         <result column="pay_method" jdbcType="INTEGER" property="payMethod"/>
         <result column="cost" jdbcType="INTEGER" property="cost"/>
-        <result column="is_pulloffed" jdbcType="INTEGER" property="isPulloffed"/>
+        <result column="gift_state" jdbcType="INTEGER" property="giftState"/>
     </resultMap>
     <sql id="Base_Column_List">
     id,
@@ -23,7 +23,7 @@
     pulloff_time,
     pay_method,
     cost,
-    is_pulloffed
+    gift_state
   </sql>
     <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Gift">
     insert into gift (pic, name,
@@ -33,7 +33,7 @@
     values (#{pic,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{content,jdbcType=VARCHAR}, #{available,jdbcType=INTEGER}, #{putonTime,jdbcType=TIMESTAMP}, 
       #{pulloffTime,jdbcType=TIMESTAMP}, #{payMethod,jdbcType=INTEGER}, #{cost,jdbcType=INTEGER},
-      #{isPulloffed,jdbcType=INTEGER})
+      #{giftState,jdbcType=INTEGER})
       ON DUPLICATE KEY UPDATE
       pic=VALUES(pic),
       name=VALUES(name),
@@ -43,7 +43,7 @@
       pulloff_time=VALUES(pulloff_time),
       pay_method=VALUES(pay_method),
       cost=VALUES(cost),
-      is_pulloffed=VALUES(is_pulloffed)
+      gift_state=VALUES(gift_state)
   </insert>
     <select id="list" resultMap="BaseResultMap">
         select
@@ -69,10 +69,22 @@
       pulloff_time=#{pulloffTime,jdbcType=TIMESTAMP},
       pay_method=#{payMethod,jdbcType=INTEGER},
       cost=#{cost,jdbcType=INTEGER},
-      is_pulloffed=#{isPulloffed,jdbcType=INTEGER}
+      gift_state=#{giftState,jdbcType=INTEGER}
       WHERE id=#{id,jdbcType=INTEGER}
     </update>
+
     <delete id="deleteById" parameterType="java.lang.Integer">
-    DELETE FROM gift WHERE id= #{id,jdbcType=INTEGER}
-  </delete>
+      DELETE FROM gift WHERE id= #{id,jdbcType=INTEGER}
+    </delete>
+
+    <update id="pulloffById" parameterType="java.lang.Integer">
+        UPDATE gift SET
+        pulloff_time=#{now(),jdbcType=TIMESTAMP},
+        gift_state=#{0,jdbcType=INTEGER}
+        WHERE id=#{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from gift
+    </select>
 </mapper>

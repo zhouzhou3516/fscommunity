@@ -1,4 +1,4 @@
-package com.lxx.app.common.util;
+package com.lxx.app.common.util.page;
 
 import java.util.Collections;
 import java.util.List;
