@@ -141,5 +141,11 @@ public class UserInfoService {
         return userInfoDao.updateBizInfo(userInfo);
     }
 
+    public UserInfo queryUserInfoByOpenId(String openId) {
+        if (Strings.isNullOrEmpty(openId)) {
+            return null;
+        }
 
+        return userInfoDao.queryUserByOpenId(openId);
+    }
 }

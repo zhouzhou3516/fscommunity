@@ -27,4 +27,6 @@ public interface UserInfoDao {
     int updateBizInfo(UserInfo userInfo);
 
     int updateLevelByUserId(int id, UserLevel level);
+
+    UserInfo queryUserByOpenId(String openId);
 }

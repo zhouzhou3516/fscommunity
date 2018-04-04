@@ -1,6 +1,13 @@
 package com.fscommunity.platform.common.web.filter;
 
+import com.fscommunity.platform.common.web.CookieManager;
+import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.common.web.WxInvoker;
+import com.fscommunity.platform.persist.pojo.UserAuditStatus;
+import com.fscommunity.platform.persist.pojo.UserInfo;
+import com.fscommunity.platform.service.UserInfoService;
+import com.lxx.app.common.util.json.JsonUtil;
+import com.lxx.app.common.util.pojo.APIResponse;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,24 +26,24 @@ public class WxWebAuthFilter implements HandlerInterceptor{
     WxInvoker wxInvoker;
 
     @Resource
-    StaffInfoService staffInfoService;
+    UserInfoService userInfoService;
 
     @Resource
-    SessionUserHolder sessionUserHolder;
+    SessionHolder sessionHolder;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
         logger.info("进入微信验证检测filter");
-        String cookieValue = CookieManager.SESSION.getCookieValue();
-        StaffInfo info = staffInfoService.queryStaffByOpenid(cookieValue);
-        if (info ==  null || info.getVerifyStatus() != StaffVerifyStatus.VERIFIED) {
+        String openid = CookieManager.SESSION.getCookieValue();
+        UserInfo info = userInfoService.queryUserInfoByOpenId(openid);
+        if (info ==  null || info.getAuditStatus() != UserAuditStatus.AUDIT_SUCC) {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
-            JsonUtil.instance().writeValue(response.getWriter(), APIResponse.error(102, "该用户未验证"));
+            JsonUtil.instance().writeValue(response.getWriter(), APIResponse.error(102, "该用户未审核成功"));
             return false;
         }
-        sessionUserHolder.setSession(cookieValue, staffInfoService.queryStaffByOpenid(cookieValue));
+        //sessionHolder.setSession(cookieValue, staffInfoService.queryStaffByOpenid(cookieValue));
         return true;
     }
 
@@ -49,7 +56,7 @@ public class WxWebAuthFilter implements HandlerInterceptor{
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
             Object handler, Exception ex) throws Exception {
-        sessionUserHolder.removeSession();
-        sessionUserHolder.removeOpenid();
+        //sessionHolder.removeSession();
+        //sessionHolder.removeOpenid();
     }
 }
