@@ -8,7 +8,9 @@ import com.fscommunity.platform.persist.pojo.UserBizInfo;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.pojo.BizException;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +40,8 @@ public class GiftExchService {
     @Autowired
     UserInfoService userService;
 
-    public List<GiftExchInfo> list(String condition) {
-        return giftExchInfoMapper.list(condition);
+    public List<GiftExchInfo> list(String condition, PageRequest pageRequest) {
+        return giftExchInfoMapper.list(condition, new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
     }
 
     public int add(GiftExchInfo exchInfo) {
@@ -132,8 +134,9 @@ public class GiftExchService {
         if (gift.getPayMethod() == GOLD) {//0积分，1金币
             if (bizz.getIntegral() < gift.getCost() * exch.getExchSum())
                 throw new BizException("用户积分不足！");
-            else{
-                bizz.setIntegral(bizz.getIntegral() - gift.getCost() * exch.getExchSum());}
+            else {
+                bizz.setIntegral(bizz.getIntegral() - gift.getCost() * exch.getExchSum());
+            }
         } else if (gift.getPayMethod() == INTEGRAL) {
             if (bizz.getGoldCoin() < gift.getCost())
                 throw new BizException("用户金币不足！");
@@ -151,5 +154,10 @@ public class GiftExchService {
         giftMapper.updateById(gift);
         userService.updateBizInfo(user);
 
+    }
+
+
+    public int getCount() {
+        return giftExchInfoMapper.getCount();
     }
 }

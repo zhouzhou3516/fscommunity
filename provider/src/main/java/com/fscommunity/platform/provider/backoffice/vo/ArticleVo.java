@@ -1,18 +1,24 @@
-package com.fscommunity.platform.persist.pojo;
+package com.fscommunity.platform.provider.backoffice.vo;
 
-import java.io.Serializable;
+import com.fscommunity.platform.persist.pojo.Article;
+
 import java.util.Date;
 
-public class Article implements Serializable {
+/**
+ * @Description
+ * @Author jing.c
+ * @Date: 18-4-4
+ */
+public class ArticleVo {
     /**
      * 主键id
      */
     private Integer id;
 
     /**
-     * 作者id
+     * 作者名称
      */
-    private Integer authorId;
+    private String authorName;
 
     /**
      * 文章名称
@@ -44,7 +50,17 @@ public class Article implements Serializable {
      */
     private Integer views;
 
-    private static final long serialVersionUID = 1L;
+    public ArticleVo(){}
+
+    public ArticleVo(Article article){
+        this.id=article.getId();
+        this.name=article.getName();
+        this.type=article.getType();
+        this.content=article.getContent();
+        this.publishTime=article.getPublishTime();
+        this.updateTime=article.getUpdateTime();
+        this.views=article.getViews();
+    }
 
     public Integer getId() {
         return id;
@@ -82,9 +98,9 @@ public class Article implements Serializable {
 
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
-    public Integer getAuthorId() { return authorId; }
+    public String getAuthorName() { return authorName; }
 
-    public void setAuthorId(Integer authorId) { this.authorId = authorId; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
 
     public Integer getViews() { return views; }
 
@@ -102,10 +118,7 @@ public class Article implements Serializable {
         sb.append(", content=").append(content);
         sb.append(", putonTime=").append(publishTime);
         sb.append(", pulloffTime=").append(updateTime);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
-
-
 }

@@ -21,12 +21,13 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
+  `author_id` int(11) DEFAULT NULL,
   `name` varchar(25) DEFAULT NULL,
   `type` varchar(11) DEFAULT NULL,
   `content` text,
   `publish_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
+  `views` int(11) DEFAULT NULL COMMENT '浏览量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
@@ -51,7 +52,7 @@ CREATE TABLE `gift` (
   `pulloff_time` datetime DEFAULT NULL COMMENT '下架时间',
   `pay_method` int(5) DEFAULT NULL COMMENT '支付方式：0积分，1金币',
   `cost` decimal(10,2) DEFAULT NULL COMMENT '兑换积分/金币数量',
-  `is_pulloffed` int(255) DEFAULT NULL COMMENT '是否下架：0已下架，1未下架',
+  `gift_state` int(255) DEFAULT NULL COMMENT '是否下架：0已下架，1未下架',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='礼品';
 
@@ -67,11 +68,10 @@ INSERT INTO `gift` VALUES ('2', null, 'dsa', null, '4', null, null, null, null, 
 DROP TABLE IF EXISTS `gift_exch_info`;
 CREATE TABLE `gift_exch_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `gift_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `user_name` varchar(15) DEFAULT NULL,
-  `apply_time` datetime DEFAULT NULL,
-  `exch_sum` int(5) DEFAULT NULL,
+  `gift_id` int(11) DEFAULT NULL COMMENT '礼品id',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `apply_time` datetime DEFAULT NULL COMMENT '兑换申请时间',
+  `exch_sum` int(5) DEFAULT NULL COMMENT '兑换数量',
   `exch_state` int(5) DEFAULT NULL COMMENT '兑换状态：0已兑换，1未兑换',
   `obtain_time` datetime DEFAULT NULL COMMENT '实现兑换日期',
   PRIMARY KEY (`id`)

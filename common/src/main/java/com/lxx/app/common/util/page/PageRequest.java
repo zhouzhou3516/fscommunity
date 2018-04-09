@@ -1,4 +1,4 @@
-package com.lxx.app.common.util;
+package com.lxx.app.common.util.page;
 
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;

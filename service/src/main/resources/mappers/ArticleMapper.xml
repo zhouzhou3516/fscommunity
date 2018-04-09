@@ -3,34 +3,37 @@
 <mapper namespace="com.fscommunity.platform.persist.dao.ArticleMapper">
     <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.Article">
         <result column="id" jdbcType="INTEGER" property="id"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="author_id" jdbcType="INTEGER" property="authorId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="views" jdbcType="INTEGER" property="views"/>
     </resultMap>
     <sql id="fields">
     id,
-    user_id,
+    author_id,
     name,
     type,
     content,
     publish_time,
-    update_time
+    update_time,
+    views
     </sql>
     <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Article">
-    insert into article (user_id, name,type,
-      content, publish_time,update_time)
-    values ( #{userId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},
-    #{publishTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into article (author_id, name, type,
+      content, publish_time, update_time, views)
+    values ( #{authorId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},
+    #{publishTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{views,jdbcType=INTEGER})
       ON DUPLICATE KEY UPDATE
-      user_id=VALUES(user_id),
+      author_id=VALUES(author_id),
       name=VALUES(name),
       type=VALUES(type),
       content=VALUES(content),
       publish_time=VALUES(publish_time),
-      update_time=VALUES(update_time)
+      update_time=VALUES(update_time),
+      views=VALUES(views)
     </insert>
 
     <select id="list" resultMap="BaseResultMap">
@@ -38,8 +41,13 @@
         <include refid="fields"/>
         from article
         <if test="condition != null and condition !=''">
-            where name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
+           and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
         </if>
+        order by publish_time DESC
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from article
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer"
@@ -52,15 +60,20 @@
 
     <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Article">
       UPDATE article SET
-      user_id=#{userId,jdbcType=INTEGER},
+      author_id=#{authorId,jdbcType=INTEGER},
       name=#{name,jdbcType=VARCHAR},
       type=#{type,jdbcType=VARCHAR},
       content=#{content,jdbcType=VARCHAR},
       publish_time=#{publishTime,jdbcType=TIMESTAMP},
-      update_time=#{updateTime,jdbcType=TIMESTAMP}
+      update_time=#{updateTime,jdbcType=TIMESTAMP},
+      views=#{views,jdbcType=INTEGER}
       WHERE id= #{id,jdbcType=INTEGER}
     </update>
-
+    <update id="updateViewsById" parameterType="com.fscommunity.platform.persist.pojo.Article">
+        UPDATE article SET
+        views=#{views,jdbcType=INTEGER}
+        WHERE id= #{id,jdbcType=INTEGER}
+    </update>
     <delete id="deleteById" parameterType="java.lang.Integer">
       DELETE FROM article WHERE id= #{id,jdbcType=INTEGER}
     </delete>

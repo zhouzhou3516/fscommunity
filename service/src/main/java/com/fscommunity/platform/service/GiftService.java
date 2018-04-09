@@ -4,6 +4,8 @@ import com.fscommunity.platform.persist.dao.GiftMapper;
 import com.fscommunity.platform.persist.pojo.Gift;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.lxx.app.common.util.page.PageRequest;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ public class GiftService {
     @Autowired
     GiftMapper giftMapper;
 
-    public List<Gift> list(String condition) {
-        return giftMapper.list(condition);
+    public List<Gift> list(String condition,PageRequest pageRequest) {
+        return giftMapper.list(condition, new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
     }
 
     public void add(Gift gift) {
@@ -43,4 +45,16 @@ public class GiftService {
         giftMapper.updateById(gift);
     }
 
+    /**
+     * 下架礼品
+     * @param id
+     */
+    public void pulloff(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        giftMapper.pulloffById(Integer.valueOf(id));
+    }
+
+    public int getCount() {
+        return giftMapper.getCount();
+    }
 }

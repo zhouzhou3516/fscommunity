@@ -4,6 +4,8 @@ import com.fscommunity.platform.persist.pojo.Gift;
 import com.fscommunity.platform.persist.pojo.GiftExchInfo;
 import com.fscommunity.platform.service.GiftExchService;
 import com.fscommunity.platform.service.GiftService;
+import com.lxx.app.common.util.page.PageRequest;
+import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +35,16 @@ public class GiftController {
 
     @RequestMapping("/list")
     @JsonBody
-    public List<Gift> list(HttpServletRequest request) {
+    public PageResp list(HttpServletRequest request) {
         logger.info("list");
-        return giftService.list(request.getParameter("condition"));
+        List<Gift> rows = giftService.list(request.getParameter("condition"),
+                new PageRequest(Integer.valueOf(request.getParameter("currentPage")), Integer.valueOf(request.getParameter("pageSize")))
+        );
+        int count = giftService.getCount();
+        PageResp resp = new PageResp<Gift>(rows, count);
+        return resp;
     }
+
     @RequestMapping("/new")
     @JsonBody
     public void add(@RequestBody Gift gift) {
@@ -58,6 +66,7 @@ public class GiftController {
         giftService.updateById(gift);
 
     }
+
     @RequestMapping("/del")
     @JsonBody
     public void delete(HttpServletRequest request) {
@@ -72,11 +81,23 @@ public class GiftController {
         giftExchService.apply(giftExchInfo);
     }
 
+    @RequestMapping("/pulloff")
+    @JsonBody
+    public void pulloff(HttpServletRequest request) {
+        logger.info("pulloff");
+        giftService.pulloff(request.getParameter("id"));
+    }
+
     @RequestMapping("/exchange/list")
     @JsonBody
-    public void exchList(HttpServletRequest request) {
+    public PageResp exchList(HttpServletRequest request) {
         logger.info("exchList");
-        giftExchService.list(request.getParameter("condition"));
+        List<GiftExchInfo> rows = giftExchService.list(request.getParameter("condition"),
+                new PageRequest(Integer.valueOf(request.getParameter("currentPage")), Integer.valueOf(request.getParameter("pageSize")))
+        );
+        int count = giftExchService.getCount();
+        PageResp resp = new PageResp<GiftExchInfo>(rows, count);
+        return resp;
     }
 
     @RequestMapping("/exchange/info")
