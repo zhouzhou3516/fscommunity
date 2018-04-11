@@ -3,41 +3,41 @@ package com.fscommunity.platform.persist.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Article implements Serializable {
+/**
+ * @Description 在线投票
+ * @Author jing.c
+ * @Date: 18-4-4
+ */
+public class Vote implements Serializable {
     /**
      * 主键id
      */
     private Integer id;
 
     /**
-     * 作者id
-     */
-    private Integer authorId;
-
-    /**
-     * 文章名称
+     * 投票名称
      */
     private String name;
 
     /**
-     * 文章类型
-     */
-    private String type;
-
-    /**
-     * 文章内容
+     * 投票描述
      */
     private String content;
+
+    /**
+     * 投票类型：0单选，1多选
+     */
+    private Integer voteType;
+
+    /**
+     * 投票状态：0已关闭，1开放
+     */
+    private Integer voteState;
 
     /**
      * 发布时间
      */
     private Date publishTime;
-
-    /**
-     * 最后更新时间
-     */
-    private Date updateTime;
 
     /**
      * 浏览次数
@@ -52,6 +52,14 @@ public class Article implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVoteType() {
+        return voteType;
+    }
+
+    public void setVoteType(Integer voteType) {
+        this.voteType = voteType;
     }
 
     public String getName() {
@@ -70,25 +78,21 @@ public class Article implements Serializable {
         this.content = content == null ? null : content.trim();
     }
 
-    public String getType() { return type; }
+    public Integer getVoteState() {
+        return voteState;
+    }
 
-    public void setType(String type) { this.type = type; }
-
-    public Date getPublishTime() { return publishTime; }
-
-    public void setPublishTime(Date publishTime) { this.publishTime = publishTime; }
-
-    public Date getUpdateTime() { return updateTime; }
-
-    public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
-
-    public Integer getAuthorId() { return authorId; }
-
-    public void setAuthorId(Integer authorId) { this.authorId = authorId; }
+    public void setVoteState(Integer voteState) {
+        this.voteState = voteState;
+    }
 
     public Integer getViews() { return views; }
 
     public void setViews(Integer views) { this.views = views; }
+
+    public Date getPublishTime() { return publishTime; }
+
+    public void setPublishTime(Date publishTime) { this.publishTime = publishTime; }
 
     @Override
     public String toString() {
@@ -97,16 +101,14 @@ public class Article implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", type=").append(type);
         sb.append(", name=").append(name);
         sb.append(", content=").append(content);
+        sb.append(", voteType=").append(voteType);
+        sb.append(", voteState=").append(voteState);
         sb.append(", publishTime=").append(publishTime);
-        sb.append(", updateTime=").append(updateTime);
         sb.append(", views=").append(views);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
-
-
 }

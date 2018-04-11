@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.VoteMapper">
+    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.Vote">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="vote_type" jdbcType="INTEGER" property="voteType"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="vote_state" jdbcType="INTEGER" property="voteState"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="views" jdbcType="INTEGER" property="views"/>
+    </resultMap>
+    <sql id="fields">
+    id,
+    name,
+    vote_type,
+    content,
+    vote_state,
+    publish_time,
+    views
+    </sql>
+    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Vote">
+    insert into vote ( name, vote_type,content, vote_state,publish_time, views)
+    values ( #{name,jdbcType=VARCHAR},#{voteType,jdbcType=INTEGER},#{content,jdbcType=VARCHAR},
+    #{voteState,jdbcType=INTEGER},#{publishTime,jdbcType=TIMESTAMP}, #{views,jdbcType=INTEGER})
+      ON DUPLICATE KEY UPDATE
+      name=VALUES(name),
+      vote_type=VALUES(vote_type),
+      content=VALUES(content),
+      vote_state=VALUES(vote_state),
+      publish_time=VALUES(publish_time),
+      views=VALUES(views)
+    </insert>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="fields"/>
+        from vote
+        <if test="condition != null and condition !=''">
+           and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
+        </if>
+        order by publish_time DESC
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from vote
+    </select>
+
+    <select id="selectById" parameterType="java.lang.Integer"
+            resultType="com.fscommunity.platform.persist.pojo.Vote">
+        SELECT
+        <include refid="fields"/>
+        FROM vote
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Vote">
+      UPDATE vote SET
+      name=#{name,jdbcType=VARCHAR},
+      vote_type=#{voteType,jdbcType=INTEGER},
+      vote_state=#{voteState,jdbcType=INTEGER},
+      content=#{content,jdbcType=VARCHAR},
+      publish_time=#{publishTime,jdbcType=TIMESTAMP},
+      views=#{views,jdbcType=INTEGER}
+      WHERE id= #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateViewsById" parameterType="com.fscommunity.platform.persist.pojo.Vote">
+        UPDATE vote SET
+        views=#{views,jdbcType=INTEGER}
+        WHERE id= #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateStateById" parameterType="com.fscommunity.platform.persist.pojo.Vote">
+        UPDATE vote SET
+        vote_state=#{voteState,jdbcType=INTEGER}
+        WHERE id= #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+      DELETE FROM vote WHERE id= #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>
