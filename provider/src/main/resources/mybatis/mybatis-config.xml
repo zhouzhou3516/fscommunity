@@ -28,8 +28,14 @@
     </settings>
 
     <typeHandlers>
-        <!--<typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"-->
-            <!--javaType="com.ysgh.pro.service.bean.WxTokenItem"/>-->
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+            javaType="com.fscommunity.platform.persist.pojo.UserInfo"/>
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+                     javaType="com.fscommunity.platform.persist.pojo.UserBaseinfo"/>
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+                     javaType="com.fscommunity.platform.persist.pojo.UserBizInfo"/>
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+                     javaType="com.fscommunity.platform.persist.pojo.WxTokenItem"/>
     </typeHandlers>
 
     <!-- RowBounds plugins-->

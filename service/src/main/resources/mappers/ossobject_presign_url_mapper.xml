@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.OssObjectPresignedDao">
+
+    <sql id="fields">
+        id,
+        bucket_name as bucketName,
+        object_name as objectName,
+        presigned_url as presignedUrl,
+        expire_time as expireTime,
+        create_time as createTime,
+        update_time as updateTime
+    </sql>
+
+    <insert id="saveOssObPresignedUrl" parameterType="com.fscommunity.platform.persist.pojo.OssObjectPresignedUrlnfo">
+        INSERT INTO oss_object_presign_url(
+        bucket_name,
+        object_name,
+        presigned_url,
+        expire_time,
+        create_time,
+        update_time
+        ) VALUES (
+        #{bucketName},
+        #{objectName},
+        #{presignedUrl},
+        #{expireTime},
+        #{createTime},
+        #{updateTime}
+        ) ON DUPLICATE KEY UPDATE
+        presigned_url=VALUES(presigned_url),
+        expire_time=VALUES(expire_time),
+        update_time=now()
+    </insert>
+
+    <select id="queryByObjectName" parameterType="java.util.Map" resultType="com.fscommunity.platform.persist.pojo.OssObjectPresignedUrlnfo">
+        SELECT
+        <include refid="fields"/>
+        FROM oss_object_presign_url
+        WHERE bucket_name=#{bucketName} and object_name=#{objectName}
+    </select>
+</mapper>
