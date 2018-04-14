@@ -1,9 +1,8 @@
 package com.fscommunity.platform.provider.backoffice.controller;
 
-import com.fscommunity.platform.persist.pojo.Comment;
-import com.fscommunity.platform.provider.backoffice.adapter.CommentVoAdatpter;
-import com.fscommunity.platform.provider.backoffice.vo.CommentVo;
-import com.fscommunity.platform.service.CommentService;
+import com.fscommunity.platform.persist.pojo.MsgBroad;
+import com.fscommunity.platform.provider.backoffice.req.MsgBroadListQueryReq;
+import com.fscommunity.platform.service.MsgBroadService;
 import com.fscommunity.platform.service.UserInfoService;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
@@ -20,65 +19,53 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * @Description
+ * @Description 留言板controller
  * @Author jing.c
  * @Date: 18-3-28
  */
-@RequestMapping("/fscommunity/comment")
+@RequestMapping("/fscommunity/msgbroad")
 @Controller
-public class CommentController {
-    private final static Logger logger = LoggerFactory.getLogger(CommentController.class);
+public class MsgBroadController {
+    private final static Logger logger = LoggerFactory.getLogger(MsgBroadController.class);
 
     @Resource
-    CommentService commentService;
+    MsgBroadService msgBroadService;
 
     @Autowired
     UserInfoService userInfoService;
 
     @RequestMapping("/list")
     @JsonBody
-    public PageResp list(HttpServletRequest request) {
+    public PageResp list(MsgBroadListQueryReq req) {
         logger.info("list");
-        List<Comment> rows = commentService.list(request.getParameter("condition"),
-                new PageRequest(Integer.valueOf(request.getParameter("currentPage")), Integer.valueOf(request.getParameter("pageSize")))
+        List<MsgBroad> rows = msgBroadService.list(req.getFuzzyName(),
+                new PageRequest(Integer.valueOf(req.getCurrentPage()), Integer.valueOf(req.getPageSize()))
         );
-        int count = commentService.getCount();
-        PageResp resp = new PageResp<Comment>(rows, count);
-        return resp;
-    }
-
-    @RequestMapping("/getByArcticalId")
-    @JsonBody
-    public PageResp getByArcticalId(HttpServletRequest request) {
-        logger.info("getByArcticalId");
-        List<Comment> rows = commentService.getByArticleId(request.getParameter("condition"),request.getParameter("target_id"),
-                new PageRequest(Integer.valueOf(request.getParameter("currentPage")), Integer.valueOf(request.getParameter("pageSize")))
-        );
-        int count = commentService.getCount();
-        PageResp resp = new PageResp<Comment>(rows, count);
+        int count = msgBroadService.getCount();
+        PageResp resp = new PageResp<MsgBroad>(rows, count);
         return resp;
     }
 
     @RequestMapping("/new")
     @JsonBody
-    public void add(@RequestBody Comment comment) {
+    public void add(@RequestBody MsgBroad msgBroad) {
         logger.info("new");
-        commentService.add(comment);
+        msgBroadService.add(msgBroad);
     }
 
     @RequestMapping("/info")
     @JsonBody
-    public CommentVo info(HttpServletRequest request) {
+    public MsgBroad info(HttpServletRequest request) {
         logger.info("info");
-        Comment comment = commentService.selectById(request.getParameter("id"));
-        return CommentVoAdatpter.adaptToCommentVo(comment);
+        MsgBroad msgBroad = msgBroadService.selectById(request.getParameter("id"));
+        return msgBroad;
     }
 
     @RequestMapping("/update")
     @JsonBody
-    public void update(@RequestBody Comment comment) {
+    public void update(@RequestBody MsgBroad msgBroad) {
         logger.info("update");
-        commentService.updateById(comment);
+        msgBroadService.updateById(msgBroad);
 
     }
 
@@ -86,11 +73,11 @@ public class CommentController {
     @JsonBody
     public void delete(HttpServletRequest request) {
         logger.info("delete");
-        commentService.delById(request.getParameter("id"));
+        msgBroadService.delById(request.getParameter("id"));
     }
 
     /**
-     * 公开显示评论
+     * 公开显示留言
      *
      * @param request
      */
@@ -98,6 +85,6 @@ public class CommentController {
     @JsonBody
     public void display(HttpServletRequest request) {
         logger.info("display");
-        commentService.displayCmmt(request.getParameter("id"));
+        msgBroadService.displayMsg(request.getParameter("id"));
     }
 }

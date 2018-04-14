@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * @Description
+ * @Description 评论controller
  * @Author jing.c
  * @Date: 18-3-28
  */
@@ -47,10 +47,10 @@ public class CommentController {
         return resp;
     }
 
-    @RequestMapping("/getByArcticalId")
+    @RequestMapping("/getByArticleId")
     @JsonBody
-    public PageResp getByArcticalId(HttpServletRequest request) {
-        logger.info("getByArcticalId");
+    public PageResp getByArticleId(HttpServletRequest request) {
+        logger.info("getByArticleId");
         List<Comment> rows = commentService.getByArticleId(request.getParameter("condition"),request.getParameter("target_id"),
                 new PageRequest(Integer.valueOf(request.getParameter("currentPage")), Integer.valueOf(request.getParameter("pageSize")))
         );
