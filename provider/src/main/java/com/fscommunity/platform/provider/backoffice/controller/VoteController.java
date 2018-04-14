@@ -109,9 +109,10 @@ public class VoteController {
      */
     @RequestMapping("/vote")
     @JsonBody
-    public void vote(HttpServletRequest request) {
+    public VoteVo vote(HttpServletRequest request) {
         logger.info("vote");
-        voteService.vote(request.getParameter("id"));
+        Vote vote=voteService.vote(request.getParameter("id"));
+        return VoteVoAdatpter.adaptToVoteVo(vote,voteService.getVoteItems(vote.getId().toString()));
     }
 
     /**

@@ -65,7 +65,7 @@ public class VoteService {
      * user vote
      * @param id voteItem id
      */
-    public void vote(String id) {
+    public Vote vote(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         VoteItem voteItem=voteItemMapper.selectById(Integer.valueOf(id));
         //todo 从上下文中获取当前用户
@@ -74,6 +74,8 @@ public class VoteService {
         voteItem.setVoterList(voteItem.getVoterList()+","+info.getRealName());
         voteItem.setVoterSum(voteItem.getVoterSum()+1);
         voteItemMapper.updateById(voteItem);
+        return voteMapper.selectById(voteItem.getVoteId());
+
     }
 
     /**
