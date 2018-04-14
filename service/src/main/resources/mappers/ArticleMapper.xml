@@ -22,32 +22,44 @@
     views
     </sql>
     <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Article">
-    insert into article (author_id, name, type,
-      content, publish_time, update_time, views)
-    values ( #{authorId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},
-    #{publishTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{views,jdbcType=INTEGER})
+    insert into
+    article (
+    author_id,
+    name,
+    type,
+    content,
+    publish_time,
+    update_time,
+    views)
+    values
+    (
+    #{authorId,jdbcType=INTEGER},
+    #{name,jdbcType=VARCHAR},
+    #{type},
+    #{content,jdbcType=VARCHAR},
+    #{publishTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP},
+    #{views,jdbcType=INTEGER})
       ON DUPLICATE KEY UPDATE
-      author_id=VALUES(author_id),
-      name=VALUES(name),
-      type=VALUES(type),
       content=VALUES(content),
-      publish_time=VALUES(publish_time),
-      update_time=VALUES(update_time),
-      views=VALUES(views)
+      update_time=VALUES(update_time)
     </insert>
 
-    <select id="list" resultMap="BaseResultMap">
+    <select id="list" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="fields"/>
         from article
-        <if test="condition != null and condition !=''">
-           and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
-        </if>
+        <where>
+            <if test="fuzzyName != null and fuzzyName !=''">
+                and  name like concat('%',#{fuzzyName},'%')
+            </if>
+        </where>
         order by publish_time DESC
     </select>
 
-    <select id="getCount" resultType="java.lang.Integer">
-        select count(*) from article
+    <select id="getCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from article
+        where name like concat('%',#{fuzzyName},'%')
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer"
@@ -59,16 +71,22 @@
     </select>
 
     <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Article">
-      UPDATE article SET
-      author_id=#{authorId,jdbcType=INTEGER},
-      name=#{name,jdbcType=VARCHAR},
-      type=#{type,jdbcType=VARCHAR},
-      content=#{content,jdbcType=VARCHAR},
-      publish_time=#{publishTime,jdbcType=TIMESTAMP},
-      update_time=#{updateTime,jdbcType=TIMESTAMP},
-      views=#{views,jdbcType=INTEGER}
-      WHERE id= #{id,jdbcType=INTEGER}
+      UPDATE article
+        <set>
+            <if test="type != null">
+                type=#{type},
+            </if>
+            <if test="content !=null and content !=''">
+                content=#{content},
+            </if>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            update_time=now()
+        </set>
+      WHERE id= #{id}
     </update>
+
     <update id="updateViewsById" parameterType="com.fscommunity.platform.persist.pojo.Article">
         UPDATE article SET
         views=#{views,jdbcType=INTEGER}

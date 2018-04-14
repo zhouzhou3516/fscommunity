@@ -3,15 +3,14 @@ package com.fscommunity.platform.service;
 import com.fscommunity.platform.persist.dao.ArticleMapper;
 import com.fscommunity.platform.persist.pojo.Article;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.page.PageRequest;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,13 +23,17 @@ public class ArticleService {
     @Autowired
     ArticleMapper articleMapper;
 
-    public List<Article> list(String condition, PageRequest pageRequest) {
-
-        List<Article> listArticle = articleMapper.list(condition,
+    public List<Article> list(String fuzzyName, PageRequest pageRequest) {
+        List<Article> listArticle = articleMapper.list(fuzzyName,
                 new RowBounds(pageRequest.getOffset(),pageRequest.getLimit())
         );
+
+        if (CollectionUtils.isEmpty(listArticle)) {
+            return Collections.EMPTY_LIST;
+        }
+
         for(Article article: listArticle){
-            article.setContent(Base64Util.encode(article.getContent()));
+            article.setContent(Base64Util.decode(article.getContent()));
         }
         return listArticle;
     }
@@ -38,22 +41,17 @@ public class ArticleService {
     public void add(Article article) {
         Preconditions.checkNotNull(article);
         article.setContent(Base64Util.encode(article.getContent()));
-        article.setViews(0);
-        article.setPublishTime(new Date());
-        article.setUpdateTime(new Date());
         articleMapper.insert(article);
     }
 
-    public Article selectById(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        Article article = articleMapper.selectById(Integer.valueOf(id));
+    public Article selectById(int id) {
+        Article article = articleMapper.selectById(id);
         article.setContent(Base64Util.decode(article.getContent()));
         return article;
     }
 
-    public void delById(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        articleMapper.deleteById(Integer.valueOf(id));
+    public void delById(int id) {
+        articleMapper.deleteById(id);
     }
 
     public void updateById(Article article) {
@@ -62,12 +60,16 @@ public class ArticleService {
         articleMapper.updateById(article);
     }
 
-    public void updateViewsById(String id,String views) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        articleMapper.updateViewsById(Integer.valueOf(id),Integer.valueOf(views));
+    public void updateViewsById(int id,int views) {
+        articleMapper.updateViewsById(id, views);
     }
 
-    public int getCount() {
-        return articleMapper.getCount();
+    public void incrArtileViewsById(int id) {
+        Article article = selectById(id);
+        updateViewsById(id, article.getViews() + 1);
+    }
+
+    public int getCount(String fuzzyName) {
+        return articleMapper.getCount(fuzzyName);
     }
 }

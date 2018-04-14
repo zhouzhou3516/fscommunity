@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.ManUserDao">
+
+    <sql id="fields">
+        id,
+        staff_id AS staffId,
+        user_name AS userName,
+        real_name AS realName,
+        passward,
+        roleId,
+        create_time AS createTime,
+        update_time as updateTime
+    </sql>
+
+    <insert id="saveManUser" parameterType="com.fscommunity.platform.common.pojo.ManUser">
+        INSERT INTO man_user(
+        staff_id,
+        user_name,
+        real_name,
+        passward,
+        roleId,
+        create_time,
+        update_time
+        ) VALUES (
+        #{staffId},
+        #{userName},
+        #{realName},
+        #{passward},
+        #{roleId},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+
+    <select id="queryUserByNamePass" parameterType="java.util.Map" resultType="com.fscommunity.platform.common.pojo.ManUser">
+        SELECT
+        <include refid="fields"/>
+        FROM man_user
+        WHERE user_name=#{userName} AND passward=#{password}
+    </select>
+
+    <select id="queryUserByUsername" parameterType="java.lang.String" resultType="com.fscommunity.platform.common.pojo.ManUser">
+        SELECT
+        <include refid="fields"/>
+        FROM man_user
+        WHERE user_name=#{userName}
+    </select>
+
+    <select id="queryUserById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.common.pojo.ManUser">
+        SELECT
+        <include refid="fields"/>
+        FROM man_user
+        where id=#{id}
+    </select>
+</mapper>

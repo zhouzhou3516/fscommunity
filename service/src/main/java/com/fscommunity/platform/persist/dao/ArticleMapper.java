@@ -16,9 +16,9 @@ public interface ArticleMapper {
 
     int insertSelective(Article record);
 
-    int getCount();
+    int getCount(String fuzzyName);
 
-    List<Article> list(@Param("condition") String conditiion, RowBounds rowBounds);
+    List<Article> list(@Param("fuzzyName") String fuzzyName, RowBounds rowBounds);
 
     Article selectById(@Param("id")Integer id);
 

@@ -1,5 +1,7 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.fscommunity.platform.common.constant.ArticleType;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,7 +24,7 @@ public class Article implements Serializable {
     /**
      * 文章类型
      */
-    private String type;
+    private ArticleType type;
 
     /**
      * 文章内容
@@ -70,9 +72,13 @@ public class Article implements Serializable {
         this.content = content == null ? null : content.trim();
     }
 
-    public String getType() { return type; }
+    public ArticleType getType() {
+        return type;
+    }
 
-    public void setType(String type) { this.type = type; }
+    public void setType(ArticleType type) {
+        this.type = type;
+    }
 
     public Date getPublishTime() { return publishTime; }
 

@@ -1,5 +1,6 @@
 package com.fscommunity.platform.provider.backoffice.vo;
 
+import com.fscommunity.platform.common.constant.ArticleType;
 import com.fscommunity.platform.persist.pojo.Article;
 
 import java.util.Date;
@@ -28,7 +29,7 @@ public class ArticleVo {
     /**
      * 文章类型
      */
-    private String type;
+    private ArticleType type;
 
     /**
      * 文章内容
@@ -86,9 +87,13 @@ public class ArticleVo {
         this.content = content == null ? null : content.trim();
     }
 
-    public String getType() { return type; }
+    public ArticleType getType() {
+        return type;
+    }
 
-    public void setType(String type) { this.type = type; }
+    public void setType(ArticleType type) {
+        this.type = type;
+    }
 
     public Date getPublishTime() { return publishTime; }
 
