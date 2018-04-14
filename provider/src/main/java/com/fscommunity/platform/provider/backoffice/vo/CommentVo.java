@@ -1,6 +1,6 @@
 package com.fscommunity.platform.provider.backoffice.vo;
 
-import com.fscommunity.platform.persist.pojo.Comment;
+import com.fscommunity.platform.persist.pojo.CommentType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,27 +19,34 @@ public class CommentVo implements Serializable {
     /**
      * 文章id
      */
-    private Integer targetId;
+    private Integer articleId;
+
+    private String articleName;
 
     /**
-     * 用户id
+     * 评论人的id
      */
-    private String userId;
+    private int commentUserId;
 
     /**
-     *用户姓名
+     * 评论人姓名
      */
-    private String userName;
+    private String commentUserName;
 
     /**
-     *用户头像
-     */
-    private String userAvatar;
-
-    /**
-     * 回复内容
+     * 评论内容
      */
     private String content;
+
+    /**
+     * 被评论的评论内容, commentType=COMMENT_COMMENT有效
+     */
+    private String commentedContent;
+
+    /**
+     * 被评论的评论id，commentType=COMMENT_COMMENT有效
+     */
+    private String commentedId;
 
     /**
      * 评论时间
@@ -47,41 +54,24 @@ public class CommentVo implements Serializable {
     private Date publishTime;
 
     /**
-     * 被回复的评论id, 如果是回复一条评论，则需要填写，is_reply==1
+     * 被评论用户id, is_reply=1次值有效
      */
-    private Integer targetCid;
+    private Integer commentedUserid;
 
     /**
-     * 被回复的评论作者id,如果是回复一条评论，则需要填写，is_reply==1 exists
+     * 被评论用户姓名
      */
-    private Integer targetUid;
+    private String commentedUserName;
 
     /**
-     * 被回复的评论作者名字,如果是回复一条评论，则需要填写 is_reply==1 exists
+     * 评论类型：针对文章的评论还是针对评论的评论
      */
-    private String targetUname;
+    private CommentType commentType;
 
     /**
-     *1：一条评论的回复，0：直接评论文章
+     * 审核状态
      */
-    private Integer isReply;
-
-    /**
-     * 1：评论显示在浏览界面，0：不显示
-     */
-    private Integer isShowed;
-
-    public CommentVo(Comment comment){
-        this.id=comment.getId();
-        this.targetId=comment.getTargetId();
-        this.userId=comment.getUserId();
-        this.content=comment.getContent();
-        this.publishTime=comment.getPublishTime();
-        this.targetCid=comment.getTargetCid();
-        this.targetUid=comment.getTargetUid();
-        this.isReply=comment.getIsReply();
-        this.isShowed=comment.getIsShowed();
-    }
+    private boolean authStatus;
 
     public Integer getId() {
         return id;
@@ -91,36 +81,36 @@ public class CommentVo implements Serializable {
         this.id = id;
     }
 
-    public Integer getTargetId() {
-        return targetId;
+    public Integer getArticleId() {
+        return articleId;
     }
 
-    public void setTargetId(Integer targetId) {
-        this.targetId = targetId;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getArticleName() {
+        return articleName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setArticleName(String articleName) {
+        this.articleName = articleName;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getCommentUserId() {
+        return commentUserId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCommentUserId(int commentUserId) {
+        this.commentUserId = commentUserId;
     }
 
-    public String getUserAvatar() {
-        return userAvatar;
+    public String getCommentUserName() {
+        return commentUserName;
     }
 
-    public void setUserAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
+    public void setCommentUserName(String commentUserName) {
+        this.commentUserName = commentUserName;
     }
 
     public String getContent() {
@@ -139,67 +129,43 @@ public class CommentVo implements Serializable {
         this.publishTime = publishTime;
     }
 
-    public Integer getTargetCid() {
-        return targetCid;
+    public Integer getCommentedUserid() {
+        return commentedUserid;
     }
 
-    public void setTargetCid(Integer targetCid) {
-        this.targetCid = targetCid;
+    public void setCommentedUserid(Integer commentedUserid) {
+        this.commentedUserid = commentedUserid;
     }
 
-    public Integer getTargetUid() {
-        return targetUid;
+    public String getCommentedUserName() {
+        return commentedUserName;
     }
 
-    public void setTargetUid(Integer targetUid) {
-        this.targetUid = targetUid;
+    public void setCommentedUserName(String commentedUserName) {
+        this.commentedUserName = commentedUserName;
     }
 
-    public String getTargetUname() {
-        return targetUname;
+    public CommentType getCommentType() {
+        return commentType;
     }
 
-    public void setTargetUname(String targetUname) {
-        this.targetUname = targetUname;
+    public void setCommentType(CommentType commentType) {
+        this.commentType = commentType;
     }
 
-    public Integer getIsReply() {
-        return isReply;
+    public boolean isAuthStatus() {
+        return authStatus;
     }
 
-    public void setIsReply(Integer isReply) {
-        this.isReply = isReply;
+    public void setAuthStatus(boolean authStatus) {
+        this.authStatus = authStatus;
     }
 
-    public Integer getIsShowed() {
-        return isShowed;
+    public String getCommentedContent() {
+        return commentedContent;
     }
 
-    public void setIsShowed(Integer isShowed) {
-        this.isShowed = isShowed;
-    }
-
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", targetId=").append(targetId);
-        sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
-        sb.append(", userAvatar=").append(userAvatar);
-        sb.append(", content=").append(content);
-        sb.append(", publishTime=").append(publishTime);
-        sb.append(", targetCid=").append(targetCid);
-        sb.append(", targetUname=").append(targetUname);
-        sb.append(", isReply=").append(isReply);
-        sb.append(", isShowed=").append(isShowed);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+    public void setCommentedContent(String commentedContent) {
+        this.commentedContent = commentedContent;
     }
 }

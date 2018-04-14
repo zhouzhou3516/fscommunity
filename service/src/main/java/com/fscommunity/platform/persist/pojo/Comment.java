@@ -22,7 +22,7 @@ public class Comment implements Serializable {
     /**
      * 用户id
      */
-    private String userId;
+    private int userId;
 
     /**
      * 评论内容
@@ -47,7 +47,9 @@ public class Comment implements Serializable {
     /**
      * 1：一条评论的回复，0：直接评论文章
      */
-    private Integer isReply;
+    private CommentType commentType;
+
+    private int isReply;
 
     /**
      * 1：评论显示在浏览界面，0：不显示
@@ -75,11 +77,11 @@ public class Comment implements Serializable {
         this.targetId = targetId;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -115,12 +117,12 @@ public class Comment implements Serializable {
         this.targetUid = targetUid;
     }
 
-    public Integer getIsReply() {
-        return isReply;
+    public CommentType getCommentType() {
+        return commentType;
     }
 
-    public void setIsReply(Integer isReply) {
-        this.isReply = isReply;
+    public void setCommentType(CommentType commentType) {
+        this.commentType = commentType;
     }
 
     public Integer getIsShowed() {
@@ -139,25 +141,13 @@ public class Comment implements Serializable {
         this.sid = sid;
     }
 
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", targetId=").append(targetId);
-        sb.append(", userId=").append(userId);
-        sb.append(", content=").append(content);
-        sb.append(", publishTime=").append(publishTime);
-        sb.append(", targetCid=").append(targetCid);
-        sb.append(", isReply=").append(isReply);
-        sb.append(", isShowed=").append(isShowed);
-        sb.append(", sid=").append(sid);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+    public int getIsReply() {
+        return isReply;
     }
+
+    public void setIsReply(int isReply) {
+        this.isReply = isReply;
+    }
+
+    private static final long serialVersionUID = 1L;
 }

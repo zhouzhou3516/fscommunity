@@ -3,13 +3,16 @@ package com.fscommunity.platform.service;
 import com.fscommunity.platform.persist.dao.UserInfoDao;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
+import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.lxx.app.common.util.pojo.BizException;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
-import java.util.List;
-import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author lixiaoxiong
@@ -57,6 +60,14 @@ public class UserInfoService {
      */
     public UserInfo queryUserById(int id) {
         return userInfoDao.queryByUserId(id);
+    }
+
+    public List<UserSimpleInfo> querySimpleUsersByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return userInfoDao.querySimpleInfoByIds(ids);
     }
 
     /**

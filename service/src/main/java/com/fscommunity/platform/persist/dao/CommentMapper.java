@@ -14,23 +14,23 @@ import java.util.List;
 public interface CommentMapper {
     int insert(Comment record);
 
-    int insertSelective(Comment record);
-
-    int getCount();
+    int getCountByArticleId();
 
     List<Comment> list(@Param("condition") String conditiion, RowBounds rowBounds);
+
+    List<Comment> queryCommentsByIds(List<Integer> ids);
 
     Comment selectById(@Param("id") Integer id);
 
     int updateById(Comment record);
 
+    int updateAuthStatus(@Param("showed") int showed, @Param("id") int id);
+
     int deleteById(@Param("id") Integer id);
 
-    void updateViewsById(@Param("id") Integer integer, @Param("views") Integer views);
+    List<Comment> getCmmtByArticleId(Integer articleId, RowBounds rowBounds);
 
-    List<Comment> getCmmtByArticleId(@Param("condition") String condition, Integer integer, RowBounds rowBounds);
 
-    int displayCmmt(Integer integer);
 
     int setSidById(@Param("id")Integer integer,@Param("sid") Integer sid);
 }

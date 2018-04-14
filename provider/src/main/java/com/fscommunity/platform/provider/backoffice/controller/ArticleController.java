@@ -26,7 +26,7 @@ import java.util.List;
  * @Author jing.c
  * @Date: 18-3-28
  */
-@RequestMapping("/fscommunity/article")
+@RequestMapping("/fscommunity/backoffice/article")
 @Controller
 public class ArticleController {
     private final static Logger logger = LoggerFactory.getLogger(ArticleController.class);

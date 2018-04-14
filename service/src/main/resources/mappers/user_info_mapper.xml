@@ -33,6 +33,14 @@
         update_time AS updateTime
     </sql>
 
+    <sql id="simpleFields">
+        id,
+        real_name AS realName,
+        cell_phone AS cellPhone,
+        phone,
+        open_id AS openId
+    </sql>
+
     <insert id="saveUser" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
         INSERT INTO user_info(
         real_name,
@@ -105,6 +113,16 @@
         <include refid="fields"/>
         FROM user_info
         WHERE id=#{id}
+    </select>
+
+    <select id="querySimpleInfoByIds" parameterType="java.util.List" resultType="com.fscommunity.platform.persist.pojo.UserSimpleInfo">
+        select
+        <include refid="simpleFields"/>
+        FROM user_info
+        where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 
     <select id="queryByRealName" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">

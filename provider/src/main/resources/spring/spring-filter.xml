@@ -34,5 +34,9 @@
             <!--<mvc:exclude-mapping path="/ysgh/test/**"/>-->
             <!--<bean class="com.ysgh.pro.service.impl.filter.WxWebAuthFilter"/>-->
         <!--</mvc:interceptor>-->
+        <mvc:interceptor>
+            <mvc:mapping path="fasdf"/>
+            <bean class="com.fscommunity.platform.common.web.filter.ManAuthFilter"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 </beans>

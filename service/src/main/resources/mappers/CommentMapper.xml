@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fscommunity.platform.persist.dao.CommentMapper">
-    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.Comment">
+    <resultMap id="resultMap" type="com.fscommunity.platform.persist.pojo.Comment">
         <result column="id" jdbcType="INTEGER" property="id"/>
         <result column="target_id" jdbcType="INTEGER" property="targetId"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
@@ -10,9 +10,11 @@
         <result column="target_cid" jdbcType="INTEGER" property="targetCid"/>
         <result column="target_uid" jdbcType="INTEGER" property="targetUid"/>
         <result column="is_reply" jdbcType="INTEGER" property="isReply"/>
+        <result column="comment_type"  property="commentType"/>
         <result column="is_showed" jdbcType="INTEGER" property="isShowed"/>
         <result column="sid" jdbcType="INTEGER" property="sid"/>
     </resultMap>
+
     <sql id="fields">
     id,
     target_id,
@@ -22,13 +24,34 @@
     target_cid,
     target_uid,
     is_reply,
+    comment_type,
     is_showed,
     sid
     </sql>
+
     <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Comment">
-    insert into comment (target_id, user_id, content, publish_time, target_cid,target_uid,is_reply,is_showed,sid)
-    values ( #{targetId,jdbcType=INTEGER},#{userId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{publishTime,jdbcType=TIMESTAMP},
-     #{targetCid,jdbcType=INTEGER},#{targetUid,jdbcType=INTEGER},#{isReply,jdbcType=INTEGER},#{isShowed,jdbcType=INTEGER},#{sid,jdbcType=INTEGER})
+    insert into comment
+    (target_id,
+    user_id,
+    content,
+    publish_time,
+    target_cid,
+    target_uid,
+    is_reply,
+    comment_type,
+    is_showed,
+    sid)
+    values (
+    #{targetId},
+    #{userId},
+    #{content},
+    #{publishTime},
+     #{targetCid},
+     #{targetUid},
+     #{isReply},
+     #{commentType},
+     #{isShowed},
+     #{sid})
       ON DUPLICATE KEY UPDATE
       target_id=VALUES(target_id),
       user_id=VALUES(user_id),
@@ -37,11 +60,12 @@
       target_cid=VALUES(target_cid),
       target_uid=VALUES(target_uid),
       is_reply=VALUES(is_reply),
+      comment_type=VALUES(comment_type),
       is_showed=VALUES(is_showed),
       sid=VALUES(sid)
     </insert>
 
-    <select id="list" resultMap="BaseResultMap">
+    <select id="list" resultMap="resultMap">
         select
         <include refid="fields"/>
         from comment
@@ -50,18 +74,28 @@
         </if>
         order by publish_time DESC
     </select>
-    <select id="getCmmtByArticleId" resultMap="BaseResultMap">
+
+    <select id="queryCommentsByIds" parameterType="java.util.List" resultMap="resultMap">
         select
         <include refid="fields"/>
         from comment
-        <if test="condition != null and condition !=''">
-            and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
-        </if>
-        WHERE target_id=#{target_id}
+        where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getCmmtByArticleId" parameterType="java.lang.Integer" resultMap="resultMap">
+        select
+        <include refid="fields"/>
+        from comment
+        WHERE target_id=#{articleId}
         order by sid ASC, publish_time DESC
     </select>
-    <select id="getCount" resultType="java.lang.Integer">
+
+    <select id="getCountByArticleId" resultType="java.lang.Integer">
         select count(*) from comment
+        where target_id=#{articleId}
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer"
@@ -89,6 +123,11 @@
         UPDATE comment SET
         sid=#{sid,jdbcType=INTEGER}
         WHERE id= #{id}
+    </update>
+    <update id="updateAuthStatus" parameterType="java.util.Map">
+        update comment
+        set is_showed=#{showed}
+        where id=#{id}
     </update>
     <delete id="deleteById" parameterType="java.lang.Integer">
       DELETE FROM comment WHERE id= #{id,jdbcType=INTEGER}
