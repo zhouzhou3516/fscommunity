@@ -34,4 +34,12 @@ public class ConveniencePhoneService {
     public int countPhone() {
         return conveniencePhoneDao.countPhone();
     }
+
+    public ConveniencePhone queryById(int id) {
+        return conveniencePhoneDao.queryById(id);
+    }
+
+    public int delPhone(int id) {
+        return conveniencePhoneDao.delById(id);
+    }
 }
