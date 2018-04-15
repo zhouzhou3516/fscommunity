@@ -1,6 +1,5 @@
 package com.fscommunity.platform.provider.backoffice.controller;
 
-import com.fscommunity.platform.persist.dao.VoteItemMapper;
 import com.fscommunity.platform.persist.pojo.Vote;
 import com.fscommunity.platform.persist.pojo.VoteItem;
 import com.fscommunity.platform.provider.backoffice.adapter.VoteVoAdatpter;
@@ -109,9 +108,10 @@ public class VoteController {
      */
     @RequestMapping("/vote")
     @JsonBody
-    public void vote(HttpServletRequest request) {
+    public VoteVo vote(HttpServletRequest request) {
         logger.info("vote");
-        voteService.vote(request.getParameter("id"));
+        Vote vote=voteService.vote(request.getParameter("id"));
+        return VoteVoAdatpter.adaptToVoteVo(vote,voteService.getVoteItems(vote.getId().toString()));
     }
 
     /**
