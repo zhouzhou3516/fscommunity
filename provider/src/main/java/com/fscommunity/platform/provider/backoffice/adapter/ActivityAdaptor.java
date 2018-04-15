@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class ActivityAdaptor {
     public static ActivityInfo adaptToInfo(AddNewActivityReq req) {
         ActivityInfo info = new ActivityInfo();
-        info.setArticleId(req.getActivityId());
+        info.setArticleId(req.getArticleId());
         info.setActivityDesc(req.getDesc());
         info.setActivityTime(req.getActivityTime());
         info.setApplyStartTime(req.getApplyStartTime());

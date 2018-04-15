@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
  */
 @RequestMapping("/fscommunity/backoffice/activity")
 @Controller
-public class ActivityController {
-
+public class MgrActivityController {
     @Resource
     ActivityService activityService;
 
@@ -45,7 +44,7 @@ public class ActivityController {
 
     @RequestMapping("/list")
     @JsonBody
-    public MgrActivityListVo listActivity(int currentPage,  int pageSize) {
+    public MgrActivityListVo listActivity(int currentPage, int pageSize) {
         List<ActivityInfo> infos = activityService.queryByPage(new PageRequest(currentPage, pageSize));
         MgrActivityListVo vo = new MgrActivityListVo();
         if (CollectionUtils.isEmpty(infos)) {
@@ -75,14 +74,15 @@ public class ActivityController {
     @RequestMapping("/update")
     @JsonBody
     public void updateActivity(@RequestBody UpdateActivityReq req) {
-        ActivityInfo activityInfo = activityService.queryById(req.getArticleId());
+        ActivityInfo activityInfo = activityService.queryById(req.getActivityId());
 
         activityInfo.setArticleId(req.getArticleId());
+        activityInfo.setActivityDesc(req.getActivityDesc());
         activityInfo.setActivityTime(req.getActivityTime());
         activityInfo.setApplyStartTime(req.getApplyStartTime());
         activityInfo.setApplyEndTime(req.getApplyEndTime());
         activityInfo.setApplyCostCount(req.getApplyCostCount());
-        activityInfo.setApplyCostCount(req.getApplyCostCount());
+        activityInfo.setCostType(req.getCostType());
         activityService.updateActivity(activityInfo);
     }
 }

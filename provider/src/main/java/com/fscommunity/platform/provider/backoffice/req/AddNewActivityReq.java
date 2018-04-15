@@ -7,7 +7,7 @@ import com.fscommunity.platform.persist.pojo.ActivityApplyCostType;
  * @version 2018-04-15
  */
 public class AddNewActivityReq {
-    private int activityId;
+    private int articleId;
     private String desc;
     private String activityTime;
     private String applyStartTime;
@@ -15,12 +15,12 @@ public class AddNewActivityReq {
     private ActivityApplyCostType costType;
     private int costCount;
 
-    public int getActivityId() {
-        return activityId;
+    public int getArticleId() {
+        return articleId;
     }
 
-    public void setActivityId(int activityId) {
-        this.activityId = activityId;
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 
     public String getDesc() {

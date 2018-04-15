@@ -55,7 +55,11 @@ public class ArticleService {
             return Collections.emptyList();
         }
 
-        return articleMapper.selectByIds(ids);
+        List<Article> articles = articleMapper.selectByIds(ids);
+        for (Article article : articles) {
+            article.setContent(Base64Util.decode(article.getContent()));
+        }
+        return articles;
     }
 
     public void delById(int id) {

@@ -7,6 +7,9 @@ import com.fscommunity.platform.persist.pojo.ActivityApplyCostType;
  * @version 2018-04-15
  */
 public class UpdateActivityReq {
+
+    private int activityId;
+
     private int articleId;
 
     /**
@@ -38,6 +41,14 @@ public class UpdateActivityReq {
      * 支付数量
      */
     private int applyCostCount;
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
+    }
 
     public int getArticleId() {
         return articleId;
