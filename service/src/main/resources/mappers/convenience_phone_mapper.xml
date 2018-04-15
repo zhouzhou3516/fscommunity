@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.ConveniencePhoneDao">
+
+    <sql id="fields">
+    id,
+    phone,
+    owner,
+    phone_desc as phoneDesc,
+    create_time as createTime,
+    update_time as updateTime
+    </sql>
+
+    <insert id="savePhone" parameterType="com.fscommunity.platform.persist.pojo.ConveniencePhone">
+    insert into
+    convenience_phone (
+    phone,
+    owner,
+    phone_desc,
+    create_time,
+    update_time)
+    values
+    (
+    #{phone},
+    #{owner},
+    #{phoneDesc},
+    #{createTime},
+    #{updateTime})
+      ON DUPLICATE KEY UPDATE
+      phone=VALUES(phone),
+      phone_desc=VALUES(phone_desc),
+      owner=VALUES(owner),
+      update_time=now()
+    </insert>
+
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.ConveniencePhone">
+        select
+        <include refid="fields"/>
+        from convenience_phone
+        where id=#{id}
+    </select>
+
+    <select id="queryByPage" resultType="com.fscommunity.platform.persist.pojo.ConveniencePhone">
+        select
+        <include refid="fields"/>
+        from convenience_phone
+    </select>
+
+    <select id="countPhone" resultType="java.lang.Integer">
+        select count(1) from convenience_phone;
+    </select>
+
+    <update id="updatePhone" parameterType="com.fscommunity.platform.persist.pojo.ConveniencePhone">
+        update convenience_phone
+        <set>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="owner != null and owner != ''">
+                owner=#{owner},
+            </if>
+            <if test="phoneDesc != null and phoneDesc != ''">
+                phone_desc=#{phoneDesc},
+            </if>
+            update_time=now()
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delById" parameterType="java.lang.Integer">
+        delete from convenience_phone
+        where id=#{id}
+    </delete>
+</mapper>
