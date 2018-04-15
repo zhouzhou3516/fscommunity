@@ -8,7 +8,7 @@ import com.fscommunity.platform.provider.backoffice.vo.CommentVo;
  * @Author jing.c
  * @Date: 18-4-11
  */
-public class CommentVoAdatpter {
+public class MsgBroadVoAdatpter {
     public static CommentVo adaptToCommentVo(Comment comment) {
         //TODO
         CommentVo vo = new CommentVo(comment);

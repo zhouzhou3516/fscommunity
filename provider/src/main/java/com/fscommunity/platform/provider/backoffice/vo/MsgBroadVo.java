@@ -10,16 +10,11 @@ import java.util.Date;
  * @Author jing.c
  * @Date: 18-4-11
  */
-public class CommentVo implements Serializable {
+public class MsgBroadVo implements Serializable {
     /*
       * 主键id
      */
     private Integer id;
-
-    /**
-     * 文章id
-     */
-    private Integer targetId;
 
     /**
      * 用户id
@@ -47,33 +42,32 @@ public class CommentVo implements Serializable {
     private Date publishTime;
 
     /**
-     * 被回复的评论id, 如果是回复一条评论，则需要填写，is_reply==1
+     * 被回复的留言id, 如果是回复一条留言，则需要填写，is_reply==1
      */
     private Integer targetCid;
 
     /**
-     * 被回复的评论作者id,如果是回复一条评论，则需要填写，is_reply==1 exists
+     * 被回复的留言作者id,如果是回复一条留言，则需要填写，is_reply==1 exists
      */
     private Integer targetUid;
 
     /**
-     * 被回复的评论作者名字,如果是回复一条评论，则需要填写 is_reply==1 exists
+     * 被回复的留言作者名字,如果是回复一条留言，则需要填写 is_reply==1 exists
      */
     private String targetUname;
 
     /**
-     *1：一条评论的回复，0：直接评论文章
+     *1：一条留言的回复，0：直接留言文章
      */
     private Integer isReply;
 
     /**
-     * 1：评论显示在浏览界面，0：不显示
+     * 1：留言显示在浏览界面，0：不显示
      */
     private Integer isShowed;
 
-    public CommentVo(Comment comment){
+    public MsgBroadVo(Comment comment){
         this.id=comment.getId();
-        this.targetId=comment.getTargetId();
         this.userId=comment.getUserId();
         this.content=comment.getContent();
         this.publishTime=comment.getPublishTime();
@@ -89,14 +83,6 @@ public class CommentVo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Integer targetId) {
-        this.targetId = targetId;
     }
 
     public String getUserId() {
@@ -188,7 +174,6 @@ public class CommentVo implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", targetId=").append(targetId);
         sb.append(", userId=").append(userId);
         sb.append(", userName=").append(userName);
         sb.append(", userAvatar=").append(userAvatar);

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fscommunity.platform.persist.dao.CommentMapper">
-    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.Comment">
+<mapper namespace="com.fscommunity.platform.persist.dao.MsgBroadMapper">
+    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.MsgBroad">
         <result column="id" jdbcType="INTEGER" property="id"/>
-        <result column="target_id" jdbcType="INTEGER" property="targetId"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
@@ -15,7 +14,6 @@
     </resultMap>
     <sql id="fields">
     id,
-    target_id,
     user_id,
     content,
     publish_time,
@@ -25,12 +23,11 @@
     is_showed,
     sid
     </sql>
-    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Comment">
-    insert into comment (target_id, user_id, content, publish_time, target_cid,target_uid,is_reply,is_showed,sid)
-    values ( #{targetId,jdbcType=INTEGER},#{userId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{publishTime,jdbcType=TIMESTAMP},
+    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
+    insert into msgbroad (user_id, content, publish_time, target_cid,target_uid,is_reply,is_showed,sid)
+    values ( #{userId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{publishTime,jdbcType=TIMESTAMP},
      #{targetCid,jdbcType=INTEGER},#{targetUid,jdbcType=INTEGER},#{isReply,jdbcType=INTEGER},#{isShowed,jdbcType=INTEGER},#{sid,jdbcType=INTEGER})
       ON DUPLICATE KEY UPDATE
-      target_id=VALUES(target_id),
       user_id=VALUES(user_id),
       content=VALUES(content),
       publish_time=VALUES(publish_time),
@@ -44,37 +41,27 @@
     <select id="list" resultMap="BaseResultMap">
         select
         <include refid="fields"/>
-        from comment
+        from msgbroad
         <if test="condition != null and condition !=''">
            and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
         </if>
         order by publish_time DESC
     </select>
-    <select id="getCmmtByArticleId" resultMap="BaseResultMap">
-        select
-        <include refid="fields"/>
-        from comment
-        <if test="condition != null and condition !=''">
-            and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
-        </if>
-        WHERE target_id=#{target_id}
-        order by sid ASC, publish_time DESC
-    </select>
+
     <select id="getCount" resultType="java.lang.Integer">
-        select count(*) from comment
+        select count(*) from msgbroad
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer"
-            resultType="com.fscommunity.platform.persist.pojo.Comment">
+            resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
         SELECT
         <include refid="fields"/>
-        FROM comment
+        FROM msgbroad
         WHERE id = #{id}
     </select>
 
-    <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Comment">
-      UPDATE comment SET
-      target_id=#{targetId,jdbcType=INTEGER},
+    <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
+      UPDATE msgbroad SET
       user_id=#{userId,jdbcType=VARCHAR},
       content=#{content,jdbcType=VARCHAR},
       publish_time=#{publishTime,jdbcType=TIMESTAMP},
@@ -85,12 +72,14 @@
       sid=#{sid,jdbcType=INTEGER}
       WHERE id= #{id,jdbcType=INTEGER}
     </update>
-    <update id="setSidById" parameterType="com.fscommunity.platform.persist.pojo.Comment">
-        UPDATE comment SET
+
+    <update id="setSidById" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
+        UPDATE msgbroad SET
         sid=#{sid,jdbcType=INTEGER}
         WHERE id= #{id}
     </update>
+
     <delete id="deleteById" parameterType="java.lang.Integer">
-      DELETE FROM comment WHERE id= #{id,jdbcType=INTEGER}
+      DELETE FROM msgbroad WHERE id= #{id,jdbcType=INTEGER}
     </delete>
 </mapper>
