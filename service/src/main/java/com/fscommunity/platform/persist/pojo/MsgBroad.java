@@ -1,6 +1,4 @@
-package com.fscommunity.platform.provider.backoffice.vo;
-
-import com.fscommunity.platform.persist.pojo.Comment;
+package com.fscommunity.platform.persist.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,12 +6,12 @@ import java.util.Date;
 /**
  * @Description
  * @Author jing.c
- * @Date: 18-4-11
+ * @Date: 18-4-14
  */
-public class MsgBroadVo implements Serializable {
+public class MsgBroad implements Serializable {
     /*
-      * 主键id
-     */
+     * 主键id
+    */
     private Integer id;
 
     /**
@@ -22,22 +20,12 @@ public class MsgBroadVo implements Serializable {
     private String userId;
 
     /**
-     *用户姓名
-     */
-    private String userName;
-
-    /**
-     *用户头像
-     */
-    private String userAvatar;
-
-    /**
-     * 回复内容
+     * 留言内容
      */
     private String content;
 
     /**
-     * 评论时间
+     * 留言时间
      */
     private Date publishTime;
 
@@ -52,30 +40,19 @@ public class MsgBroadVo implements Serializable {
     private Integer targetUid;
 
     /**
-     * 被回复的留言作者名字,如果是回复一条留言，则需要填写 is_reply==1 exists
-     */
-    private String targetUname;
-
-    /**
-     *1：一条留言的回复，0：直接留言文章
+     * 1：一条留言的回复，0：直接留言
      */
     private Integer isReply;
 
     /**
-     * 1：留言显示在浏览界面，0：不显示
+     * 1：显示在浏览界面，0：不显示
      */
     private Integer isShowed;
 
-    public MsgBroadVo(Comment comment){
-        this.id=comment.getId();
-        //this.userId=comment.getUserId();
-        this.content=comment.getContent();
-        this.publishTime=comment.getPublishTime();
-        this.targetCid=comment.getTargetCid();
-        this.targetUid=comment.getTargetUid();
-        this.isReply=comment.getIsReply();
-        this.isShowed=comment.getIsShowed();
-    }
+    /**
+     * 排序序号Serial Number
+     */
+    private Integer sid;
 
     public Integer getId() {
         return id;
@@ -91,22 +68,6 @@ public class MsgBroadVo implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserAvatar() {
-        return userAvatar;
-    }
-
-    public void setUserAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
     }
 
     public String getContent() {
@@ -141,14 +102,6 @@ public class MsgBroadVo implements Serializable {
         this.targetUid = targetUid;
     }
 
-    public String getTargetUname() {
-        return targetUname;
-    }
-
-    public void setTargetUname(String targetUname) {
-        this.targetUname = targetUname;
-    }
-
     public Integer getIsReply() {
         return isReply;
     }
@@ -165,6 +118,14 @@ public class MsgBroadVo implements Serializable {
         this.isShowed = isShowed;
     }
 
+    public Integer getSid() {
+        return sid;
+    }
+
+    public void setSid(Integer sid) {
+        this.sid = sid;
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -175,14 +136,12 @@ public class MsgBroadVo implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
-        sb.append(", userAvatar=").append(userAvatar);
         sb.append(", content=").append(content);
         sb.append(", publishTime=").append(publishTime);
         sb.append(", targetCid=").append(targetCid);
-        sb.append(", targetUname=").append(targetUname);
         sb.append(", isReply=").append(isReply);
         sb.append(", isShowed=").append(isShowed);
+        sb.append(", sid=").append(sid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
