@@ -40,6 +40,10 @@
                      javaType="com.fscommunity.platform.common.constant.ArticleType"/>
         <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
                      javaType="com.fscommunity.platform.persist.pojo.NetVoteStatus"/>
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+                     javaType="com.fscommunity.platform.persist.pojo.ActivityApplyCostType"/>
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+                     javaType="com.fscommunity.platform.persist.pojo.ApplyStatus"/>
     </typeHandlers>
 
     <!-- RowBounds plugins-->

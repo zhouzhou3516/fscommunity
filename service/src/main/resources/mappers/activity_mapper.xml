@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.ActivityDao">
+
+    <sql id="fields">
+    id,
+    article_id as articleId,
+    activity_desc as activityDesc,
+    activity_time as activityTime,
+    apply_start_time as applyStartTime,
+    apply_end_time as applyEndTime,
+    cost_type as costType,
+    apply_cost_count as applyCostCount,
+    create_time as createTime,
+    update_time as updateTime
+    </sql>
+
+    <insert id="saveActivity" parameterType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+    insert into
+    activity (
+    article_id,
+    activity_desc,
+    activity_time,
+    apply_start_time,
+    apply_end_time,
+    cost_type,
+    apply_cost_count,
+    create_time,
+    update_time)
+    values
+    (
+    #{articleId},
+    #{activityDesc},
+    #{activityTime},
+    #{applyStartTime},
+    #{applyEndTime},
+    #{costType},
+    #{applyCostCount},
+    #{createTime},
+    #{updateTime})
+      ON DUPLICATE KEY UPDATE
+      activity_desc=VALUES(activity_desc),
+      article_id=VALUES(article_id),
+      activity_time=VALUES(activity_time),
+      apply_start_time=VALUES(apply_start_time),
+      apply_end_time=VALUES(apply_end_time),
+      cost_type=VALUES(cost_type),
+      apply_cost_count=VALUES(apply_cost_count),
+      update_time=now()
+    </insert>
+
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+        select
+        <include refid="fields"/>
+        from activity
+        where id=#{id}
+    </select>
+
+    <select id="queryByPage" resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+        select
+        <include refid="fields"/>
+        from activity
+    </select>
+
+    <select id="queryByIds" parameterType="java.util.List" resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+        select
+        <include refid="fields"/>
+        from activity
+        where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="countActivity" resultType="java.lang.Integer">
+        select count(1) from activity;
+    </select>
+
+    <update id="updateActivity" parameterType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+        update activity
+        <set>
+            article_id=#{articleId},
+            <if test="activityDesc != null and activityDesc != ''">
+                activity_desc=#{activityDesc},
+            </if>
+            <if test="activityTime != null and activityTime != ''">
+                activity_time=#{activityTime},
+            </if>
+            <if test="applyStartTime != null and applyStartTime != ''">
+                apply_start_time=#{applyStartTime},
+            </if>
+            <if test="applyEndTime != null and applyEndTime != ''">
+                apply_end_time=#{applyEndTime},
+            </if>
+            <if test="costType!= null">
+                cost_type=#{costType},
+            </if>
+            apply_cost_count=#{applyCostCount},
+            update_time=now()
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delById" parameterType="java.lang.Integer">
+        delete from activity
+        where id=#{id}
+    </delete>
+</mapper>
