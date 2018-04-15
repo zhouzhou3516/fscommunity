@@ -1,39 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fscommunity.platform.persist.dao.VoteItemMapper">
-    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.VoteItem">
-        <result column="id" jdbcType="INTEGER" property="id"/>
-        <result column="vote_id" jdbcType="INTEGER" property="voteId"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="voter_list" jdbcType="INTEGER" property="voterList"/>
-        <result column="voter_sum" jdbcType="INTEGER" property="voterSum"/>
-    </resultMap>
+
     <sql id="fields">
     id,
+    vote_id as voteId,
+    content,
+    voter_list as voterList,
+    voter_sum as voterSum,
+    create_time as createTime,
+    update_time as updateTime
+    </sql>
+
+    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.VoteItem">
+    insert into
+    vote_item(
     vote_id,
     content,
     voter_list,
-    voter_sum
-    </sql>
-    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.VoteItem">
-    insert into vote_item ( vote_id, content, voter_list, voter_sum)
-    values ( #{vote_id,jdbcType=INTEGER},#{content,jdbcType=VARCHAR},#{voter_list,jdbcType=VARCHAR},#{voter_sum,jdbcType=INTEGER})
-      ON DUPLICATE KEY UPDATE
-      vote_id=VALUES(vote_id),
+    voter_sum,
+    create_time,
+    update_time)
+    values(
+    #{voteId,jdbcType=INTEGER},
+    #{content,jdbcType=VARCHAR},
+    #{voterList,jdbcType=VARCHAR},
+    #{voterSum,jdbcType=INTEGER},
+    #{createTime},
+    #{updateTime}
+    )ON DUPLICATE KEY UPDATE
       content=VALUES(content),
-      voter_list=VALUES(voter_list),
-      voter_sum=VALUES(voter_sum)
+      update_time=now()
     </insert>
 
-    <select id="list" resultMap="BaseResultMap">
+    <select id="queryItemsByIds" resultType="com.fscommunity.platform.persist.pojo.VoteItem">
         select
         <include refid="fields"/>
         from vote_item
-        <if test="condition != null and condition !=''">
-           and  content like concat('%',#{condition},'%') or voter_list like concat('%',#{condition},'%')
-        </if>
-        group by vote_id DESC
+        where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
+
+    <select id="queryItemsByVoteId" resultType="com.fscommunity.platform.persist.pojo.VoteItem">
+        select
+        <include refid="fields"/>
+        from vote_item
+        where vote_id=#{voteId}
+    </select>
+
+
+
+    <update id="lockForLock" parameterType="java.lang.Integer">
+        update vote_item
+        set update_time=now()
+        where id=#{id}
+    </update>
 
     <select id="getCount" resultType="java.lang.Integer">
         select count(*) from vote_item
@@ -47,6 +70,12 @@
         WHERE id = #{id}
     </select>
 
+    <update id="updateCountById" parameterType="java.util.Map">
+        update vote_item
+        set voter_sum=#{count}
+        where id=#{id}
+    </update>
+
     <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.VoteItem">
       UPDATE vote_item SET
       vote_id=#{voteId,jdbcType=INTEGER},
@@ -55,11 +84,7 @@
       voter_sum=#{voterSum,jdbcType=INTEGER}
       WHERE id= #{id,jdbcType=INTEGER}
     </update>
-    <select id="selectByVoteId" resultMap="BaseResultMap">
-        SELECT <include refid="fields"/>
-        FROM vote_item
-        WHERE vote_id= #{vote_id,jdbcType=INTEGER}
-    </select>
+
     <delete id="deleteById" parameterType="java.lang.Integer">
       DELETE FROM vote_item WHERE id= #{id,jdbcType=INTEGER}
     </delete>

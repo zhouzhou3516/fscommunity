@@ -79,16 +79,6 @@ public class VoteService {
     }
 
     /**
-     * 由投票id得到所有投票选项详情
-     * @param id vote_id
-     * @return
-     */
-    public List<VoteItem> getVoteItems(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return voteItemMapper.selectByVoteId(Integer.valueOf(id));
-    }
-
-    /**
      * 更新投票状态
      * @param id
      * @param voteState

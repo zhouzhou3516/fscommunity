@@ -2,8 +2,6 @@ package com.fscommunity.platform.provider.backoffice.controller;
 
 import com.fscommunity.platform.persist.pojo.Vote;
 import com.fscommunity.platform.persist.pojo.VoteItem;
-import com.fscommunity.platform.provider.backoffice.adapter.VoteVoAdatpter;
-import com.fscommunity.platform.provider.backoffice.vo.VoteVo;
 import com.fscommunity.platform.service.UserInfoService;
 import com.fscommunity.platform.service.VoteService;
 import com.lxx.app.common.util.page.PageRequest;
@@ -54,13 +52,13 @@ public class VoteController {
         voteService.add(vote);
     }
 
-    @RequestMapping("/info")
-    @JsonBody
-    public VoteVo info(HttpServletRequest request) {
-        logger.info("info");
-        Vote vote = voteService.selectById(request.getParameter("id"));
-        return VoteVoAdatpter.adaptToVoteVo(vote,voteService.getVoteItems(request.getParameter("id")));
-    }
+//    @RequestMapping("/info")
+//    @JsonBody
+//    public VoteVo info(HttpServletRequest request) {
+//        logger.info("info");
+//        Vote vote = voteService.selectById(request.getParameter("id"));
+//        return VoteVoAdatpter.adaptToVoteVo(vote,voteService.getVoteItems(request.getParameter("id")));
+//    }
 
     @RequestMapping("/update")
     @JsonBody
@@ -101,18 +99,6 @@ public class VoteController {
         voteService.updateState(request.getParameter("id"),request.getParameter("voteState"));
     }
 
-    /**
-     * 当前用户投票
-     *
-     * @param request
-     */
-    @RequestMapping("/vote")
-    @JsonBody
-    public VoteVo vote(HttpServletRequest request) {
-        logger.info("vote");
-        Vote vote=voteService.vote(request.getParameter("id"));
-        return VoteVoAdatpter.adaptToVoteVo(vote,voteService.getVoteItems(vote.getId().toString()));
-    }
 
     /**
      * 新增投票选项

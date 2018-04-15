@@ -26,6 +26,8 @@ public class Article implements Serializable {
      */
     private ArticleType type;
 
+    private String tag;
+
     /**
      * 文章内容
      */
@@ -96,23 +98,11 @@ public class Article implements Serializable {
 
     public void setViews(Integer views) { this.views = views; }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", type=").append(type);
-        sb.append(", name=").append(name);
-        sb.append(", content=").append(content);
-        sb.append(", publishTime=").append(publishTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", views=").append(views);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+    public String getTag() {
+        return tag;
     }
 
-
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 }

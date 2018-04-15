@@ -38,6 +38,8 @@
                      javaType="com.fscommunity.platform.persist.pojo.WxTokenItem"/>
         <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
                      javaType="com.fscommunity.platform.common.constant.ArticleType"/>
+        <typeHandler handler="com.lxx.app.common.web.mybatis.typehandler.JsonTypeHandler"
+                     javaType="com.fscommunity.platform.persist.pojo.NetVoteStatus"/>
     </typeHandlers>
 
     <!-- RowBounds plugins-->

@@ -3,7 +3,6 @@ package com.fscommunity.platform.provider.vote;
 import com.fscommunity.platform.persist.dao.VoteItemMapper;
 import com.fscommunity.platform.persist.dao.VoteMapper;
 import com.fscommunity.platform.persist.pojo.Vote;
-import com.fscommunity.platform.persist.pojo.VoteItem;
 import com.fscommunity.platform.provider.BaseJunit;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
@@ -80,12 +79,5 @@ public class VoteTest extends BaseJunit {
     public void delTest() {
         int rslt = voteMapper.deleteById(5);
         System.out.println(rslt);
-    }
-
-    @Test
-    public void selectByVoteIdTest() {
-        List<VoteItem> votes = voteItemMapper.selectByVoteId(1);
-        for(VoteItem vote:votes)
-            System.out.println(vote.toString());
     }
 }

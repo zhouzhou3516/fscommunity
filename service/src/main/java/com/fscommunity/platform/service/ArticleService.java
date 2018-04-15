@@ -50,6 +50,14 @@ public class ArticleService {
         return article;
     }
 
+    public List<Article> selectByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+
+        return articleMapper.selectByIds(ids);
+    }
+
     public void delById(int id) {
         articleMapper.deleteById(id);
     }

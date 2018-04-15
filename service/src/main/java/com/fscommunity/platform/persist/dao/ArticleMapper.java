@@ -14,13 +14,13 @@ import java.util.List;
 public interface ArticleMapper {
     int insert(Article record);
 
-    int insertSelective(Article record);
-
     int getCount(String fuzzyName);
 
     List<Article> list(@Param("fuzzyName") String fuzzyName, RowBounds rowBounds);
 
     Article selectById(@Param("id")Integer id);
+
+    List<Article> selectByIds(List<Integer> ids);
 
     int updateById(Article record);
 

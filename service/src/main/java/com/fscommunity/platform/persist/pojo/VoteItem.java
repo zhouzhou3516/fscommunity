@@ -1,6 +1,7 @@
 package com.fscommunity.platform.persist.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Description 投票选项内容
@@ -24,7 +25,7 @@ public class VoteItem implements Serializable {
     private String content;
 
     /**
-     * 投票人列表
+     * 投票人列表, id用逗号隔开
      */
     private String voterList;
 
@@ -32,6 +33,25 @@ public class VoteItem implements Serializable {
      * 投票人数
      */
     private Integer voterSum;
+
+    private Date createTime;
+    private Date updateTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getId() { return id; }
 

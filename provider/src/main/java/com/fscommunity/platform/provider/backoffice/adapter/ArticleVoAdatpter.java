@@ -31,6 +31,7 @@ public class ArticleVoAdatpter {
         article.setPublishTime(current);
         article.setUpdateTime(current);
         article.setViews(0);
+        article.setTag(req.getTag());
         return article;
     }
 }

@@ -7,6 +7,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="tag" jdbcType="VARCHAR" property="tag"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="views" jdbcType="INTEGER" property="views"/>
@@ -17,10 +18,12 @@
     name,
     type,
     content,
+    tag,
     publish_time,
     update_time,
     views
     </sql>
+
     <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.Article">
     insert into
     article (
@@ -28,6 +31,7 @@
     name,
     type,
     content,
+    tag,
     publish_time,
     update_time,
     views)
@@ -37,6 +41,7 @@
     #{name,jdbcType=VARCHAR},
     #{type},
     #{content,jdbcType=VARCHAR},
+    #{tag},
     #{publishTime,jdbcType=TIMESTAMP},
     #{updateTime,jdbcType=TIMESTAMP},
     #{views,jdbcType=INTEGER})
@@ -68,6 +73,16 @@
         <include refid="fields"/>
         FROM article
         WHERE id = #{id}
+    </select>
+
+    <select id="selectByIds" parameterType="java.util.List" resultType="com.fscommunity.platform.persist.pojo.Article">
+        SELECT
+        <include refid="fields"/>
+        FROM article
+        where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 
     <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Article">

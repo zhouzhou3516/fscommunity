@@ -2,7 +2,6 @@ package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.VoteItem;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -14,17 +13,18 @@ import java.util.List;
 public interface VoteItemMapper {
     int insert(VoteItem record);
 
-    int insertSelective(VoteItem record);
+    List<VoteItem> queryItemsByIds(List<Integer> ids);
+    List<VoteItem> queryItemsByVoteId(int voteId);
 
     int getCount();
 
-    List<VoteItem> list(@Param("condition") String conditiion, RowBounds rowBounds);
+    void lockForLock(int id);
 
     VoteItem selectById(@Param("id") Integer id);
 
     int updateById(VoteItem record);
 
-    int deleteById(@Param("id") Integer id);
+    int updateCountById(@Param("id") int id, @Param("count") int count);
 
-    List<VoteItem> selectByVoteId(@Param("vote_id") Integer integer);
+    int deleteById(@Param("id") Integer id);
 }

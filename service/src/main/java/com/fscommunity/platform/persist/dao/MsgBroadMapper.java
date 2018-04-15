@@ -11,10 +11,8 @@ import java.util.List;
  * @Author jing.c
  * @Date: 18-3-28
  */
-public interface ArticleMapper {
+public interface MsgBroadMapper {
     int insert(Article record);
-
-    int insertSelective(Article record);
 
     int getCount();
 

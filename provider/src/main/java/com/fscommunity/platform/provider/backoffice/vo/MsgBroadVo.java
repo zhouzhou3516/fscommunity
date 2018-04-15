@@ -10,7 +10,7 @@ import java.util.Date;
  * @Author jing.c
  * @Date: 18-4-11
  */
-public class CommentVo implements Serializable {
+public class MsgBroadVo implements Serializable {
     /*
       * 主键id
      */
@@ -24,7 +24,7 @@ public class CommentVo implements Serializable {
     /**
      * 用户id
      */
-    private String userId;
+    private int userId;
 
     /**
      *用户姓名
@@ -71,7 +71,7 @@ public class CommentVo implements Serializable {
      */
     private Integer isShowed;
 
-    public CommentVo(Comment comment){
+    public MsgBroadVo(Comment comment){
         this.id=comment.getId();
         this.targetId=comment.getTargetId();
         this.userId=comment.getUserId();
@@ -99,11 +99,11 @@ public class CommentVo implements Serializable {
         this.targetId = targetId;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
