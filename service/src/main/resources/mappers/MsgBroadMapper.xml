@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fscommunity.platform.persist.dao.MsgBroadMapper">
-    <resultMap id="BaseResultMap" type="com.fscommunity.platform.persist.pojo.MsgBroad">
-        <result column="id" jdbcType="INTEGER" property="id"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
-        <result column="target_cid" jdbcType="INTEGER" property="targetCid"/>
-        <result column="target_uid" jdbcType="INTEGER" property="targetUid"/>
-        <result column="is_reply" jdbcType="INTEGER" property="isReply"/>
-        <result column="is_showed" jdbcType="INTEGER" property="isShowed"/>
-        <result column="sid" jdbcType="INTEGER" property="sid"/>
-    </resultMap>
+
     <sql id="fields">
     id,
+    user_id as userId,
+    content,
+    publish_time as publishTime,
+    target_cid as targetCid,
+    target_uid as targetUid,
+    is_reply as isReply,
+    is_showed as isShowed,
+    sid,
+    treecode,
+    create_time as createTime,
+    update_time as updateTime
+    </sql>
+
+    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad"
+            useGeneratedKeys="true" keyProperty="id">
+    insert into
+    msgbroad (
     user_id,
     content,
     publish_time,
@@ -21,91 +28,36 @@
     target_uid,
     is_reply,
     is_showed,
-    sid
-    </sql>
-    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
-    insert into msgbroad (user_id, content, publish_time, target_cid,target_uid,is_reply,is_showed,sid)
-    values ( #{userId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{publishTime,jdbcType=TIMESTAMP},
-     #{targetCid,jdbcType=INTEGER},#{targetUid,jdbcType=INTEGER},#{isReply,jdbcType=INTEGER},#{isShowed,jdbcType=INTEGER},#{sid,jdbcType=INTEGER})
-      ON DUPLICATE KEY UPDATE
-      user_id=VALUES(user_id),
-      content=VALUES(content),
-      publish_time=VALUES(publish_time),
-      target_cid=VALUES(target_cid),
-      target_uid=VALUES(target_uid),
-      is_reply=VALUES(is_reply),
-      is_showed=VALUES(is_showed),
-      sid=VALUES(sid)
+    sid,
+    treecode,
+    create_time,
+    update_time)
+    values (
+    #{userId},
+    #{content},
+    #{publishTime},
+    #{targetCid},
+    #{targetUid},
+    #{isReply},
+    #{isShowed},
+    #{sid},
+    #{treecode},
+    #{createTime},
+    #{updateTime}
+    ) ON DUPLICATE KEY UPDATE
+      update_time=now()
     </insert>
 
-    <select id="list" resultMap="BaseResultMap">
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
         select
         <include refid="fields"/>
         from msgbroad
-        <if test="condition != null and condition !=''">
-           and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
-        </if>
-        order by publish_time DESC
+        where id=#{id}
     </select>
 
-    <select id="wxlist" resultMap="BaseResultMap">
-        SELECT
-        <include refid="fields"/>
-        FROM msgbroad
-        WHERE is_reply=0
-        order by publish_time DESC
-    </select>
-
-    <select id="getCount" resultType="java.lang.Integer">
-        select count(*) from msgbroad
-    </select>
-    <select id="getDirectCount" resultType="java.lang.Integer">
-        select count(*) from msgbroad where is_reply=0
-    </select>
-
-    <select id="selectById" parameterType="java.lang.Integer"
-            resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
-        SELECT
-        <include refid="fields"/>
-        FROM msgbroad
-        WHERE id = #{id}
-    </select>
-
-    <select id="getReplyMsg" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad"
-            resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
-        SELECT
-        <include refid="fields"/>
-        FROM msgbroad
-        WHERE target_cid=#{targetCid} AND
-        target_uid=#{targetUid},
-    </select>
-
-    <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
-      UPDATE msgbroad SET
-      user_id=#{userId,jdbcType=VARCHAR},
-      content=#{content,jdbcType=VARCHAR},
-      publish_time=#{publishTime,jdbcType=TIMESTAMP},
-      target_cid=#{targetCid,jdbcType=INTEGER},
-      target_uid=#{targetUid,jdbcType=INTEGER},
-      is_reply=#{isReply,jdbcType=INTEGER},
-      is_showed=#{isShowed,jdbcType=INTEGER},
-      sid=#{sid,jdbcType=INTEGER}
-      WHERE id= #{id,jdbcType=INTEGER}
+    <update id="updateTreeCode" parameterType="java.util.Map">
+        update msgbroad
+        set treecode=#{treecode}
+        where id=#{id}
     </update>
-
-    <update id="displayMsg" parameterType="java.lang.Integer">
-        UPDATE msgbroad SET
-        is_showed=#{isShowed,jdbcType=INTEGER}
-        WHERE id= #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="setSidById" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
-        UPDATE msgbroad SET
-        sid=#{sid,jdbcType=INTEGER}
-        WHERE id= #{id}
-    </update>
-
-    <delete id="deleteById" parameterType="java.lang.Integer">
-      DELETE FROM msgbroad WHERE id= #{id,jdbcType=INTEGER}
-    </delete>
 </mapper>

@@ -71,7 +71,7 @@ public class MgrConveniencePhoneController {
 
     @RequestMapping("/del")
     @JsonBody
-    public void delPhone(int id) {
-        conveniencePhoneService.delPhone(id);
+    public void delPhone(int phoneId) {
+        conveniencePhoneService.delPhone(phoneId);
     }
 }

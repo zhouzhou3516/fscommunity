@@ -54,6 +54,35 @@ public class MsgBroad implements Serializable {
      */
     private Integer sid;
 
+    private String treecode;
+
+    private Date createTime;
+    private Date updateTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getTreecode() {
+        return treecode;
+    }
+
+    public void setTreecode(String treecode) {
+        this.treecode = treecode;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -128,22 +157,5 @@ public class MsgBroad implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
-        sb.append(", content=").append(content);
-        sb.append(", publishTime=").append(publishTime);
-        sb.append(", targetCid=").append(targetCid);
-        sb.append(", isReply=").append(isReply);
-        sb.append(", isShowed=").append(isShowed);
-        sb.append(", sid=").append(sid);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
+
 }
