@@ -1,17 +1,21 @@
-package com.fscommunity.platform.persist.pojo;
+package com.fscommunity.platform.provider.wechat.vo;
+
+import com.fscommunity.platform.persist.pojo.MsgBroad;
+import com.fscommunity.platform.provider.backoffice.vo.MgrMsgBroadVo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * @Description
+ * @Description 留言板
  * @Author jing.c
- * @Date: 18-4-14
+ * @Date: 18-4-11
  */
-public class MsgBroad implements Serializable {
+public class MsgBroadVo implements Serializable {
     /*
-     * 主键id
-    */
+      * 主键id
+     */
     private Integer id;
 
     /**
@@ -20,7 +24,17 @@ public class MsgBroad implements Serializable {
     private Integer userId;
 
     /**
-     * 留言内容
+     * 用户姓名
+     */
+    private String userName;
+
+    /**
+     * 用户头像
+     */
+    private String userAvatar;
+
+    /**
+     * 回复内容
      */
     private String content;
 
@@ -40,19 +54,35 @@ public class MsgBroad implements Serializable {
     private Integer targetUid;
 
     /**
-     * 1：一条留言的回复，0：直接留言
+     * 被回复的留言作者名字,如果是回复一条留言，则需要填写 is_reply==1 exists
+     */
+    private String targetUname;
+
+    /**
+     * 1：一条留言的回复，0：直接留言文章
      */
     private Integer isReply;
 
     /**
-     * 1：显示在浏览界面，0：不显示
+     * 1：留言显示在浏览界面，0：不显示
      */
     private Integer isShowed;
 
     /**
-     * 排序序号Serial Number
+     * 回复本留言的留言列表
      */
-    private Integer sid;
+    private List<MgrMsgBroadVo> replyMsg;
+
+    public MsgBroadVo(MsgBroad msgBroad) {
+        this.id = msgBroad.getId();
+        this.content = msgBroad.getContent();
+        this.userId = msgBroad.getUserId();
+        this.publishTime = msgBroad.getPublishTime();
+        this.targetCid = msgBroad.getTargetCid();
+        this.targetUid = msgBroad.getTargetUid();
+        this.isReply = msgBroad.getIsReply();
+        this.isShowed = msgBroad.getIsShowed();
+    }
 
     public Integer getId() {
         return id;
@@ -68,6 +98,22 @@ public class MsgBroad implements Serializable {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     public String getContent() {
@@ -102,6 +148,14 @@ public class MsgBroad implements Serializable {
         this.targetUid = targetUid;
     }
 
+    public String getTargetUname() {
+        return targetUname;
+    }
+
+    public void setTargetUname(String targetUname) {
+        this.targetUname = targetUname;
+    }
+
     public Integer getIsReply() {
         return isReply;
     }
@@ -118,12 +172,12 @@ public class MsgBroad implements Serializable {
         this.isShowed = isShowed;
     }
 
-    public Integer getSid() {
-        return sid;
+    public List<MgrMsgBroadVo> getReplyMsg() {
+        return replyMsg;
     }
 
-    public void setSid(Integer sid) {
-        this.sid = sid;
+    public void setReplyMsg(List<MgrMsgBroadVo> replyMsg) {
+        this.replyMsg = replyMsg;
     }
 
     private static final long serialVersionUID = 1L;
@@ -136,12 +190,14 @@ public class MsgBroad implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
+        sb.append(", userName=").append(userName);
+        sb.append(", userAvatar=").append(userAvatar);
         sb.append(", content=").append(content);
         sb.append(", publishTime=").append(publishTime);
         sb.append(", targetCid=").append(targetCid);
+        sb.append(", targetUname=").append(targetUname);
         sb.append(", isReply=").append(isReply);
         sb.append(", isShowed=").append(isShowed);
-        sb.append(", sid=").append(sid);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

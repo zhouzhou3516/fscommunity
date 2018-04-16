@@ -26,4 +26,10 @@ public interface MsgBroadMapper {
     int deleteById(@Param("id") Integer id);
 
     int displayMsg(@Param("id")Integer id);
+
+    List<MsgBroad> wxlist(RowBounds rowBounds);
+
+    int directCount();
+
+    MsgBroad getReplyMsg(@Param("targetCid") Integer id,@Param("targetUid") Integer userid);
 }

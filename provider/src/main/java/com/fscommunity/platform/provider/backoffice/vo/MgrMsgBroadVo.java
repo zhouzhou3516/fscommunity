@@ -1,16 +1,17 @@
 package com.fscommunity.platform.provider.backoffice.vo;
 
-import com.fscommunity.platform.persist.pojo.Comment;
+import com.fscommunity.platform.persist.pojo.MsgBroad;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * @Description
+ * @Description 留言板
  * @Author jing.c
  * @Date: 18-4-11
  */
-public class MsgBroadVo implements Serializable {
+public class MgrMsgBroadVo implements Serializable {
     /*
       * 主键id
      */
@@ -19,15 +20,15 @@ public class MsgBroadVo implements Serializable {
     /**
      * 用户id
      */
-    private String userId;
+    private Integer userId;
 
     /**
-     *用户姓名
+     * 用户姓名
      */
     private String userName;
 
     /**
-     *用户头像
+     * 用户头像
      */
     private String userAvatar;
 
@@ -37,7 +38,7 @@ public class MsgBroadVo implements Serializable {
     private String content;
 
     /**
-     * 评论时间
+     * 留言时间
      */
     private Date publishTime;
 
@@ -57,7 +58,7 @@ public class MsgBroadVo implements Serializable {
     private String targetUname;
 
     /**
-     *1：一条留言的回复，0：直接留言文章
+     * 1：一条留言的回复，0：直接留言文章
      */
     private Integer isReply;
 
@@ -66,15 +67,15 @@ public class MsgBroadVo implements Serializable {
      */
     private Integer isShowed;
 
-    public MsgBroadVo(Comment comment){
-        this.id=comment.getId();
-        //this.userId=comment.getUserId();
-        this.content=comment.getContent();
-        this.publishTime=comment.getPublishTime();
-        this.targetCid=comment.getTargetCid();
-        this.targetUid=comment.getTargetUid();
-        this.isReply=comment.getIsReply();
-        this.isShowed=comment.getIsShowed();
+    public MgrMsgBroadVo(MsgBroad msgBroad) {
+        this.id = msgBroad.getId();
+        this.content = msgBroad.getContent();
+        this.userId = msgBroad.getUserId();
+        this.publishTime = msgBroad.getPublishTime();
+        this.targetCid = msgBroad.getTargetCid();
+        this.targetUid = msgBroad.getTargetUid();
+        this.isReply = msgBroad.getIsReply();
+        this.isShowed = msgBroad.getIsShowed();
     }
 
     public Integer getId() {
@@ -85,11 +86,11 @@ public class MsgBroadVo implements Serializable {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

@@ -48,8 +48,19 @@
         order by publish_time DESC
     </select>
 
+    <select id="wxlist" resultMap="BaseResultMap">
+        SELECT
+        <include refid="fields"/>
+        FROM msgbroad
+        WHERE is_reply=0
+        order by publish_time DESC
+    </select>
+
     <select id="getCount" resultType="java.lang.Integer">
         select count(*) from msgbroad
+    </select>
+    <select id="getDirectCount" resultType="java.lang.Integer">
+        select count(*) from msgbroad where is_reply=0
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer"
@@ -58,6 +69,15 @@
         <include refid="fields"/>
         FROM msgbroad
         WHERE id = #{id}
+    </select>
+
+    <select id="getReplyMsg" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad"
+            resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
+        SELECT
+        <include refid="fields"/>
+        FROM msgbroad
+        WHERE target_cid=#{targetCid} AND
+        target_uid=#{targetUid},
     </select>
 
     <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">
@@ -71,6 +91,12 @@
       is_showed=#{isShowed,jdbcType=INTEGER},
       sid=#{sid,jdbcType=INTEGER}
       WHERE id= #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="displayMsg" parameterType="java.lang.Integer">
+        UPDATE msgbroad SET
+        is_showed=#{isShowed,jdbcType=INTEGER}
+        WHERE id= #{id,jdbcType=INTEGER}
     </update>
 
     <update id="setSidById" parameterType="com.fscommunity.platform.persist.pojo.MsgBroad">

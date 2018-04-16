@@ -31,7 +31,15 @@ public class MsgBroadService {
         }
         return msgBroadList;
     }
-
+    public List<MsgBroad> wxlist(PageRequest pageRequest) {
+        List<MsgBroad> msgBroadList = msgBroadMapper.wxlist(
+                new RowBounds(pageRequest.getOffset(),pageRequest.getLimit())
+        );
+        for(MsgBroad msgBroad: msgBroadList){
+            msgBroad.setContent(Base64Util.encode(msgBroad.getContent()));
+        }
+        return msgBroadList;
+    }
     public void add(MsgBroad msgBroad) {
         Preconditions.checkNotNull(msgBroad);
         msgBroad.setContent(Base64Util.encode(msgBroad.getContent()));
@@ -64,5 +72,20 @@ public class MsgBroadService {
     public int displayMsg(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         return msgBroadMapper.displayMsg(Integer.valueOf(id));
+    }
+
+    public void replyMsg(MsgBroad newMsg) {
+        Preconditions.checkNotNull(newMsg);
+        msgBroadMapper.insert(newMsg);
+        //TODO 发送消息给被回复的用户
+    }
+
+
+    public int getDirectCount() {
+        return msgBroadMapper.directCount();
+    }
+
+    public MsgBroad getReplyMsg(MsgBroad msg) {
+        return msgBroadMapper.getReplyMsg(msg.getId(),msg.getUserId());
     }
 }
