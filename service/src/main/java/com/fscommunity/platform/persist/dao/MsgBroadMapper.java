@@ -12,4 +12,5 @@ public interface MsgBroadMapper {
     int insert(MsgBroad record);
     MsgBroad queryById(int id);
     int updateTreeCode(@Param("id") int id, @Param("treecode") String treecode);
+    int lockForUpdate(int id);
 }

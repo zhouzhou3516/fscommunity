@@ -41,15 +41,7 @@ public class MsgBroadController {
 
         MsgBroad broad = MsgBroadVoAdatpter.adaptBroad(req, simpleInfo.getId());
         MsgBroad savedBroad = msgBroadService.saveBroad(broad);
-
-        //生成treecode
-        if (savedBroad.getTargetCid() == 0) {
-            savedBroad.setTreecode("0#" + savedBroad.getId() + "#");
-        } else {
-            MsgBroad pmsg = msgBroadService.queryById(savedBroad.getTargetCid());
-            savedBroad.setTreecode(pmsg.getTreecode() + savedBroad.getId() + "#");
-        }
-        msgBroadService.updateTreeCode(savedBroad.getId(), savedBroad.getTreecode());
+        msgBroadService.updateTreeCode(savedBroad.getTargetCid() == 0, savedBroad);
     }
 
 //    @RequestMapping("/list")

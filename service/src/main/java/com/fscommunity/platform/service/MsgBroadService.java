@@ -5,6 +5,7 @@ import com.fscommunity.platform.persist.pojo.MsgBroad;
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Description
@@ -27,11 +28,28 @@ public class MsgBroadService {
         return msgBroad;
     }
 
+    @Transactional
+    public void updateTreeCode(boolean newMsg, MsgBroad savedBroad) {
+        lockForUpdateInTransaction(savedBroad.getId());
+        String treecode;
+        if (newMsg) {
+            treecode = "0#" + savedBroad.getId() + "#";
+        } else {
+            MsgBroad pmsg = queryById(savedBroad.getTargetCid());
+            treecode = pmsg.getTreecode() + savedBroad.getId() + "#";
+        }
+        updateTreeCode(savedBroad.getId(), savedBroad.getTreecode());
+    }
+
     public MsgBroad queryById(int id) {
         return msgBroadMapper.queryById(id);
     }
 
-    public int updateTreeCode(int id,String treecode) {
+    private int updateTreeCode(int id,String treecode) {
         return msgBroadMapper.updateTreeCode(id, treecode);
+    }
+
+    public void lockForUpdateInTransaction(int id) {
+        msgBroadMapper.lockForUpdate(id);
     }
 }

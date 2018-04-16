@@ -60,4 +60,10 @@
         set treecode=#{treecode}
         where id=#{id}
     </update>
+
+    <update id="lockForUpdate" parameterType="java.lang.Integer">
+        update msgbroad
+        set update_time=now()
+        where id=#{id}
+    </update>
 </mapper>
