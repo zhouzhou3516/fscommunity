@@ -22,7 +22,7 @@ import java.util.List;
  * @Author jing.c
  * @Date: 18-3-25
  */
-@RequestMapping("/fscommunity/gift")
+@RequestMapping("/fscommunity/man/gift")
 @Controller
 public class GiftController {
     private final static Logger logger = LoggerFactory.getLogger(GiftController.class);

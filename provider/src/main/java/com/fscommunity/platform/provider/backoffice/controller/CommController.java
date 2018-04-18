@@ -5,6 +5,7 @@ import com.fscommunity.platform.persist.pojo.Comment;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.backoffice.adapter.CommentVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.QueryCommentListReq;
+import com.fscommunity.platform.provider.backoffice.vo.CommentVo;
 import com.fscommunity.platform.service.ArticleService;
 import com.fscommunity.platform.service.CommentService;
 import com.fscommunity.platform.service.UserInfoService;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * @author chao.zhu
  * @version 2018-04-14
  */
-@RequestMapping("/fscommunity/backoffice/comment")
+@RequestMapping("/fscommunity/man/comment")
 @Controller
 public class CommController {
     private final static Logger logger = LoggerFactory.getLogger(CommController.class);
@@ -57,8 +58,16 @@ public class CommController {
             return new PageResp(Collections.EMPTY_LIST, 0);
         }
 
+        rows = rows.stream().filter(r->r.getIsShowed() == (req.isAuthStatus()?1:0)).collect(Collectors.toList());
 
-        //评论用户id
+        if (CollectionUtils.isEmpty(rows)) {
+            PageResp<CommentVo> resp = new PageResp();
+            resp.setRows(Collections.EMPTY_LIST);
+            resp.setTotalCount(0);
+            return resp;
+        }
+
+        //评论用户
         List<Integer> userIds = rows.stream().map(Comment::getUserId).filter(id -> id != 0).distinct().collect(Collectors.toList());
         //被评论用户id，去除评论文章的情况
         List<Integer> commedIds = rows.stream().map(Comment::getTargetUid).filter(id -> id != 0).distinct().collect(Collectors.toList());

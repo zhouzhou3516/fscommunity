@@ -14,7 +14,7 @@ import java.util.List;
 public interface CommentMapper {
     int insert(Comment record);
 
-    int getCountByArticleId();
+    int getCountByArticleId(int articleId);
 
     List<Comment> list(@Param("condition") String conditiion, RowBounds rowBounds);
 

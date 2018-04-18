@@ -1,16 +1,32 @@
 package com.fscommunity.platform.provider.backoffice.req;
 
-import com.fscommunity.platform.common.constant.ArticleType;
-
 /**
  * @author chao.zhu
  * @version 2018-04-14
  */
 public class AddNewArticleReq {
+    private int id;
     private String name;
-    private ArticleType type;
+    private String author;
     private String content;
     private String tag;
+    private String coverUrl;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
 
     public String getTag() {
         return tag;
@@ -28,12 +44,12 @@ public class AddNewArticleReq {
         this.name = name;
     }
 
-    public ArticleType getType() {
-        return type;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setType(ArticleType type) {
-        this.type = type;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getContent() {

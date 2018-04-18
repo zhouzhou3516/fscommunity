@@ -27,11 +27,7 @@ public class ArticleTest extends BaseJunit {
             System.out.println(article.toString());
         assertTrue(articleList.size() > 0);
     }
-    @Test
-    public void getCountTest() {
-        int rslt = articleMapper.getCount();
-        System.out.println(rslt);
-    }
+
 
     @Test
     public void getTest() {

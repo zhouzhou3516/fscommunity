@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @Author jing.c
  * @Date: 18-3-28
  */
-@RequestMapping("/fscommunity/msgbroad")
+@RequestMapping("/fscommunity/man/msgbroad")
 @Controller
 public class MsgBroadMgrController {
     private final static Logger logger = LoggerFactory.getLogger(MsgBroadMgrController.class);

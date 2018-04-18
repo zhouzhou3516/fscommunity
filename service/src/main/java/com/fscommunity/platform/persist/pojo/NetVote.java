@@ -8,13 +8,31 @@ import java.util.Date;
  */
 public class NetVote {
     private int id;
+    private String voteName;
     private int articleId;
     private NetVoteStatus voteStatus;
     private NetVoteSelectType selectType;
     private String startDate;
     private String endDate;
+    private String itemIds;
     private Date createTime;
     private Date updateTime;
+
+    public String getVoteName() {
+        return voteName;
+    }
+
+    public void setVoteName(String voteName) {
+        this.voteName = voteName;
+    }
+
+    public String getItemIds() {
+        return itemIds;
+    }
+
+    public void setItemIds(String itemIds) {
+        this.itemIds = itemIds;
+    }
 
     public NetVoteSelectType getSelectType() {
         return selectType;

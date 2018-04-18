@@ -20,6 +20,9 @@ public class PageResp <T>{
         this.totalCount = totalCount;
     }
 
+    public PageResp() {
+    }
+
     public List<T> getRows() {
         return rows;
     }

@@ -5,9 +5,10 @@
         <result column="id" jdbcType="INTEGER" property="id"/>
         <result column="author_id" jdbcType="INTEGER" property="authorId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="author_name" property="authorName"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="tag" jdbcType="VARCHAR" property="tag"/>
+        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="views" jdbcType="INTEGER" property="views"/>
@@ -16,9 +17,10 @@
     id,
     author_id,
     name,
-    type,
+    author_name,
     content,
     tag,
+    cover_url,
     publish_time,
     update_time,
     views
@@ -29,9 +31,10 @@
     article (
     author_id,
     name,
-    type,
+    author_name,
     content,
     tag,
+    cover_url,
     publish_time,
     update_time,
     views)
@@ -39,15 +42,20 @@
     (
     #{authorId,jdbcType=INTEGER},
     #{name,jdbcType=VARCHAR},
-    #{type},
+    #{authorName},
     #{content,jdbcType=VARCHAR},
     #{tag},
+    #{coverUrl},
     #{publishTime,jdbcType=TIMESTAMP},
     #{updateTime,jdbcType=TIMESTAMP},
     #{views,jdbcType=INTEGER})
       ON DUPLICATE KEY UPDATE
       content=VALUES(content),
-      update_time=VALUES(update_time)
+      name=VALUES(name),
+      author_name=VALUES(author_name),
+      tag=VALUES(tag),
+      cover_url=VALUES(cover_url),
+      update_time=now()
     </insert>
 
     <select id="list" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -88,14 +96,17 @@
     <update id="updateById" parameterType="com.fscommunity.platform.persist.pojo.Article">
       UPDATE article
         <set>
-            <if test="type != null">
-                type=#{type},
+            <if test="authorName != null and authorName !=''">
+                author_name=#{authorName},
             </if>
             <if test="content !=null and content !=''">
                 content=#{content},
             </if>
             <if test="name != null and name != ''">
                 name=#{name},
+            </if>
+            <if test="coverUrl != null and coverUrl !=''">
+                cover_url=#{coverUrl}
             </if>
             update_time=now()
         </set>

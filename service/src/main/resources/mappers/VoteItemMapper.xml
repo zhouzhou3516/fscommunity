@@ -12,7 +12,8 @@
     update_time as updateTime
     </sql>
 
-    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.VoteItem">
+    <insert id="insert" parameterType="com.fscommunity.platform.persist.pojo.VoteItem"
+            useGeneratedKeys="true" keyProperty="id">
     insert into
     vote_item(
     vote_id,

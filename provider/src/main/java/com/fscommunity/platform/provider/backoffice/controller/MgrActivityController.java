@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author chao.zhu
  * @version 2018-04-15
  */
-@RequestMapping("/fscommunity/backoffice/activity")
+@RequestMapping("/fscommunity/man/activity")
 @Controller
 public class MgrActivityController {
     @Resource

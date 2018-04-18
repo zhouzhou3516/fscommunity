@@ -22,7 +22,7 @@ import java.util.List;
  * @author chao.zhu
  * @version 2018-04-15
  */
-@RequestMapping("/fscommunity/backoffice/phone")
+@RequestMapping("/fscommunity/man/phone")
 @Controller
 public class MgrConveniencePhoneController {
 

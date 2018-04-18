@@ -20,8 +20,20 @@ public class NetVoteItemService {
     @Resource
     VoteItemMapper voteItemMapper;
 
-    public int addNewItem(VoteItem item) {
-        return voteItemMapper.insert(item);
+    public VoteItem addNewItem(VoteItem item) {
+        voteItemMapper.insert(item);
+        return item;
+    }
+
+    public List<VoteItem> addNewItems(List<VoteItem> items) {
+        if (CollectionUtils.isEmpty(items)) {
+            return Collections.emptyList();
+        }
+
+        for (VoteItem item : items) {
+            addNewItem(item);
+        }
+        return items;
     }
 
     public List<VoteItem> queryItemsByIds(List<Integer> ids) {
@@ -46,5 +58,16 @@ public class NetVoteItemService {
 
     public int delVoteItem(int itemId) {
         return voteItemMapper.deleteById(itemId);
+    }
+
+    public int delVoteItems(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return 0;
+        }
+
+        for (Integer id : ids) {
+            delVoteItem(id);
+        }
+        return ids.size();
     }
 }

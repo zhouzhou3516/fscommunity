@@ -3,8 +3,13 @@ package com.fscommunity.platform.provider.backoffice.adapter;
 import com.fscommunity.platform.persist.pojo.*;
 import com.fscommunity.platform.provider.backoffice.req.AddNewVoteItemReq;
 import com.fscommunity.platform.provider.backoffice.req.AddNewVoteReq;
+import com.fscommunity.platform.provider.backoffice.vo.VoteItemVo;
+import com.google.common.base.Joiner;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author chao.zhu
@@ -13,6 +18,7 @@ import java.util.Date;
 public class NetVoteAdaptor {
     public static NetVote adaptToVote(AddNewVoteReq req) {
         NetVote netVote = new NetVote();
+        netVote.setVoteName(req.getVoteName());
         netVote.setArticleId(req.getArticleId());
         netVote.setVoteStatus(NetVoteStatus.VALID);
         netVote.setStartDate(req.getStartDate());
@@ -21,6 +27,13 @@ public class NetVoteAdaptor {
         netVote.setCreateTime(current);
         netVote.setUpdateTime(current);
         netVote.setSelectType(NetVoteSelectType.RADIO);
+
+        List<VoteItemVo> items = req.getItems();
+        if (CollectionUtils.isNotEmpty(items)) {
+            List<Integer> ids = items.stream().map(VoteItemVo::getId).collect(Collectors.toList());
+            String join = Joiner.on(",").join(ids);
+            netVote.setItemIds(join);
+        }
         return netVote;
     }
 
@@ -36,4 +49,6 @@ public class NetVoteAdaptor {
         item.setUpdateTime(current);
         return item;
     }
+
+
 }

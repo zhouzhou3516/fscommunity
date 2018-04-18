@@ -1,7 +1,6 @@
 package com.fscommunity.platform.provider.comment;
 
 import com.fscommunity.platform.persist.dao.CommentMapper;
-import com.fscommunity.platform.persist.pojo.Article;
 import com.fscommunity.platform.persist.pojo.Comment;
 import com.fscommunity.platform.provider.BaseJunit;
 import org.apache.ibatis.session.RowBounds;
@@ -28,11 +27,7 @@ public class CommtTest extends BaseJunit {
             System.out.println(comment.toString());
         assertTrue(comments.size() > 0);
     }
-    @Test
-    public void getCountTest() {
-        int rslt = commentMapper.getCount();
-        System.out.println(rslt);
-    }
+
 
     @Test
     public void getTest() {

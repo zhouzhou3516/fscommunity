@@ -23,7 +23,7 @@ import java.util.List;
  * @Author jing.c
  * @Date: 18-4-4
  */
-@RequestMapping("/fscommunity/vote")
+@RequestMapping("/fscommunity/man/vote")
 @Controller
 public class VoteController {
     private final static Logger logger = LoggerFactory.getLogger(VoteController.class);

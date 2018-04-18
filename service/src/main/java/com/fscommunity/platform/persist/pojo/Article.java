@@ -1,7 +1,5 @@
 package com.fscommunity.platform.persist.pojo;
 
-import com.fscommunity.platform.common.constant.ArticleType;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,15 +14,14 @@ public class Article implements Serializable {
      */
     private Integer authorId;
 
+    private String authorName;
+
+    private String coverUrl;
+
     /**
      * 文章名称
      */
     private String name;
-
-    /**
-     * 文章类型
-     */
-    private ArticleType type;
 
     private String tag;
 
@@ -47,6 +44,14 @@ public class Article implements Serializable {
      * 浏览次数
      */
     private Integer views;
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -74,14 +79,6 @@ public class Article implements Serializable {
         this.content = content == null ? null : content.trim();
     }
 
-    public ArticleType getType() {
-        return type;
-    }
-
-    public void setType(ArticleType type) {
-        this.type = type;
-    }
-
     public Date getPublishTime() { return publishTime; }
 
     public void setPublishTime(Date publishTime) { this.publishTime = publishTime; }
@@ -104,5 +101,13 @@ public class Article implements Serializable {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 }

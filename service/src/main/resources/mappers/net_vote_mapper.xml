@@ -4,32 +4,43 @@
 
     <sql id="fields">
         id,
+        vote_name as voteName,
         article_id as articleId,
         vote_status as voteStatus,
         start_date as startDate,
         end_date as endDate,
+        item_ids as itemIds,
         create_time as createTime,
         update_time as updateTime
     </sql>
 
-    <insert id="saveNetVote" parameterType="com.fscommunity.platform.persist.pojo.NetVote">
+    <insert id="saveNetVote" parameterType="com.fscommunity.platform.persist.pojo.NetVote"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO net_vote(
+        vote_name,
         article_id,
         vote_status,
         start_date,
         end_date,
+        item_ids,
         create_time,
         update_time
         ) VALUES (
+        #{voteName},
         #{articleId},
         #{voteStatus},
         #{startDate},
         #{endDate},
+        #{itemIds},
         #{createTime},
         #{updateTime}
         ) ON DUPLICATE KEY UPDATE
         start_date=VALUES(start_date),
         end_date=VALUES(end_date),
+        item_ids=VALUES(item_ids),
+        vote_status=VALUES(vote_status),
+        vote_name=VALUES(vote_name),
+        article_id=VALUES(article_id),
         update_time=now()
     </insert>
 
@@ -59,6 +70,12 @@
             </if>
             <if test="endDate != null and endDate!=''">
                 end_date=#{endDate},
+            </if>
+            <if test="itemIds != null and itemIds!=''">
+                item_ids=#{itemIds},
+            </if>
+            <if test="voteName != null and voteName!=''">
+                vote_name=#{voteName},
             </if>
             article_id=#{articleId},
             update_time=now()

@@ -6,8 +6,17 @@ package com.fscommunity.platform.provider.backoffice.req;
  */
 public class QueryCommentListReq {
     private int articleId;
+    private boolean authStatus;
     private int currentPage;
     private int pageSize;
+
+    public boolean isAuthStatus() {
+        return authStatus;
+    }
+
+    public void setAuthStatus(boolean authStatus) {
+        this.authStatus = authStatus;
+    }
 
     public int getArticleId() {
         return articleId;

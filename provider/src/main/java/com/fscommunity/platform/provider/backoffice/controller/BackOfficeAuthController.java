@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author chao.zhu
  * @version 2018-04-14
  */
-@RequestMapping("/fscommunity/backoffice/auth")
+@RequestMapping("/fscommunity/man/auth")
 @Controller
 public class BackOfficeAuthController {
 

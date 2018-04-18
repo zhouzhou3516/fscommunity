@@ -1,6 +1,5 @@
 package com.fscommunity.platform.provider.backoffice.vo;
 
-import com.fscommunity.platform.common.constant.ArticleType;
 import com.fscommunity.platform.persist.pojo.Article;
 
 import java.util.Date;
@@ -27,11 +26,6 @@ public class ArticleVo {
     private String name;
 
     /**
-     * 文章类型
-     */
-    private ArticleType type;
-
-    /**
      * 文章内容
      */
     private String content;
@@ -51,12 +45,31 @@ public class ArticleVo {
      */
     private Integer views;
 
+    private String coverUrl;
+
+    private String tag;
+
     public ArticleVo(){}
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
 
     public ArticleVo(Article article){
         this.id=article.getId();
         this.name=article.getName();
-        this.type=article.getType();
         this.content=article.getContent();
         this.publishTime=article.getPublishTime();
         this.updateTime=article.getUpdateTime();
@@ -87,14 +100,6 @@ public class ArticleVo {
         this.content = content == null ? null : content.trim();
     }
 
-    public ArticleType getType() {
-        return type;
-    }
-
-    public void setType(ArticleType type) {
-        this.type = type;
-    }
-
     public Date getPublishTime() { return publishTime; }
 
     public void setPublishTime(Date publishTime) { this.publishTime = publishTime; }
@@ -110,20 +115,4 @@ public class ArticleVo {
     public Integer getViews() { return views; }
 
     public void setViews(Integer views) { this.views = views; }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", type=").append(type);
-        sb.append(", name=").append(name);
-        sb.append(", content=").append(content);
-        sb.append(", putonTime=").append(publishTime);
-        sb.append(", pulloffTime=").append(updateTime);
-        sb.append("]");
-        return sb.toString();
-    }
 }

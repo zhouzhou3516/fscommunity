@@ -5,6 +5,7 @@ import com.fscommunity.platform.provider.backoffice.adapter.ArticleVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.AddNewArticleReq;
 import com.fscommunity.platform.provider.backoffice.req.ArticleListQueryReq;
 import com.fscommunity.platform.provider.backoffice.req.UpdateArticleReq;
+import com.fscommunity.platform.provider.backoffice.vo.ArticleListItemVo;
 import com.fscommunity.platform.provider.backoffice.vo.ArticleVo;
 import com.fscommunity.platform.service.ArticleService;
 import com.fscommunity.platform.service.ManUserService;
@@ -26,7 +27,7 @@ import java.util.List;
  * @Author jing.c
  * @Date: 18-3-28
  */
-@RequestMapping("/fscommunity/backoffice/article")
+@RequestMapping("/fscommunity/man/article")
 @Controller
 public class ArticleController {
     private final static Logger logger = LoggerFactory.getLogger(ArticleController.class);
@@ -44,7 +45,9 @@ public class ArticleController {
                 new PageRequest(req.getCurrentPage(), req.getPageSize())
         );
         int count = articleService.getCount(req.getFuzzyName());
-        PageResp resp = new PageResp<Article>(rows, count);
+        PageResp<ArticleListItemVo> resp = new PageResp<>();
+        resp.setTotalCount(count);
+        resp.setRows(ArticleVoAdatpter.adaptToVos(rows));
         return resp;
     }
 
@@ -52,7 +55,17 @@ public class ArticleController {
     @JsonBody
     public void add(@RequestBody AddNewArticleReq req) {
         //todo 获取当前登录用户
-        articleService.add(ArticleVoAdatpter.adaptToArticle(req, 1));
+        if (req.getId() == 0) {
+            articleService.add(ArticleVoAdatpter.adaptToArticle(req, 1));
+        } else {
+            Article old = articleService.selectById(req.getId());
+            old.setCoverUrl(req.getCoverUrl());
+            old.setAuthorName(req.getAuthor());
+            old.setTag(req.getTag());
+            old.setContent(req.getContent());
+            old.setName(req.getName());
+            articleService.add(old);
+        }
     }
 
     @RequestMapping("/info")
@@ -76,7 +89,6 @@ public class ArticleController {
         if (!Strings.isNullOrEmpty(article.getArticleName())) {
             old.setName(article.getArticleName());
         }
-        old.setType(article.getType());
         old.setContent(article.getContent());
         articleService.updateById(old);
     }

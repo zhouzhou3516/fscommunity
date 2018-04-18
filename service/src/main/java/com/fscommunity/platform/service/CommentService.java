@@ -87,7 +87,7 @@ public class CommentService {
 //    }
 
     public int getCount(int articleId) {
-        return commentMapper.getCountByArticleId();
+        return commentMapper.getCountByArticleId(articleId);
     }
 
 //    public int displayCmmt(String id) {

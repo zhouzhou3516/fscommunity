@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Author jing.c
  * @Date: 18-3-22
  */
-@RequestMapping("/fscommunity/user")
+@RequestMapping("/fscommunity/man/user")
 @Controller
 public class UserMgrController {
     private final static Logger logger = LoggerFactory.getLogger(UserMgrController.class);

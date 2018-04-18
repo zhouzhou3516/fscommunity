@@ -31,8 +31,7 @@ public class ManAuthFilter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
         String cookieValue = CookieManager.MAN_SESSION.getCookieValue();
-        String username = Base64Util.decode(cookieValue);
-        if (Strings.isNullOrEmpty(cookieValue) || sessionHolder.getSessionUser(username) == null) {
+        if (Strings.isNullOrEmpty(cookieValue) || sessionHolder.getSessionUser(Base64Util.decode(cookieValue)) == null) {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             JsonUtil.instance().writeValue(response.getWriter(), APIResponse.error(102, "该用户未登录"));
@@ -40,7 +39,7 @@ public class ManAuthFilter implements HandlerInterceptor {
         }
 
 
-        ManUser manUser = sessionHolder.getSessionUser(username);
+        ManUser manUser = sessionHolder.getSessionUser(Base64Util.decode(cookieValue));
         sessionHolder.setManUser(manUser);
         return true;
     }
