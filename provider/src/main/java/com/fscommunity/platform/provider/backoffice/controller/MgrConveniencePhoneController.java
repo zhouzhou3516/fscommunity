@@ -30,6 +30,7 @@ public class MgrConveniencePhoneController {
     ConveniencePhoneService conveniencePhoneService;
 
     @RequestMapping("/add")
+    @JsonBody
     public void addPhone(@RequestBody AddPhoneReq req) {
         ConveniencePhone phone = PhoneAdaptor.adaptCPhone(req);
         conveniencePhoneService.savePhone(phone);
