@@ -1,10 +1,12 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
+
 /**
  * @author lixiaoxiong
  * @version 2018-02-01
  */
-public class WxUser {
+public class WxUser extends Bean {
     private String openid;
     private String nickname;
     private int sex;

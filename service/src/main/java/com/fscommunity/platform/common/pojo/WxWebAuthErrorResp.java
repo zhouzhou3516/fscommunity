@@ -1,10 +1,12 @@
 package com.fscommunity.platform.common.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
+
 /**
  * @author lixiaoxiong
  * @version 2018-01-24
  */
-public class WxWebAuthErrorResp {
+public class WxWebAuthErrorResp extends Bean {
     private int errcode;
     private String errmsg;
 

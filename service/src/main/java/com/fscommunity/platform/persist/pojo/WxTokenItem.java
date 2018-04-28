@@ -1,12 +1,13 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
 import java.util.Date;
 
 /**
  * @author lixiaoxiong
  * @version 2018-02-01
  */
-public class WxTokenItem {
+public class WxTokenItem extends Bean {
     private String value;
     private Date expireTime;
 

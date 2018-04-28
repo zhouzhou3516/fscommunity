@@ -85,14 +85,12 @@ public class AccessTokenCache {
     }
 
     public void refresh() {
-        ListenableFuture<WxAccessToken> future = wxInvoker
-                .queryAccessToken();
+        ListenableFuture<WxAccessToken> future = wxInvoker.queryAccessToken();
 
         Futures.addCallback(future, new FutureCallback<WxAccessToken>() {
             @Override
             public void onSuccess(WxAccessToken result) {
-                logger.info("请求wx获取accesstoken:{}, expire:{}",
-                        result.getAccessToken(), result.getExpire());
+                logger.info("请求wx获取accesstoken:{}",result);
                 tokenMap.put(TOKEN_KEY, result.getAccessToken());
                 wxTokenService.updateInterfaceToken(build(result));
                 refreshTicket();
@@ -111,8 +109,7 @@ public class AccessTokenCache {
         Futures.addCallback(byRefreshToken, new FutureCallback<WxWebAuthToken>() {
             @Override
             public void onSuccess(WxWebAuthToken result) {
-                logger.info("请求wx获取webAccesstoken:{}, expire:{}",
-                        result.getAccessToken(), result.getExpire());
+                logger.info("请求wx获取webAccesstoken:{}", result);
                 updateWebToken(result.getAccessToken(), result.getExpire());
             }
 
@@ -134,8 +131,7 @@ public class AccessTokenCache {
         ListenableFuture<WxJsapiTicket> queryJsapiTicket = wxInvoker
                 .queryJsapiTicket(getToken());
         Futures.transformAsync(queryJsapiTicket, input -> {
-            logger.info("请求wx获取ticket:{}, expire:{}",
-                    input.getTicket(), input.getExpiresIn());
+            logger.info("请求wx获取ticket:{}",input);
             ticketMap.put(JSAPI_TICKET_KEY, input.getTicket());
             wxTokenService.updateTicketToken(build(input));
             return null;

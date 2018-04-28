@@ -1,12 +1,13 @@
 package com.fscommunity.platform.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lxx.app.common.util.pojo.Bean;
 
 /**
  * @author lixiaoxiong
  * @version 2018-01-26
  */
-public class WxJsapiTicket {
+public class WxJsapiTicket extends Bean {
     private int errcode;
     private String errmsg;
     private String ticket;

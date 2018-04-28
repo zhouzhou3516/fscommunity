@@ -1,10 +1,12 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
+
 /**
  * @author chao.zhu
  * @version 2018-04-14
  */
-public class UserSimpleInfo {
+public class UserSimpleInfo extends Bean {
     /**
      * 数据库唯一id标识
      */

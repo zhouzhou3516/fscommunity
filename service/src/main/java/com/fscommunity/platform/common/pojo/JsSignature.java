@@ -1,10 +1,12 @@
 package com.fscommunity.platform.common.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
+
 /**
  * @author lixiaoxiong
  * @version 2018-01-26
  */
-public class JsSignature {
+public class JsSignature extends Bean {
     private String nonceStr;
     private String timestamp;
     private String url;

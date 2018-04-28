@@ -1,10 +1,12 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
+
 /**
  * @author lixiaoxiong
  * @version 2018-03-23
  */
-public class UserAddressInfo {
+public class UserAddressInfo extends Bean {
 
     /**
      * 国家

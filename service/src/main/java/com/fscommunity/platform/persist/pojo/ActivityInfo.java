@@ -1,12 +1,13 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
 import java.util.Date;
 
 /**
  * @author chao.zhu
  * @version 2018-04-15
  */
-public class ActivityInfo {
+public class ActivityInfo extends Bean {
     private int id;
     private int articleId;
 

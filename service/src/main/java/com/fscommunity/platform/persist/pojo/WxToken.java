@@ -1,12 +1,13 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
 import java.util.Date;
 
 /**
  * @author lixiaoxiong
  * @version 2018-02-01
  */
-public class WxToken {
+public class WxToken extends Bean {
 
     /**
      * 公众号code

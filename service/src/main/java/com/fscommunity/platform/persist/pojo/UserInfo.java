@@ -4,13 +4,14 @@ import com.fscommunity.platform.common.constant.BloodType;
 import com.fscommunity.platform.common.constant.IDCardType;
 import com.fscommunity.platform.common.constant.NationalityType;
 import com.fscommunity.platform.common.constant.Sex;
+import com.lxx.app.common.util.pojo.Bean;
 import java.util.Date;
 
 /**
  * @author lixiaoxiong
  * @version 2018-03-23
  */
-public class UserInfo {
+public class UserInfo extends Bean {
 
     /**
      * 数据库唯一id标识

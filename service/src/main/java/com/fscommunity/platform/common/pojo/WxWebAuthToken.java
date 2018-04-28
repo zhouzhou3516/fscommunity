@@ -1,12 +1,13 @@
 package com.fscommunity.platform.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lxx.app.common.util.pojo.Bean;
 
 /**
  * @author lixiaoxiong
  * @version 2018-01-24
  */
-public class WxWebAuthToken {
+public class WxWebAuthToken extends Bean {
     @JsonProperty("access_token")
     private String accessToken;
 

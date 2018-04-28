@@ -1,14 +1,16 @@
 package com.fscommunity.platform.common.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
 import java.util.Date;
 
 /**
  * 后台用户
+ *
  * @author lixiaoxiong
  * @version 2018-01-29
  */
-public class
-ManUser {
+public class ManUser extends Bean{
+
     private int id;
     private int staffId;
     private String userName;

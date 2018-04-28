@@ -139,6 +139,7 @@ public class AliOssMediaClient {
     }
     public String uploadVoice(File file){
         ossClient.putObject(defaultBucket, file.getName(),file);
+        return file.getName();
     }
 
     private Pair<String, String> queryPipeline() {

@@ -1,12 +1,13 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
 import java.util.Date;
 
 /**
  * @author lixiaoxiong
  * @version 2018-03-27
  */
-public class UserSignInfo {
+public class UserSignInfo extends Bean {
     private int id;
 
     /**
