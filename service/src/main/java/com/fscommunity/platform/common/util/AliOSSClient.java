@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AliOSSClient {
+
     private final static Logger logger = LoggerFactory.getLogger(AliOSSClient.class);
 
 
@@ -78,9 +79,6 @@ public class AliOSSClient {
         }
     }
 
-
-
-
 //    public String submitJobId() {
 //        String region = "cn-beijing";
 //        String pipelineId = "7944e0efe7e64c17bbb5b86781e7d7fe";
@@ -135,8 +133,6 @@ public class AliOSSClient {
 //        }
 //
 //    }
-
-
 
 //    private void querySnap() {
 //        String region = "cn-beijing";

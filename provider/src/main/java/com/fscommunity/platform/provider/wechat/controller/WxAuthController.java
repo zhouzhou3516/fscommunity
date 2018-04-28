@@ -27,12 +27,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140842
+ *
  * @author lixiaoxiong
  * @version 2018-01-24
  */
 @RequestMapping("/ysgh/wx/auth")
 @Controller
 public class WxAuthController {
+
     private final static Logger logger = LoggerFactory.getLogger(WxAuthController.class);
 
     @Resource
@@ -66,7 +69,7 @@ public class WxAuthController {
 
         //2. 获取openid
         WxWebAuthToken wxWebAuthToken = wxInvoker.queryOpenId(code);
-        logger.info("获取openid:{}",JsonUtil.of(wxWebAuthToken));
+        logger.info("获取openid:{}", JsonUtil.of(wxWebAuthToken));
 
         //2.1 更新web access token
         accessTokenCache.updateWebToken(wxWebAuthToken.getAccessToken(), wxWebAuthToken.getExpire());
@@ -110,7 +113,7 @@ public class WxAuthController {
         AuthInfo info = new AuthInfo();
         if (Strings.isNullOrEmpty(op)) {
             info.setOpenid("");
-        }else {
+        } else {
             info.setOpenid(op);
         }
 

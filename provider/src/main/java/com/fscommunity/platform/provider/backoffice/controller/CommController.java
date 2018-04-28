@@ -49,7 +49,7 @@ public class CommController {
 
     @RequestMapping("/getByArcticalId")
     @JsonBody
-    public PageResp getByArcticalId(@RequestBody QueryCommentListReq req) {
+    public PageResp getByArticleId(@RequestBody QueryCommentListReq req) {
         List<Comment> rows = commentService.getByArticleId(req.getArticleId(),
                 new PageRequest(req.getCurrentPage(), req.getPageSize())
         );

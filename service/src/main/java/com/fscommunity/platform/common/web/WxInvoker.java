@@ -1,6 +1,7 @@
 package com.fscommunity.platform.common.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fscommunity.platform.common.constant.WxMediaType;
 import com.fscommunity.platform.common.pojo.WxAccessToken;
 import com.fscommunity.platform.common.pojo.WxJsapiTicket;
 import com.fscommunity.platform.common.pojo.WxUserExt;
@@ -18,6 +19,8 @@ import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
 import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.util.pojo.BizException;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
@@ -25,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import javax.annotation.Resource;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class WxInvoker {
+
     private final static Logger logger = LoggerFactory.getLogger(WxInvoker.class);
     private final static String TOKEN_BASE_URL = "https://api.weixin.qq.com";
     private final static String WX_USER_INFO_URL = "/sns/userinfo";
@@ -48,6 +53,7 @@ public class WxInvoker {
     private final static String URL_PARAM_SEP = "&";
     private final static String APP_ID = "wxad8fb528b56bdf2e";
     private final static String APP_SECRET = "2857a9393c04903e60d97f597da53efd";
+    private static final String DOWNLOAD_MEDIA_URL = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
 
     @Resource
     HttpClientUtil httpClientUtil;
@@ -64,13 +70,12 @@ public class WxInvoker {
         ListenableFuture<AsyncHttpResponse> future = httpClientUtil
                 .syncGet(tokenUrl.toString());
         return Futures.transform(future, new Function<AsyncHttpResponse, WxAccessToken>() {
-                    @Override
-                    public WxAccessToken apply(AsyncHttpResponse input) {
-                        return decode(input, tokenUrl.toString());
-                    }
-                });
+            @Override
+            public WxAccessToken apply(AsyncHttpResponse input) {
+                return decode(input, tokenUrl.toString());
+            }
+        });
     }
-
 
 
     public boolean checkSubcribe(String openId) {
@@ -215,7 +220,8 @@ public class WxInvoker {
         try {
             codeUrl.append(OPEN_BASE_URL).append(URL_SEP)
                     .append("appid=").append(APP_ID).append(URL_PARAM_SEP)
-                    .append("redirect_uri=").append(URLEncoder.encode("http://www.community-cloud.cn/ysgh/wx/auth/code/callback", Charsets.UTF_8.name()))
+                    .append("redirect_uri=").append(URLEncoder
+                    .encode("http://www.community-cloud.cn/ysgh/wx/auth/code/callback", Charsets.UTF_8.name()))
                     .append(URL_PARAM_SEP)
                     .append("response_type=code").append(URL_PARAM_SEP)
                     .append("scope=").append("snsapi_userinfo").append(URL_PARAM_SEP)
@@ -232,6 +238,30 @@ public class WxInvoker {
         ListenableFuture<AsyncHttpResponse> syncGet = httpClientUtil.syncGet(url);
     }
 
+    public File dowloadWxMedia(String accessToken, final String mediaId, WxMediaType type) {
+        ListenableFuture<File> future = downloadWxMediaRemote(accessToken, mediaId, type);
+        try {
+            return future.get(10, TimeUnit.SECONDS);
+        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+            logger.error("下载多媒体文件异常", e);
+        }
+        return null;
+    }
+
+    private ListenableFuture<File> downloadWxMediaRemote(String accessToken, String mediaId, WxMediaType type) {
+        String url = String.format(DOWNLOAD_MEDIA_URL, accessToken, mediaId);
+        ListenableFuture<AsyncHttpResponse> future = httpClientUtil.syncGet(url);
+        return Futures.transform(future, (Function<AsyncHttpResponse, File>) input -> {
+            File file = new File(mediaId + "." + type.getExtName());
+            try {
+                FileUtils.writeByteArrayToFile(file, input.getBodyAsBytes());
+            } catch (IOException e) {
+                file = null;
+                logger.error("下载多媒体文件异常", e);
+            }
+            return file;
+        });
+    }
 
     private WxAccessToken decode(AsyncHttpResponse response, String url) {
         logger.info("wx request info, request:{}, status:{}",
@@ -269,7 +299,6 @@ public class WxInvoker {
             throw new BizException(MessageFormat.format("从微信获取openid出错, code:{0}, errmsg:{1}",
                     errorResp.getErrcode(), errorResp.getErrmsg()));
         }
-
         return JsonUtil.of(responseBodyAsString, WxUser.class);
     }
 
@@ -286,4 +315,5 @@ public class WxInvoker {
 
         return JsonUtil.of(responseBodyAsString, reference);
     }
+
 }

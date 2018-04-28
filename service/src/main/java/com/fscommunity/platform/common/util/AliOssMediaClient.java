@@ -14,6 +14,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.fscommunity.platform.persist.pojo.OssObjectPresignedUrlnfo;
 import com.fscommunity.platform.service.OssObjectPresignUrlService;
 import com.lxx.app.common.util.pojo.BizException;
+import java.io.File;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,7 @@ public class AliOssMediaClient {
     private String defaultBucket;
 
     private String mediaProcessPipelineId;
+    private OSSClient ossClient;
 
     @Resource
     OssObjectPresignUrlService ossObjectPresignUrlService;
@@ -61,19 +63,14 @@ public class AliOssMediaClient {
      * @return 返回预览url
      */
     public String queryPresignedUrl(String objectName) {
-
         //没有过期，则返回数据库存在的url
         OssObjectPresignedUrlnfo presignedUrlnfo = ossObjectPresignUrlService.queryByBNameAndObName("fs-community-store", objectName);
         if (presignedUrlnfo != null && presignedUrlnfo.getExpireTime().before(new Date())) {
             return presignedUrlnfo.getPresignedUrl();
         }
-
         //如果过期（默认20天过期）
-        OSSClient client = new OSSClient(ossMasterEndPoint, ossMasterKeyId, ossMasterKeySecret);
         Date expiration = new Date(new Date().getTime() + 3600 * 1000  * 24  * 20);
-        URL url = client.generatePresignedUrl("fs-community-store", objectName, expiration, HttpMethod.GET);
-        client.shutdown();
-
+        URL url = ossClient.generatePresignedUrl("fs-community-store", objectName, expiration, HttpMethod.GET);
         ossObjectPresignUrlService.saveOssObjectUrl(initOssObjectUrl(objectName, expiration, url.toString()));
         return url.toString();
     }
@@ -84,7 +81,6 @@ public class AliOssMediaClient {
         Date current = new Date();
         info.setCreateTime(current);
         info.setUpdateTime(current);
-
         info.setExpireTime(expire);
         info.setObjectName(objectName);
         info.setPresignedUrl(url);
@@ -141,6 +137,9 @@ public class AliOssMediaClient {
             return null;
         }
     }
+    public String uploadVoice(File file){
+        ossClient.putObject(defaultBucket, file.getName(),file);
+    }
 
     private Pair<String, String> queryPipeline() {
         DefaultProfile profile = DefaultProfile.getProfile(
@@ -166,5 +165,6 @@ public class AliOssMediaClient {
     private void init() {
         Pair<String, String> pair = queryPipeline();
         mediaProcessPipelineId = pair.getRight();
+        ossClient = new OSSClient(ossMasterEndPoint, ossMasterKeyId, ossMasterKeySecret);
     }
 }
