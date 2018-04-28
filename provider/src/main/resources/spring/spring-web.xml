@@ -11,4 +11,7 @@
 
     <!-- default handler -->
     <mvc:default-servlet-handler />
+    <bean id="accessLogFilter" class="com.lxx.app.common.web.filter.AccessDataLogFilter">
+        <property name="loggerName" value="accessDataLog"/>
+    </bean>
 </beans>
