@@ -49,7 +49,8 @@
       update_time=now()
     </insert>
 
-    <select id="queryById" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+    <select id="queryById" parameterType="java.lang.Integer"
+      resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
         select
         <include refid="fields"/>
         from activity
@@ -60,9 +61,11 @@
         select
         <include refid="fields"/>
         from activity
+        order by activity_time
     </select>
 
-    <select id="queryByIds" parameterType="java.util.List" resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+    <select id="queryByIds" parameterType="java.util.List"
+      resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
         select
         <include refid="fields"/>
         from activity
@@ -74,6 +77,16 @@
 
     <select id="countActivity" resultType="java.lang.Integer">
         select count(1) from activity;
+    </select>
+    <select id="list" resultType="com.fscommunity.platform.persist.pojo.ActivityInfo">
+        select
+        <include refid="fields"/>
+        from activity
+        <where>
+            <if test="fuzzyName != null and fuzzyName !=''">
+                activity_desc like concat('%',#{fuzzyName},'%')
+            </if>
+        </where>
     </select>
 
     <update id="updateActivity" parameterType="com.fscommunity.platform.persist.pojo.ActivityInfo">

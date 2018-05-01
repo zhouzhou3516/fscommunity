@@ -125,11 +125,11 @@ public class UserInfo extends Bean {
 
     private String remark;
 
-    private UserBaseinfo baseinfo;
+    private UserBaseinfo baseinfo = new UserBaseinfo();
 
-    private UserAddressInfo addressInfo;
+    private UserAddressInfo addressInfo = new UserAddressInfo();
 
-    private UserBizInfo bizInfo;
+    private UserBizInfo bizInfo= new UserBizInfo();
 
     private Date createTime;
 

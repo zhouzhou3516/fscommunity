@@ -9,6 +9,7 @@ public class ArticleListItemVo {
     private String articleName;
     private String articleAuthor;
     private String tag;
+    private String coverUrl;
     private int viewCount;
     private int replyCount;
 
@@ -50,6 +51,14 @@ public class ArticleListItemVo {
 
     public void setReplyCount(int replyCount) {
         this.replyCount = replyCount;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public String getTag() {

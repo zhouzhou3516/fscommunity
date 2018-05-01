@@ -5,7 +5,9 @@ package com.fscommunity.platform.provider.backoffice.req;
  * @version 2018-04-14
  */
 public class ArticleListQueryReq {
+
     private String fuzzyName;
+    private String authorName;
     private int currentPage;
     private int pageSize;
 
@@ -15,6 +17,14 @@ public class ArticleListQueryReq {
 
     public void setFuzzyName(String fuzzyName) {
         this.fuzzyName = fuzzyName;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public int getCurrentPage() {

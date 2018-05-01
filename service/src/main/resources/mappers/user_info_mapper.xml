@@ -101,21 +101,24 @@
         )
     </insert>
 
-    <select id="queryByFuzzyName" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <select id="queryByFuzzyName" parameterType="java.lang.String"
+      resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         SELECT
         <include refid="fields"/>
         FROM user_info
         WHERE real_name LIKE CONCAT('%', #{fuzzyName}, '%')
     </select>
 
-    <select id="queryByUserId" parameterType="java.lang.Integer" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <select id="queryByUserId" parameterType="java.lang.Integer"
+      resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         SELECT
         <include refid="fields"/>
         FROM user_info
         WHERE id=#{id}
     </select>
 
-    <select id="querySimpleInfoByIds" parameterType="java.util.List" resultType="com.fscommunity.platform.persist.pojo.UserSimpleInfo">
+    <select id="querySimpleInfoByIds" parameterType="java.util.List"
+      resultType="com.fscommunity.platform.persist.pojo.UserSimpleInfo">
         select
         <include refid="simpleFields"/>
         FROM user_info
@@ -125,18 +128,53 @@
         </foreach>
     </select>
 
-    <select id="queryByRealName" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <select id="queryByRealName" parameterType="java.lang.String"
+      resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         SELECT
         <include refid="fields"/>
         FROM user_info
         WHERE real_name=#{realName}
     </select>
 
-    <select id="queryUserInfoByOpenId" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <select id="queryUserInfoByOpenId" parameterType="java.lang.String"
+      resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         SELECT
         <include refid="fields"/>
         FROM user_info
         WHERE open_id=#{openId}
+    </select>
+    <select id="list" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+        select
+        <include refid="fields"/>
+        from activity
+        <where>
+            <if test="fuzzyName != null and fuzzyName !=''">
+                AND activity_desc like concat('%',#{fuzzyName},'%')
+            </if>
+            <if test="phone != null and phone !=''">
+                and cell_phone like concat('%',#{phone},'%')
+            </if>
+            <if test="auditStatus != null and auditStatus !=''">
+                and audit_status like concat('%',#{auditStatus},'%')
+            </if>
+        </where>
+        order by create_tiem
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select
+        count(1)
+        from activity
+        <where>
+            <if test="fuzzyName != null and fuzzyName !=''">
+                AND activity_desc like concat('%',#{fuzzyName},'%')
+            </if>
+            <if test="phone != null and phone !=''">
+                and cell_phone like concat('%',#{phone},'%')
+            </if>
+            <if test="auditStatus != null and auditStatus !=''">
+                and audit_status like concat('%',#{auditStatus},'%')
+            </if>
+        </where>
     </select>
 
     <update id="updateBizInfo" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">

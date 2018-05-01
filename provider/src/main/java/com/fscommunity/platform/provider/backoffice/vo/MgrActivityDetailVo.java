@@ -1,12 +1,15 @@
 package com.fscommunity.platform.provider.backoffice.vo;
 
 import com.fscommunity.platform.persist.pojo.ActivityApplyCostType;
+import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  * @author chao.zhu
  * @version 2018-04-15
  */
 public class MgrActivityDetailVo {
+
     private int activityId;
 
     private String activityName;
@@ -41,6 +44,8 @@ public class MgrActivityDetailVo {
      * 支付数量
      */
     private int applyCostCount;
+
+    private List<ActivityParticipantVo> participantList = Lists.newArrayList();
 
     public int getActivityId() {
         return activityId;
@@ -112,5 +117,14 @@ public class MgrActivityDetailVo {
 
     public void setApplyCostCount(int applyCostCount) {
         this.applyCostCount = applyCostCount;
+    }
+
+    public List<ActivityParticipantVo> getParticipantList() {
+        return participantList;
+    }
+
+    public void setParticipantList(
+            List<ActivityParticipantVo> participantList) {
+        this.participantList = participantList;
     }
 }

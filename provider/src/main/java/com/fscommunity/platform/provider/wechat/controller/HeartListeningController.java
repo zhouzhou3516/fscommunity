@@ -13,11 +13,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
+ * 你说我听
  * @author liqingzhou on 18/4/28
  */
 @Component
 @RequestMapping("/fscommunity/listening")
-public class ProblemListeningController {
+public class HeartListeningController {
 
     @Resource
     private AliOssMediaClient aliOssMediaClient;

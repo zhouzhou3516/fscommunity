@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.ConsultListeningDao">
+
+    <sql id="fields">
+    id,
+    channel_type as channelType,
+    consult_type as consultType,
+    content as content,
+    reply_user_id AS replyUserId,
+    reply_content as replyContent,
+    voice_url as voiceUrl,
+    img_urls as imgUrls,
+    video_url as videoUrl,
+    create_time as createTime,
+    update_time as updateTime
+    </sql>
+
+    <insert id="saveConsultListening" parameterType="com.fscommunity.platform.persist.pojo.ConsultListeningInfo">
+    insert into
+    consult_listening (
+    channel_type,
+    consult_type,
+    content,
+    reply_user_id,
+    reply_content,
+    voice_url,
+    img_urls,
+    video_url,
+    create_time,
+    update_time)
+    values
+    (
+    #{channelType},
+    #{consultType},
+    #{content},
+    #{replyUserId},
+    #{replyContent},
+    #{voiceUrl},
+    #{imgUrls},
+    #{videoUrl},
+    #{createTime},
+    #{updateTime})
+      ON DUPLICATE KEY UPDATE
+      channel_type=VALUES(channel_type),
+      consult_type=VALUES(consult_type),
+      content=VALUES(content),
+      reply_content=VALUES(reply_content),
+      reply_user_id=values(reply_user_id),
+      voice_url=VALUES(voice_url),
+      img_urls=VALUES(img_urls),
+      video_url=VALUES(video_url),
+      update_time=now()
+    </insert>
+
+    <select id="queryById" parameterType="java.lang.Integer"
+      resultType="com.fscommunity.platform.persist.pojo.ConsultListeningInfo">
+        select
+        <include refid="fields"/>
+        from consult_listening
+        where id=#{id}
+    </select>
+
+
+    <select id="countList" resultType="java.lang.Integer">
+        select count(1) from consult_listening;
+        <where>
+            <if test="channelType != null and channelType !=''">
+                channel_type like concat('%',#{channelType},'%')
+            </if>
+            <if test="consultType != null and consultType !=''">
+                consult_type like concat('%',#{consultType},'%')
+            </if>
+        </where>
+    </select>
+    <select id="list" resultType="com.fscommunity.platform.persist.pojo.ConsultListeningInfo">
+        select
+        <include refid="fields"/>
+        from consult_listening
+        <where>
+            <if test="channelType != null and channelType !=''">
+                channel_type like concat('%',#{channelType},'%')
+            </if>
+            <if test="consultType != null and consultType !=''">
+                consult_type like concat('%',#{consultType},'%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="delById" parameterType="java.lang.Integer">
+        delete from consult_listening
+        where id=#{id}
+    </delete>
+    <update id="reply">
+        UPDATE consult_listening
+        <set>
+            reply_content=#{replyContent},
+            reply_user_id=#{replyUserId},
+        </set>
+        where id =#{id}
+    </update>
+</mapper>

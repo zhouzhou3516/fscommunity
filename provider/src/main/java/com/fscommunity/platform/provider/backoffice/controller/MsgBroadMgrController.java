@@ -1,14 +1,25 @@
 package com.fscommunity.platform.provider.backoffice.controller;
 
+import com.fscommunity.platform.common.pojo.ManUser;
+import com.fscommunity.platform.common.web.SessionHolder;
+import com.fscommunity.platform.persist.pojo.MsgBroad;
+import com.fscommunity.platform.provider.backoffice.adapter.MgrMsgBroadVoAdatpter;
+import com.fscommunity.platform.provider.backoffice.req.CommentAuthReq;
+import com.fscommunity.platform.provider.backoffice.req.MsgBroadListQueryReq;
+import com.fscommunity.platform.provider.backoffice.req.NewCommentReplyReq;
 import com.fscommunity.platform.service.MsgBroadService;
-import com.fscommunity.platform.service.UserInfoService;
+import com.lxx.app.common.util.page.PageRequest;
+import com.lxx.app.common.util.page.PageResp;
+import com.lxx.app.common.util.pojo.BizException;
+import com.lxx.app.common.web.spring.annotation.JsonBody;
+import java.util.List;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.Resource;
 
 /**
  * @Description 留言板controller
@@ -18,32 +29,49 @@ import javax.annotation.Resource;
 @RequestMapping("/fscommunity/man/msgbroad")
 @Controller
 public class MsgBroadMgrController {
+
     private final static Logger logger = LoggerFactory.getLogger(MsgBroadMgrController.class);
 
     @Resource
     MsgBroadService msgBroadService;
 
-    @Autowired
-    UserInfoService userInfoService;
+    @Resource
+    private SessionHolder sessionHolder;
 
-//    @RequestMapping("/list")
-//    @JsonBody
-//    public PageResp list(MsgBroadListQueryReq req) {
-//        logger.info("list");
-//        List<MsgBroad> rows = msgBroadService.list(req.getFuzzyName(),
-//                new PageRequest(Integer.valueOf(req.getCurrentPage()), Integer.valueOf(req.getPageSize()))
-//        );
-//        int count = msgBroadService.getCount();
-//        PageResp resp = new PageResp<MsgBroad>(rows, count);
-//        return resp;
-//    }
+    @RequestMapping("/reply")
+    @JsonBody
+    @Transactional
+    public void replyComment(@RequestBody NewCommentReplyReq req) {
+        MsgBroad targetCmt = msgBroadService.queryById(req.getTargetId());
+        if (targetCmt.getIsReplied() == 1) {
+            throw new BizException("已经被评论过");
+        }
+        // 更新被评论的评论状态为已评论
+        msgBroadService.updateIsReplied(targetCmt.getId());
+        ManUser user = sessionHolder.currentManUser();
+        MsgBroad newBmsgBroad = MgrMsgBroadVoAdatpter.adaptToBroad(targetCmt, req, user.getId());
+        msgBroadService.saveBroad(newBmsgBroad);
+    }
+
+
+    @RequestMapping("/list")
+    @JsonBody
+    public PageResp list(MsgBroadListQueryReq req) {
+        List<MsgBroad> rows = msgBroadService.list(req.getAuthStatus(), req.getReplyStatus(),
+                new PageRequest(Integer.valueOf(req.getCurrentPage()), Integer.valueOf(req.getPageSize()))
+        );
+        int count = msgBroadService.countList(req.getAuthStatus(), req.getReplyStatus());
+        PageResp resp = new PageResp<>(rows, count);
+        return resp;
+    }
+
+    @RequestMapping("/auth")
+    @JsonBody
+    public void authMsgBroad(@RequestBody CommentAuthReq req) {
+        msgBroadService.updateAuthStatus(req.getCommentId(), req.getAuthStatus().getCode());
+    }
 //
-//    @RequestMapping("/new")
-//    @JsonBody
-//    public void add(@RequestBody MsgBroad msgBroad) {
-//        logger.info("new");
-//        msgBroadService.add(msgBroad);
-//    }
+
 //
 //    @RequestMapping("/info")
 //    @JsonBody

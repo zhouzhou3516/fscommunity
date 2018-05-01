@@ -5,8 +5,10 @@ package com.fscommunity.platform.provider.backoffice.vo;
  * @version 2018-04-15
  */
 public class MgrVoteItemVo {
+
     private int itemId;
     private String content;
+    private int voteSum;
 
     public int getItemId() {
         return itemId;
@@ -22,5 +24,13 @@ public class MgrVoteItemVo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getVoteSum() {
+        return voteSum;
+    }
+
+    public void setVoteSum(int voteSum) {
+        this.voteSum = voteSum;
     }
 }

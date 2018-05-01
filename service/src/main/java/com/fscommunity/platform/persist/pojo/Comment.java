@@ -1,5 +1,6 @@
 package com.fscommunity.platform.persist.pojo;
 
+import com.lxx.app.common.util.pojo.Bean;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,7 +9,7 @@ import java.util.Date;
  * @Author jing.c
  * @Date: 18-4-11
  */
-public class Comment implements Serializable {
+public class Comment extends Bean {
      /*
       * 主键id
      */
@@ -20,7 +21,7 @@ public class Comment implements Serializable {
     private Integer targetId;
 
     /**
-     * 用户id
+     * 评论人的用户id
      */
     private int userId;
 
@@ -35,24 +36,27 @@ public class Comment implements Serializable {
     private Date publishTime;
 
     /**
-     * 被回复的评论id, 如果是回复一条评论，则需要填写，is_reply==1
+     * 被回复的评论id, 如果是回复一条评论(commentType=COMMENT_COMMENT)，则需要填写
      */
     private Integer targetCid;
 
     /**
-     * 被回复的评论作者id,如果是回复一条评论，则需要填写，is_reply==1 exists
+     * 被回复的评论作者id,如果是回复一条评论(commentType=COMMENT_COMMENT)，则需要填写
      */
     private Integer targetUid;
 
     /**
-     * 1：一条评论的回复，0：直接评论文章
+     * 1：回复一条评论，0：直接评论文章
      */
     private CommentType commentType;
 
-    private int isReply;
+    /**
+     * 1:该条评论被回复过;0:该条评论还未回复过
+     */
+    private int isReplied;
 
     /**
-     * 1：评论显示在浏览界面，0：不显示
+     * 1:评论显示在浏览界面,0:不显示,2:审核不通过
      */
     private Integer isShowed;
 
@@ -141,12 +145,12 @@ public class Comment implements Serializable {
         this.sid = sid;
     }
 
-    public int getIsReply() {
-        return isReply;
+    public int getIsReplied() {
+        return isReplied;
     }
 
-    public void setIsReply(int isReply) {
-        this.isReply = isReply;
+    public void setIsReplied(int isReplied) {
+        this.isReplied = isReplied;
     }
 
     private static final long serialVersionUID = 1L;

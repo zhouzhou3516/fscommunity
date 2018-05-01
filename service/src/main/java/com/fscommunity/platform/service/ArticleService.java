@@ -5,13 +5,12 @@ import com.fscommunity.platform.persist.pojo.Article;
 import com.google.common.base.Preconditions;
 import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.page.PageRequest;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @Description
@@ -20,19 +19,20 @@ import java.util.List;
  */
 @Service
 public class ArticleService {
+
     @Autowired
     ArticleMapper articleMapper;
 
-    public List<Article> list(String fuzzyName, PageRequest pageRequest) {
-        List<Article> listArticle = articleMapper.list(fuzzyName,
-                new RowBounds(pageRequest.getOffset(),pageRequest.getLimit())
+    public List<Article> list(String fuzzyName, String authorName, PageRequest pageRequest) {
+        List<Article> listArticle = articleMapper.list(fuzzyName, authorName,
+                new RowBounds(pageRequest.getOffset(), pageRequest.getLimit())
         );
 
         if (CollectionUtils.isEmpty(listArticle)) {
             return Collections.EMPTY_LIST;
         }
 
-        for(Article article: listArticle){
+        for (Article article : listArticle) {
             article.setContent(Base64Util.decode(article.getContent()));
         }
         return listArticle;
@@ -46,7 +46,9 @@ public class ArticleService {
 
     public Article selectById(int id) {
         Article article = articleMapper.selectById(id);
-        article.setContent(Base64Util.decode(article.getContent()));
+        if(article!=null) {
+            article.setContent(Base64Util.decode(article.getContent()));
+        }
         return article;
     }
 
@@ -72,7 +74,7 @@ public class ArticleService {
         articleMapper.updateById(article);
     }
 
-    public void updateViewsById(int id,int views) {
+    public void updateViewsById(int id, int views) {
         articleMapper.updateViewsById(id, views);
     }
 

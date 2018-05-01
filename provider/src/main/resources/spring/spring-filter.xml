@@ -12,14 +12,14 @@
     <!--</bean>-->
 
     <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/ysgh/**"/>
-            <mvc:exclude-mapping path="/ysgh/wx/auth/code/callback"/>
-            <mvc:exclude-mapping path="/ysgh/wx/auth/redirect"/>
-            <mvc:exclude-mapping path="/ysgh/man/**"/>
-            <mvc:exclude-mapping path="/ysgh/test/**"/>
+       <!-- <mvc:interceptor>
+            <mvc:mapping path="/fscommunity11/**"/>
+            <mvc:exclude-mapping path="/fscommunity/wx/auth/code/callback"/>
+            <mvc:exclude-mapping path="/fscommunity/wx/auth/redirect"/>
+           &lt;!&ndash; <mvc:exclude-mapping path="/ysgh/man/**"/>&ndash;&gt;
+            <mvc:exclude-mapping path="/fscommunity/test/**"/>
             <bean class="com.fscommunity.platform.common.web.filter.WxOpenidAuthFilter"/>
-        </mvc:interceptor>
+        </mvc:interceptor>-->
         <!--<mvc:interceptor>-->
             <!--<mvc:mapping path="/ysgh/**"/>-->
             <!--<mvc:exclude-mapping path="/ysgh/wx/auth/code/callback"/>-->

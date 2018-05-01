@@ -51,6 +51,7 @@ public class ArticleVoAdatpter {
         vo.setReplyCount(0);
         vo.setViewCount(article.getViews());
         vo.setTag(article.getTag());
+        vo.setCoverUrl(article.getCoverUrl());
         return vo;
     }
 

@@ -9,7 +9,6 @@ import com.fscommunity.platform.provider.wechat.voadaptor.NetVoteVoAdptor;
 import com.fscommunity.platform.service.ArticleService;
 import com.fscommunity.platform.service.NetVoteItemService;
 import com.fscommunity.platform.service.NetVoteService;
-import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.DateFormatUtil;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.pojo.BizException;
@@ -47,7 +46,7 @@ public class NetVoteController {
     @RequestMapping("/list")
     @JsonBody
     public NetVoteListVo voteList(@RequestBody QueryVoteListReq req) {
-        List<NetVote> netVotes = netVoteService.queryVotesByPage(new PageRequest(req.getCurrentPage(),
+        List<NetVote> netVotes = netVoteService.queryVotesByPage(req.getFuzzyName(), new PageRequest(req.getCurrentPage(),
         req.getPageSize()));
 
         NetVoteListVo vo = new NetVoteListVo();

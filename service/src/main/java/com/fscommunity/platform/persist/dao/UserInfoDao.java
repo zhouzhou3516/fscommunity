@@ -2,9 +2,9 @@ package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
-import java.util.List;
-
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
+import java.util.List;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,10 +13,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserInfoDao {
+
     int saveUser(UserInfo userInfo);
 
     /**
      * 模糊查询
+     *
      * @param fuzzyName 名字的关键字或者全名
      * @return 返回符合条件的结果
      */
@@ -33,4 +35,8 @@ public interface UserInfoDao {
     int updateLevelByUserId(int id, UserLevel level);
 
     UserInfo queryUserByOpenId(String openId);
+
+    List<UserInfo> list(String fuzzyName, String phone, String auditStatus, RowBounds rowBounds);
+
+    int count(String fuzzyName, String phone, String auditStatus);
 }

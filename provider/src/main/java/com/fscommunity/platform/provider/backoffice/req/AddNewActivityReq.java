@@ -7,13 +7,22 @@ import com.fscommunity.platform.persist.pojo.ActivityApplyCostType;
  * @version 2018-04-15
  */
 public class AddNewActivityReq {
+    private int id;
     private int articleId;
     private String desc;
     private String activityTime;
-    private String applyStartTime;
-    private String applyEndTime;
+    private String applyStartTime="";
+    private String applyEndTime="";
     private ActivityApplyCostType costType;
     private int costCount;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getArticleId() {
         return articleId;
@@ -38,7 +47,6 @@ public class AddNewActivityReq {
     public void setActivityTime(String activityTime) {
         this.activityTime = activityTime;
     }
-
     public String getApplyStartTime() {
         return applyStartTime;
     }

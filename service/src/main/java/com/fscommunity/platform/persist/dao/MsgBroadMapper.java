@@ -1,16 +1,27 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.MsgBroad;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Repository;
 
 /**
  * @Description
  * @Author jing.c
  * @Date: 18-3-28
  */
+@Repository
 public interface MsgBroadMapper {
     int insert(MsgBroad record);
     MsgBroad queryById(int id);
     int updateTreeCode(@Param("id") int id, @Param("treecode") String treecode);
     int lockForUpdate(int id);
+    int updateIsReplied(@Param("id") int id);
+
+    List<MsgBroad> list(int authStatus, int replyStatus, RowBounds rowBounds);
+
+    int countList(Integer authStatus, Integer replyStatus);
+
+    int updateAuthStatus(@Param("id") int id,@Param("status") int authStatus);
 }

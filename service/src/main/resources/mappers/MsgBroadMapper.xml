@@ -10,6 +10,7 @@
     target_cid as targetCid,
     target_uid as targetUid,
     is_reply as isReply,
+    is_replied as isReplied,
     is_showed as isShowed,
     sid,
     treecode,
@@ -27,6 +28,7 @@
     target_cid,
     target_uid,
     is_reply,
+    is_replied,
     is_showed,
     sid,
     treecode,
@@ -39,6 +41,7 @@
     #{targetCid},
     #{targetUid},
     #{isReply},
+    #{isReplied},
     #{isShowed},
     #{sid},
     #{treecode},
@@ -54,6 +57,34 @@
         from msgbroad
         where id=#{id}
     </select>
+    <select id="list" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
+        select
+        <include refid="fields"/>
+        from msgbroad
+        <where>
+            <if test="authStatus!=-1">
+                and auth_status = #{authStatus}
+            </if>
+            <if test="replyStatus !=-1">
+                and reply_status = #{replyStatus}
+            </if>
+        </where>
+        order by sid ASC, publish_time DESC
+    </select>
+    <select id="countList" resultType="java.lang.Integer">
+        select
+        <include refid="fields"/>
+        from msgbroad
+        <where>
+            <if test="authStatus!=-1">
+                and auth_status = #{authStatus}
+            </if>
+            <if test="replyStatus !=-1">
+                and reply_status = #{replyStatus}
+            </if>
+        </where>
+    </select>
+
 
     <update id="updateTreeCode" parameterType="java.util.Map">
         update msgbroad
@@ -65,5 +96,15 @@
         update msgbroad
         set update_time=now()
         where id=#{id}
+    </update>
+    <update id="updateIsReplied" parameterType="java.lang.Integer">
+        UPDATE msgbroad
+        SET is_replied = 1
+        WHERE id=#{id}
+    </update>
+    <update id="updateAuthStatus">
+        UPDATE msgbroad
+        SET is_showed = #{authStatus}
+        where id =#{id}
     </update>
 </mapper>

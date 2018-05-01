@@ -1,6 +1,7 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.NetVote;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Repository
 public interface NetVoteDao {
     int saveNetVote(NetVote vote);
-    List<NetVote> queryNetVotesByPage(RowBounds rowBounds);
+    List<NetVote> queryNetVotesByPage(@Param("fuzzyName") String fuzzyName,RowBounds rowBounds);
     NetVote queryNetVoteById(int id);
     int countNetVotes();
     int updateNetVote(NetVote netVote);

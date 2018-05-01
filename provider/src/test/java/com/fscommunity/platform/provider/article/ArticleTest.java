@@ -22,7 +22,7 @@ public class ArticleTest extends BaseJunit {
 
     @Test
     public void listTest() {
-        List<Article> articleList = articleMapper.list(null,new RowBounds(0,2));
+        List<Article> articleList = articleMapper.list(null, null, new RowBounds(0,2));
         for(Article article:articleList)
             System.out.println(article.toString());
         assertTrue(articleList.size() > 0);

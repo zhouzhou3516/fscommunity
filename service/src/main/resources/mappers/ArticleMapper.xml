@@ -66,6 +66,9 @@
             <if test="fuzzyName != null and fuzzyName !=''">
                 and  name like concat('%',#{fuzzyName},'%')
             </if>
+            <if test="authorName != null and authorName !=''">
+                and author_name = #{authorName}
+            </if>
         </where>
         order by publish_time DESC
     </select>

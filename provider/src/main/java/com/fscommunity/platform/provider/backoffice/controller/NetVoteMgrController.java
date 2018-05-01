@@ -8,8 +8,13 @@ import com.fscommunity.platform.provider.backoffice.adapter.VoteItemAdaptor;
 import com.fscommunity.platform.provider.backoffice.adapter.VoteVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.AddNewVoteItemReq;
 import com.fscommunity.platform.provider.backoffice.req.AddNewVoteReq;
+import com.fscommunity.platform.provider.backoffice.req.MgrVoteListQueryReq;
 import com.fscommunity.platform.provider.backoffice.req.UpdateNetVoteReq;
-import com.fscommunity.platform.provider.backoffice.vo.*;
+import com.fscommunity.platform.provider.backoffice.vo.MgrVoteDetailVo;
+import com.fscommunity.platform.provider.backoffice.vo.MgrVoteItemVo;
+import com.fscommunity.platform.provider.backoffice.vo.MgrVoteListItemVo;
+import com.fscommunity.platform.provider.backoffice.vo.MgrVoteListVo;
+import com.fscommunity.platform.provider.backoffice.vo.VoteItemVo;
 import com.fscommunity.platform.service.ArticleService;
 import com.fscommunity.platform.service.NetVoteItemService;
 import com.fscommunity.platform.service.NetVoteService;
@@ -20,18 +25,18 @@ import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author chao.zhu
@@ -40,6 +45,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/fscommunity/man/netvote")
 public class NetVoteMgrController {
+
     private final static Splitter COMM_SPLITTER = Splitter.on(",");
     private final static Joiner COMM_JOINER = Joiner.on(",");
     @Resource
@@ -51,10 +57,30 @@ public class NetVoteMgrController {
     @Resource
     ArticleService articleService;
 
+    public static void main(String[] args) {
+        List<String> ori = new ArrayList<>();
+        ori.add("a");
+        ori.add("b");
+        ArrayList<String> oriiii = Lists.newArrayList(ori);
+
+        List<String> nn = new ArrayList<>();
+        nn.add("a");
+        nn.add("e");
+        nn.add("f");
+        nn.add("c");
+        ArrayList<String> nnn = Lists.newArrayList(nn);
+
+        //oriiii.removeAll(nnn);
+        nnn.removeAll(oriiii);
+        System.out.println(JsonUtil.of(nnn));
+    }
+
     @RequestMapping("/add")
     @JsonBody
     @Transactional
     public void addNewVote(@RequestBody AddNewVoteReq req) {
+        req.setStartDate("");
+        req.setEndDate("");
         //新增
         if (req.getId() == 0) {
             //保存投票信息
@@ -85,7 +111,8 @@ public class NetVoteMgrController {
             List<Integer> addIds = Lists.newArrayList(reqIds);
             addIds.removeAll(oldIds);
 
-            List<VoteItemVo> adds = req.getItems().stream().filter(r->addIds.contains(r.getId())).collect(Collectors.toList());
+            List<VoteItemVo> adds = req.getItems().stream().filter(r -> addIds.contains(r.getId()))
+                    .collect(Collectors.toList());
             List<VoteItem> needSave = VoteItemAdaptor.adaptToVoteItems(adds, netVote.getId());
             List<VoteItem> voteItems = netVoteItemService.addNewItems(needSave);
             netVoteItemService.delVoteItems(delIds);
@@ -110,10 +137,13 @@ public class NetVoteMgrController {
         netVoteItemService.delVoteItem(itemId);
     }
 
+    // 不需要detial
     @RequestMapping("/list")
     @JsonBody
-    public MgrVoteListVo voteList(int currentPage, int pageSize) {
-        List<NetVote> netVotes = netVoteService.queryVotesByPage(new PageRequest(currentPage, pageSize));
+    public MgrVoteListVo voteList(@RequestBody MgrVoteListQueryReq req) {
+        List<NetVote> netVotes = netVoteService
+                .queryVotesByPage(req.getFuzzyName(), new PageRequest(req.getCurrentPage(), req.getPageSize()));
+        // 文章标题,文章id,
 
         MgrVoteListVo vo = new MgrVoteListVo();
         if (CollectionUtils.isEmpty(netVotes)) {
@@ -126,11 +156,19 @@ public class NetVoteMgrController {
         List<Article> articles = articleService.selectByIds(alist);
         Map<Integer, Article> articleMap = articles.stream().collect(Collectors.toMap(Article::getId, r -> r));
         List<MgrVoteListItemVo> listItemVos = VoteVoAdatpter.adaptToListItems(netVotes, articleMap);
+        Map<Integer,List<MgrVoteItemVo>> integerListMap = netVotes.stream().collect(Collectors.toMap(v->Integer.valueOf(v.getId()),v->{
+             List<VoteItem> voteItems = netVoteItemService.queryItemsByVoteId(v.getId());
+            List<MgrVoteItemVo> itemVos = VoteVoAdatpter.adadptVoteItemVos(voteItems);
+           return itemVos;
+        }));
+        listItemVos.forEach(item->{
+            item.setVoteItems(integerListMap.get(item.getVoteId()));
+        });
         vo.setCount(netVoteService.countNetVotes());
         vo.setItems(listItemVos);
         return vo;
     }
-
+    // todo remove
     @RequestMapping("/detail")
     @JsonBody
     public MgrVoteDetailVo voteDetail(int voteId) {
@@ -161,23 +199,5 @@ public class NetVoteMgrController {
         netVote.setEndDate(req.getEndDate());
         netVote.setArticleId(req.getArticleid());
         netVoteService.updateNetVote(netVote);
-    }
-
-    public static void main(String[] args) {
-        List<String> ori = new ArrayList<>();
-        ori.add("a");
-        ori.add("b");
-        ArrayList<String> oriiii = Lists.newArrayList(ori);
-
-        List<String> nn = new ArrayList<>();
-        nn.add("a");
-        nn.add("e");
-        nn.add("f");
-        nn.add("c");
-        ArrayList<String> nnn = Lists.newArrayList(nn);
-
-        //oriiii.removeAll(nnn);
-        nnn.removeAll(oriiii);
-        System.out.println(JsonUtil.of(nnn));
     }
 }

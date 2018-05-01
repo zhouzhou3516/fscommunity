@@ -37,8 +37,6 @@ public class ManAuthFilter implements HandlerInterceptor {
             JsonUtil.instance().writeValue(response.getWriter(), APIResponse.error(102, "该用户未登录"));
             return false;
         }
-
-
         ManUser manUser = sessionHolder.getSessionUser(Base64Util.decode(cookieValue));
         sessionHolder.setManUser(manUser);
         return true;

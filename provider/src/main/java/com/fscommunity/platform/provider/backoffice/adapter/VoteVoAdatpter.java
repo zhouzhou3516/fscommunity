@@ -48,6 +48,7 @@ public class VoteVoAdatpter {
         MgrVoteItemVo vo = new MgrVoteItemVo();
         vo.setItemId(item.getId());
         vo.setContent(item.getContent());
+        vo.setVoteSum(item.getVoterSum());
         return vo;
     }
 

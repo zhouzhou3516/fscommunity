@@ -43,4 +43,5 @@ public enum CookieManager {
         cookie.setMaxAge(Integer.MAX_VALUE);
         response.addCookie(cookie);
     }
+
 }

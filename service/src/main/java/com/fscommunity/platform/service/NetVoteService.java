@@ -33,9 +33,8 @@ public class NetVoteService {
         netVoteDao.saveNetVote(vote);
         return vote;
     }
-
-    public List<NetVote> queryVotesByPage(PageRequest request) {
-        return netVoteDao.queryNetVotesByPage(new RowBounds(request.getOffset(), request.getLimit()));
+    public List<NetVote> queryVotesByPage( String fuzzyName, PageRequest request) {
+        return netVoteDao.queryNetVotesByPage(fuzzyName, new RowBounds(request.getOffset(), request.getLimit()));
     }
 
     public NetVote queryNetVoteById(int id) {

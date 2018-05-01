@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fscommunity.platform.persist.dao.CommentMapper">
-    <resultMap id="resultMap" type="com.fscommunity.platform.persist.pojo.Comment">
-        <result column="id" jdbcType="INTEGER" property="id"/>
-        <result column="target_id" jdbcType="INTEGER" property="targetId"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
-        <result column="target_cid" jdbcType="INTEGER" property="targetCid"/>
-        <result column="target_uid" jdbcType="INTEGER" property="targetUid"/>
-        <result column="is_reply" jdbcType="INTEGER" property="isReply"/>
-        <result column="comment_type"  property="commentType"/>
-        <result column="is_showed" jdbcType="INTEGER" property="isShowed"/>
-        <result column="sid" jdbcType="INTEGER" property="sid"/>
-    </resultMap>
 
     <sql id="fields">
     id,
@@ -23,7 +10,7 @@
     publish_time,
     target_cid,
     target_uid,
-    is_reply,
+    is_replied,
     comment_type,
     is_showed,
     sid
@@ -37,7 +24,7 @@
     publish_time,
     target_cid,
     target_uid,
-    is_reply,
+    is_replied,
     comment_type,
     is_showed,
     sid)
@@ -48,7 +35,7 @@
     #{publishTime},
      #{targetCid},
      #{targetUid},
-     #{isReply},
+     #{isReplied},
      #{commentType},
      #{isShowed},
      #{sid})
@@ -59,23 +46,14 @@
       publish_time=VALUES(publish_time),
       target_cid=VALUES(target_cid),
       target_uid=VALUES(target_uid),
-      is_reply=VALUES(is_reply),
+      is_replied=VALUES(is_replied),
       comment_type=VALUES(comment_type),
       is_showed=VALUES(is_showed),
       sid=VALUES(sid)
     </insert>
 
-    <select id="list" resultMap="resultMap">
-        select
-        <include refid="fields"/>
-        from comment
-        <if test="condition != null and condition !=''">
-           and  name like concat('%',#{condition},'%') or type like concat('%',#{condition},'%')
-        </if>
-        order by publish_time DESC
-    </select>
-
-    <select id="queryCommentsByIds" parameterType="java.util.List" resultMap="resultMap">
+    <select id="queryCommentsByIds" parameterType="com.fscommunity.platform.persist.pojo.Comment"
+      resultType="com.fscommunity.platform.persist.pojo.Comment">
         select
         <include refid="fields"/>
         from comment
@@ -84,8 +62,41 @@
             #{item}
         </foreach>
     </select>
+    <select id="list" resultType="com.fscommunity.platform.persist.pojo.Comment">
+        select
+        <include refid="fields"/>
+        from comment
+        <where>
+            <if test="articleId!=null">
+                AND target_id=#{articleId}
+            </if>
+            <if test="authStatus!=-1">
+                and auth_status = #{authStatus}
+            </if>
+            <if test="replyStatus !=-1">
+                and reply_status = #{replyStatus}
+            </if>
+        </where>
+        order by sid ASC, publish_time DESC
+    </select>
 
-    <select id="getCmmtByArticleId" parameterType="java.lang.Integer" resultMap="resultMap">
+    <select id="countList" resultType="integer">
+        select count(*) from comment
+        <where>
+            <if test="articleId!=null">
+                AND target_id=#{articleId}
+            </if>
+            <if test="authStatus!=-1">
+                and auth_status = #{authStatus}
+            </if>
+            <if test="replyStatus !=-1">
+                and reply_status = #{replyStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCmmtByArticleId" parameterType="java.lang.Integer"
+      resultType="com.fscommunity.platform.persist.pojo.Comment">
         select
         <include refid="fields"/>
         from comment
@@ -99,10 +110,15 @@
     </select>
 
     <select id="selectById" parameterType="java.lang.Integer"
-            resultType="com.fscommunity.platform.persist.pojo.Comment">
+      resultType="com.fscommunity.platform.persist.pojo.Comment">
         SELECT
         <include refid="fields"/>
         FROM comment
+        WHERE id = #{id}
+    </select>
+    <select id="getByCommentId" resultType="com.fscommunity.platform.persist.pojo.Comment">
+        SELECT
+        <include refid="fields"/>
         WHERE id = #{id}
     </select>
 
@@ -114,7 +130,7 @@
       publish_time=#{publishTime,jdbcType=TIMESTAMP},
       target_cid=#{targetCid,jdbcType=INTEGER},
       target_uid=#{targetUid,jdbcType=INTEGER},
-      is_reply=#{isReply,jdbcType=INTEGER},
+      is_replied=#{isReplied,jdbcType=INTEGER},
       is_showed=#{isShowed,jdbcType=INTEGER},
       sid=#{sid,jdbcType=INTEGER}
       WHERE id= #{id,jdbcType=INTEGER}

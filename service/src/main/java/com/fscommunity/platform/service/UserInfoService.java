@@ -6,8 +6,10 @@ import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.pojo.BizException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -158,5 +160,12 @@ public class UserInfoService {
         }
 
         return userInfoDao.queryUserByOpenId(openId);
+    }
+
+    public List<UserInfo> list(String fuzzyName, String phone, String auditStatus, PageRequest request) {
+        return userInfoDao.list(fuzzyName,phone, auditStatus,new RowBounds(request.getOffset(), request.getLimit()));
+    }
+    public int count(String fuzzyName, String phone, String auditStatus){
+        return userInfoDao.count(fuzzyName, phone,auditStatus);
     }
 }

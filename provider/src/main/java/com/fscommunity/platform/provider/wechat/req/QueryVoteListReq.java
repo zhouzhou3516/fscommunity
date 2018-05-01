@@ -5,8 +5,17 @@ package com.fscommunity.platform.provider.wechat.req;
  * @version 2018-04-15
  */
 public class QueryVoteListReq {
+    private String fuzzyName;
     private int currentPage;
     private int pageSize;
+
+    public String getFuzzyName() {
+        return fuzzyName;
+    }
+
+    public void setFuzzyName(String fuzzyName) {
+        this.fuzzyName = fuzzyName;
+    }
 
     public int getCurrentPage() {
         return currentPage;

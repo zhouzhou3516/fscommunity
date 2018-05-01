@@ -5,9 +5,10 @@ package com.fscommunity.platform.persist.pojo;
  * @version 2018-03-23
  */
 public enum UserAuditStatus {
-    NO_AUDIT(0, "未审核"),
-    AUDIT_SUCC(1, "审核成功"),
-    AUDIT_FAIL(2, "审核失败");
+    INIT(0, "未注册"),
+    UN_AUDIT(1, "待审核"),
+    NOT_PASS(2, "审核不通过"),
+    AUDITED(3, "审核通过");
     private int code;
     private String desc;
 

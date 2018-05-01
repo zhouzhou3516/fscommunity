@@ -6,13 +6,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.page.PageRequest;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Service;
 
 /**
  * @Description
@@ -21,33 +20,38 @@ import java.util.List;
  */
 @Service
 public class CommentService {
-    @Autowired
+
+    @Resource
     CommentMapper commentMapper;
 
-    public List<Comment> list(String condition, PageRequest pageRequest) {
 
-        List<Comment> comments = commentMapper.list(condition,
-                new RowBounds(pageRequest.getOffset(),pageRequest.getLimit())
-        );
-        for(Comment comment: comments){
-            comment.setContent(Base64Util.encode(comment.getContent()));
-        }
-        return comments;
-    }
-
-    public int updateAuthStatus(int id, boolean status) {
-        return commentMapper.updateAuthStatus(!status ?0:1, id);
+    public int updateAuthStatus(int id, int status) {
+        return commentMapper.updateAuthStatus(id, status);
     }
 
     public List<Comment> getByArticleId(int articleId, PageRequest pageRequest) {
-        List<Comment> comments = commentMapper.getCmmtByArticleId(articleId,
-                new RowBounds(pageRequest.getOffset(),pageRequest.getLimit())
-        );
-        for(Comment comment: comments){
+        List<Comment> comments = commentMapper
+                .getCmmtByArticleId(articleId, new RowBounds(pageRequest.getOffset(), pageRequest.getLimit())
+                );
+        for (Comment comment : comments) {
             comment.setContent(comment.getContent());
         }
         return comments;
     }
+
+    public int getCount(int articleId) {
+        return commentMapper.getCountByArticleId(articleId);
+    }
+
+    public List<Comment> list(Integer articleId, Integer authStatus, Integer replyStatus, PageRequest pageRequest) {
+        return commentMapper.list(articleId, authStatus, replyStatus,
+                new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+    }
+
+    public int countList(Integer articleId, Integer authStatus, Integer replyStatus) {
+        return commentMapper.countList(articleId, authStatus, replyStatus);
+    }
+
 
     public List<Comment> queryCommentsByIds(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
@@ -76,7 +80,7 @@ public class CommentService {
 
     public void updateById(Comment comment) {
         Preconditions.checkNotNull(comment);
-        comment.setContent(Base64Util.encode(comment.getContent()));
+        comment.setContent(comment.getContent());
         commentMapper.updateById(comment);
     }
 
@@ -86,18 +90,18 @@ public class CommentService {
 //        commentMapper.updateViewsById(Integer.valueOf(id),Integer.valueOf(views));
 //    }
 
-    public int getCount(int articleId) {
-        return commentMapper.getCountByArticleId(articleId);
-    }
-
 //    public int displayCmmt(String id) {
 //        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
 //        return commentMapper.displayCmmt(Integer.valueOf(id));
 //    }
 
-    public int setSidById(String id,String sid) {
+    public int setSidById(String id, String sid) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         Preconditions.checkArgument(!Strings.isNullOrEmpty(sid));
-        return commentMapper.setSidById(Integer.valueOf(id),Integer.valueOf(sid));
+        return commentMapper.setSidById(Integer.valueOf(id), Integer.valueOf(sid));
+    }
+
+    public Comment getByCommentId(int targetId) {
+        return commentMapper.getByCommentId(targetId);
     }
 }

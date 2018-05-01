@@ -1,6 +1,7 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.ActivityInfo;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,6 @@ public interface ActivityDao {
     int delById(int id);
     int countActivity();
     int updateActivity(ActivityInfo info);
+    List<ActivityInfo> list(@Param("fuzzyName") String fuzzyName, RowBounds rowBounds);
+
 }

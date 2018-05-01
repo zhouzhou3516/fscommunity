@@ -43,7 +43,7 @@ public class ActivityController {
     @RequestMapping("/list")
     @JsonBody
     public ActivityListVo listActivity(int currentPage, int pageSize) {
-        List<ActivityInfo> infos = activityService.queryByPage(new PageRequest(currentPage, pageSize));
+        List<ActivityInfo> infos = activityService.queryByPage( new PageRequest(currentPage, pageSize));
 
         ActivityListVo vo = new ActivityListVo();
         if (CollectionUtils.isEmpty(infos)) {

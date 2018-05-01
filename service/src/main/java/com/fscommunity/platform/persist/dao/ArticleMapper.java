@@ -16,7 +16,7 @@ public interface ArticleMapper {
 
     int getCount(String fuzzyName);
 
-    List<Article> list(@Param("fuzzyName") String fuzzyName, RowBounds rowBounds);
+    List<Article> list(@Param("fuzzyName") String fuzzyName, @Param("authorName") String name, RowBounds rowBounds);
 
     Article selectById(@Param("id")Integer id);
 

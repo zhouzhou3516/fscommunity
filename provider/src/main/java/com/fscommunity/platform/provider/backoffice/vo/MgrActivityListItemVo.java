@@ -1,22 +1,54 @@
 package com.fscommunity.platform.provider.backoffice.vo;
 
+import com.fscommunity.platform.persist.pojo.ActivityApplyCostType;
+
 /**
  * @author chao.zhu
  * @version 2018-04-15
  */
 public class MgrActivityListItemVo {
-    private int activityId;
+
+    private int id;//activityId
+    private int articleId;
+    private String articleName;
     private String activityName;
     private String activityTime;
     private String applyStartTime;
     private String applyEndTime;
 
-    public int getActivityId() {
-        return activityId;
+    /**
+     * 报名需要支付的类型
+     */
+    private ActivityApplyCostType costType;
+    private String costTypeDesc;
+
+    /**
+     * 支付数量
+     */
+    private int applyCostCount;
+
+    public int getArticleId() {
+        return articleId;
     }
 
-    public void setActivityId(int activityId) {
-        this.activityId = activityId;
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
+
+    public String getArticleName() {
+        return articleName;
+    }
+
+    public void setArticleName(String articleName) {
+        this.articleName = articleName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getActivityName() {
@@ -49,5 +81,29 @@ public class MgrActivityListItemVo {
 
     public void setApplyEndTime(String applyEndTime) {
         this.applyEndTime = applyEndTime;
+    }
+
+    public ActivityApplyCostType getCostType() {
+        return costType;
+    }
+
+    public void setCostType(ActivityApplyCostType costType) {
+        this.costType = costType;
+    }
+
+    public int getApplyCostCount() {
+        return applyCostCount;
+    }
+
+    public void setApplyCostCount(int applyCostCount) {
+        this.applyCostCount = applyCostCount;
+    }
+
+    public String getCostTypeDesc() {
+        return costTypeDesc;
+    }
+
+    public void setCostTypeDesc(String costTypeDesc) {
+        this.costTypeDesc = costTypeDesc;
     }
 }

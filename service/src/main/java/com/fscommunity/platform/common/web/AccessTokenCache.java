@@ -1,5 +1,7 @@
 package com.fscommunity.platform.common.web;
 
+import static com.fscommunity.platform.common.web.CookieManager.SESSION;
+
 import com.fscommunity.platform.common.pojo.WxAccessToken;
 import com.fscommunity.platform.common.pojo.WxJsapiTicket;
 import com.fscommunity.platform.common.pojo.WxWebAuthToken;
@@ -8,6 +10,7 @@ import com.fscommunity.platform.service.WxTokenService;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.lxx.app.common.util.XXTEAUtil;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

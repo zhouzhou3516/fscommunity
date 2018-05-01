@@ -2,22 +2,25 @@ package com.fscommunity.platform.provider.backoffice.adapter;
 
 import com.fscommunity.platform.persist.pojo.ActivityInfo;
 import com.fscommunity.platform.persist.pojo.Article;
+import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.backoffice.req.AddNewActivityReq;
+import com.fscommunity.platform.provider.backoffice.vo.ActivityParticipantVo;
 import com.fscommunity.platform.provider.backoffice.vo.MgrActivityDetailVo;
 import com.fscommunity.platform.provider.backoffice.vo.MgrActivityListItemVo;
-import org.apache.commons.collections.CollectionUtils;
-
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @author chao.zhu
  * @version 2018-04-15
  */
 public class ActivityAdaptor {
+
     public static ActivityInfo adaptToInfo(AddNewActivityReq req) {
         ActivityInfo info = new ActivityInfo();
         info.setArticleId(req.getArticleId());
@@ -35,20 +38,27 @@ public class ActivityAdaptor {
 
     public static MgrActivityListItemVo adaptListItemVo(ActivityInfo info, Article article) {
         MgrActivityListItemVo vo = new MgrActivityListItemVo();
-        vo.setActivityId(info.getId());
+        vo.setId(info.getId());
         vo.setActivityName(article.getName());
         vo.setActivityTime(info.getActivityTime());
         vo.setApplyStartTime(info.getApplyStartTime());
         vo.setApplyEndTime(info.getApplyEndTime());
+        vo.setCostType(info.getCostType());
+        vo.setCostTypeDesc(info.getCostType().getDesc());
+        vo.setApplyCostCount(info.getApplyCostCount());
+        vo.setArticleId(article.getId());
+        vo.setArticleName(article.getName());
         return vo;
     }
 
-    public static List<MgrActivityListItemVo> adaptListItemVos(List<ActivityInfo> infos, Map<Integer, Article> articleMap) {
+    public static List<MgrActivityListItemVo> adaptListItemVos(List<ActivityInfo> infos,
+            Map<Integer, Article> articleMap) {
         if (CollectionUtils.isEmpty(infos)) {
             return Collections.EMPTY_LIST;
         }
 
-        return infos.stream().map(r->adaptListItemVo(r, articleMap.get(r.getArticleId()))).collect(Collectors.toList());
+        return infos.stream().map(r -> adaptListItemVo(r, articleMap.get(r.getArticleId())))
+                .collect(Collectors.toList());
     }
 
     public static MgrActivityDetailVo adaptToDetailVo(ActivityInfo info, Article article) {
@@ -63,5 +73,20 @@ public class ActivityAdaptor {
         vo.setCostType(info.getCostType());
         vo.setApplyCostCount(info.getApplyCostCount());
         return vo;
+    }
+
+    public static ActivityParticipantVo adaptToParticipantVo(UserSimpleInfo userSimpleInfo) {
+        ActivityParticipantVo participantVo = new ActivityParticipantVo();
+        participantVo.setName(userSimpleInfo.getRealName());
+        participantVo.setCellPhone(userSimpleInfo.getCellPhone());
+        return participantVo;
+    }
+
+    public static List<ActivityParticipantVo> adaptToParticipantVos(List<UserSimpleInfo> simpleInfos) {
+        if (CollectionUtils.isEmpty(simpleInfos)) {
+            return Lists.newArrayList();
+        }
+        return simpleInfos.stream().map(ActivityAdaptor::adaptToParticipantVo).collect(Collectors.toList());
+
     }
 }

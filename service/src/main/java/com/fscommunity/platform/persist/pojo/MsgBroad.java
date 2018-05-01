@@ -43,6 +43,10 @@ public class MsgBroad implements Serializable {
      * 1：一条留言的回复，0：直接留言
      */
     private Integer isReply;
+    /**
+     * 1：该评论被回复过，0：该评论未被回复过
+     */
+    private Integer isReplied;
 
     /**
      * 1：显示在浏览界面，0：不显示
@@ -153,6 +157,14 @@ public class MsgBroad implements Serializable {
 
     public void setSid(Integer sid) {
         this.sid = sid;
+    }
+
+    public Integer getIsReplied() {
+        return isReplied;
+    }
+
+    public void setIsReplied(Integer isReplied) {
+        this.isReplied = isReplied;
     }
 
     private static final long serialVersionUID = 1L;

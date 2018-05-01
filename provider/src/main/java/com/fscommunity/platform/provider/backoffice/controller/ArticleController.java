@@ -1,5 +1,7 @@
 package com.fscommunity.platform.provider.backoffice.controller;
 
+import com.fscommunity.platform.common.pojo.ManUser;
+import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.Article;
 import com.fscommunity.platform.provider.backoffice.adapter.ArticleVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.AddNewArticleReq;
@@ -13,14 +15,13 @@ import com.google.common.base.Strings;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
+import java.util.List;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Description
@@ -30,6 +31,7 @@ import java.util.List;
 @RequestMapping("/fscommunity/man/article")
 @Controller
 public class ArticleController {
+
     private final static Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @Resource
@@ -37,13 +39,15 @@ public class ArticleController {
 
     @Resource
     ManUserService manUserService;
+    @Resource
+    SessionHolder sessionHolder;
 
     @RequestMapping("/list")
     @JsonBody
     public PageResp list(@RequestBody ArticleListQueryReq req) {
-        List<Article> rows = articleService.list(req.getFuzzyName(),
-                new PageRequest(req.getCurrentPage(), req.getPageSize())
-        );
+        List<Article> rows = articleService
+                .list(req.getFuzzyName(), req.getAuthorName(), new PageRequest(req.getCurrentPage(), req.getPageSize())
+                );
         int count = articleService.getCount(req.getFuzzyName());
         PageResp<ArticleListItemVo> resp = new PageResp<>();
         resp.setTotalCount(count);
@@ -54,9 +58,9 @@ public class ArticleController {
     @RequestMapping("/new")
     @JsonBody
     public void add(@RequestBody AddNewArticleReq req) {
-        //todo 获取当前登录用户
         if (req.getId() == 0) {
-            articleService.add(ArticleVoAdatpter.adaptToArticle(req, 1));
+            ManUser user = sessionHolder.currentManUser();
+            articleService.add(ArticleVoAdatpter.adaptToArticle(req, user.getId()));
         } else {
             Article old = articleService.selectById(req.getId());
             old.setCoverUrl(req.getCoverUrl());
@@ -72,10 +76,9 @@ public class ArticleController {
     @JsonBody
     public ArticleVo info(int id) {
         Article article = articleService.selectById(id);
-
         //增加一次阅读数
         articleService.incrArtileViewsById(id);
-        return ArticleVoAdatpter.adaptToArticleVo(article,manUserService.queryUserById(article.getAuthorId()));
+        return ArticleVoAdatpter.adaptToArticleVo(article, manUserService.queryUserById(article.getAuthorId()));
     }
 
     @RequestMapping("/update")

@@ -48,6 +48,11 @@
         select
         <include refid="fields"/>
         from net_vote
+        <where>
+            <if test="fuzzyName != null and fuzzyName !=''">
+                and  vote_name like concat('%',#{fuzzyName},'%')
+            </if>
+        </where>
         order by create_time desc
     </select>
 
