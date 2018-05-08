@@ -5,18 +5,25 @@ import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.MsgBroad;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.wechat.req.AddLeaveMsgReq;
+import com.fscommunity.platform.provider.wechat.req.WxMsgBroadListQueryReq;
+import com.fscommunity.platform.provider.wechat.vo.MsgBroadVo;
 import com.fscommunity.platform.provider.wechat.voadaptor.MsgBroadVoAdatpter;
 import com.fscommunity.platform.service.MsgBroadService;
 import com.fscommunity.platform.service.UserInfoService;
+import com.google.common.collect.Lists;
+import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.Resource;
 
 /**
  * @Description
@@ -26,6 +33,7 @@ import javax.annotation.Resource;
 @RequestMapping("/fscommunity/wechat/msgbroad")
 @Controller
 public class MsgBroadController {
+
     private final static Logger logger = LoggerFactory.getLogger(MsgBroadController.class);
 
     @Resource
@@ -41,11 +49,48 @@ public class MsgBroadController {
     public void addNewMsg(@RequestBody AddLeaveMsgReq req) {
         SessionUserInfo userInfo = sessionHolder.currentUser();
         MsgBroad broad = MsgBroadVoAdatpter.adaptBroad(req, userInfo.getUserId());
+        // 维护留言跟节点
+        if (req.isNewMsg()) {
+            MsgBroad repliedMsg = msgBroadService.queryById(req.getReplyedId());
+            broad.setRootCid(repliedMsg.getRootCid());
+        }
         MsgBroad savedBroad = msgBroadService.saveBroad(broad);
-        msgBroadService.updateTreeCode(savedBroad.getTargetCid() == 0, savedBroad);
+        //msgBroadService.updateTreeCode(savedBroad.getTargetCid() == 0, savedBroad);
     }
 
 
+    @RequestMapping("/list")
+    @JsonBody
+    public List<MsgBroadVo> list(@RequestBody WxMsgBroadListQueryReq req) {
+        List<MsgBroad> rows = msgBroadService
+                .wxlist(new PageRequest(Integer.valueOf(req.getCurrentPage()), Integer.valueOf(req.getPageSize()))
+                );
+        if (CollectionUtils.isEmpty(rows)) {
+            return Lists.newArrayList();
+        }
+        List<Integer> userIds =  rows.stream().map(i->i.getUserId()).distinct().collect(Collectors.toList());
+        List<Integer> ids = rows.stream().map(msgBroad -> msgBroad.getId()).collect(Collectors.toList());
+        List<MsgBroad> replys = msgBroadService.queryReplyByRootCids(ids);
+        userIds.addAll( replys.stream().map(r->r.getUserId()).collect(Collectors.toList()));
+        userIds = userIds.stream().distinct().collect(Collectors.toList());
+        List<UserSimpleInfo> userSimpleInfoList = userInfoService.querySimpleUsersByIds(userIds);
+        Map<Integer, UserSimpleInfo> userMap = userSimpleInfoList.stream()
+                .collect(Collectors.toMap(u -> u.getId(), u -> u));
+        Map<Integer, List<MsgBroad>> map = replys.stream().collect(Collectors.groupingBy(m -> m.getRootCid()));
+        List<MsgBroadVo> retVos = rows.stream().map(msgBroad -> {
+            MsgBroadVo vo = new MsgBroadVo(msgBroad);
+            UserSimpleInfo userSimpleInfo = userMap.get(vo.getTargetUid());
+            vo.setTargetUname(userSimpleInfo.getUserName());
+            vo.setUserAvatar(userSimpleInfo.getUserAvatar());
+            List<MsgBroad> list = map.getOrDefault(vo.getId(), Lists.newArrayList());
+            List<MsgBroadVo> vos = list.stream().map(rpy -> new MsgBroadVo(rpy)).collect(Collectors.toList());
+            vo.setReplyMsg(vos);
+            return vo;
+        }).collect(Collectors.toList());
+        return retVos;
+
+
+    }
 
 //    @RequestMapping("/list")
 //    @JsonBody

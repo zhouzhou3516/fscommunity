@@ -68,10 +68,10 @@ public class MsgBroadVo implements Serializable {
      */
     private Integer isShowed;
 
-    /**
+/**
      * 回复本留言的留言列表
      */
-    private List<MgrMsgBroadVo> replyMsg;
+    private List<MsgBroadVo> replyMsg;
 
     public MsgBroadVo(MsgBroad msgBroad) {
         this.id = msgBroad.getId();
@@ -172,11 +172,11 @@ public class MsgBroadVo implements Serializable {
         this.isShowed = isShowed;
     }
 
-    public List<MgrMsgBroadVo> getReplyMsg() {
+    public List<MsgBroadVo> getReplyMsg() {
         return replyMsg;
     }
 
-    public void setReplyMsg(List<MgrMsgBroadVo> replyMsg) {
+    public void setReplyMsg(List<MsgBroadVo> replyMsg) {
         this.replyMsg = replyMsg;
     }
 

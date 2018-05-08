@@ -49,4 +49,13 @@
         FROM wx_user
         WHERE openid=#{openid}
     </select>
+    <select id="queryByOpenIds" resultType="com.fscommunity.platform.persist.pojo.WxUser">
+        SELECT
+        <include refid="fields"/>
+        FROM wx_user
+        WHERE openid IN
+        <foreach collection="list" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

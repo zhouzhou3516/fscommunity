@@ -1,13 +1,17 @@
 package com.fscommunity.platform.service;
 
 import com.fscommunity.platform.persist.dao.UserInfoDao;
+import com.fscommunity.platform.persist.dao.WxUserDao;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
+import com.fscommunity.platform.persist.pojo.WxUser;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.pojo.BizException;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ public class UserInfoService {
 
     @Resource
     UserInfoDao userInfoDao;
+    @Resource
+    WxUserDao wxUserDao;
 
     /**
      * 保存一个用户
@@ -68,8 +74,19 @@ public class UserInfoService {
         if (CollectionUtils.isEmpty(ids)) {
             return Collections.EMPTY_LIST;
         }
-
-        return userInfoDao.querySimpleInfoByIds(ids);
+        List<UserSimpleInfo> simpleInfoList = userInfoDao.querySimpleInfoByIds(ids);
+        List<String> openIds= simpleInfoList.stream().map(userSimpleInfo -> userSimpleInfo.getOpenId())
+                .collect(Collectors.toList());
+        List<WxUser> wxUsers = wxUserDao.queryByOpenIds(openIds);
+        Map<String, WxUser> wxUserMap = wxUsers.stream().collect(Collectors.toMap(wx -> wx.getOpenid(), wx -> wx));
+        simpleInfoList.forEach(userSimpleInfo ->{
+            WxUser defaultWxUser = new WxUser();
+            defaultWxUser.setNickname("游客"+userSimpleInfo.getId());
+            WxUser wxUser = wxUserMap.getOrDefault(userSimpleInfo.getOpenId(),defaultWxUser);
+            userSimpleInfo.setUserName(wxUser.getNickname());
+            userSimpleInfo.setUserAvatar(wxUser.getHeadimgurl());
+        } );
+        return simpleInfoList;
     }
 
     /**

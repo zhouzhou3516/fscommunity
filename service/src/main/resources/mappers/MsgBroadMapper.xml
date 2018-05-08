@@ -4,6 +4,7 @@
 
     <sql id="fields">
     id,
+    root_cid as rootCid,
     user_id as userId,
     content,
     publish_time as publishTime,
@@ -22,6 +23,7 @@
             useGeneratedKeys="true" keyProperty="id">
     insert into
     msgbroad (
+    root_cid,
     user_id,
     content,
     publish_time,
@@ -35,6 +37,7 @@
     create_time,
     update_time)
     values (
+    #{rootCid},
     #{userId},
     #{content},
     #{publishTime},
@@ -107,4 +110,31 @@
         SET is_showed = #{authStatus}
         where id =#{id}
     </update>
+    <select id="queryByRootCId" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
+        select
+        <include refid="fields"/>
+        from msgbroad
+        <where>
+            <if test="rootCid!=-1">
+                and root_cid = #{rootCid}
+            </if>
+        </where>
+        order publish_time DESC
+    </select>
+    <select id="wxlist" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
+        select
+        <include refid="fields"/>
+        from msgbroad
+        WHERE is_reply=0
+        order publish_time DESC
+    </select>
+    <select id="queryReplyByRootCids" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
+        SELECT
+        <include refid="fields"/>
+        from msgbroad
+        WHERE root_cid IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

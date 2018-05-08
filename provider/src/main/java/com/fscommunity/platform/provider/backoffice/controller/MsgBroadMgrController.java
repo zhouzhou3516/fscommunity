@@ -68,7 +68,7 @@ public class MsgBroadMgrController {
     @RequestMapping("/auth")
     @JsonBody
     public void authMsgBroad(@RequestBody CommentAuthReq req) {
-        msgBroadService.updateAuthStatus(req.getCommentId(), req.getAuthStatus().getCode());
+        msgBroadService.updateAuthStatus(req.getId(), req.getAuthStatus().getCode());
     }
 //
 

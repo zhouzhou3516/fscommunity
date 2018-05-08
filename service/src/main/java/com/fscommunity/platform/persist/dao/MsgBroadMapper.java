@@ -24,4 +24,10 @@ public interface MsgBroadMapper {
     int countList(Integer authStatus, Integer replyStatus);
 
     int updateAuthStatus(@Param("id") int id,@Param("status") int authStatus);
+
+    List<MsgBroad> queryByRootCId(@Param("rootCid") int targetId, RowBounds rowBounds);
+    List<MsgBroad> wxlist( RowBounds rowBounds);
+
+    List<MsgBroad> queryReplyByRootCids(List<Integer> ids);
+
 }

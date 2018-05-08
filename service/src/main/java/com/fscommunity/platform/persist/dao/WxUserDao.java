@@ -1,6 +1,7 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.WxUser;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,4 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface WxUserDao {
     int saveWxUser(WxUser wxUser);
     WxUser queryWxUserByOpenId(String openid);
+    List<WxUser> queryByOpenIds(List<String> openIds);
 }

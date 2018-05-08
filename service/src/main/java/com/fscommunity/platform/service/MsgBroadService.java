@@ -3,8 +3,10 @@ package com.fscommunity.platform.service;
 import com.fscommunity.platform.persist.dao.MsgBroadMapper;
 import com.fscommunity.platform.persist.pojo.MsgBroad;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.lxx.app.common.util.page.PageRequest;
 import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,12 @@ public class MsgBroadService {
         return msgBroadMapper.updateIsReplied(id);
     }
 
+    /**
+     * \
+     *
+     * @param authStatus -1 表示查所有状态
+     * @param replyStatus -1 表示查所有状态
+     */
     public List<MsgBroad> list(int authStatus, int replyStatus, PageRequest pageRequest) {
         return msgBroadMapper
                 .list(authStatus, replyStatus, new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
@@ -72,5 +80,22 @@ public class MsgBroadService {
 
     public void updateAuthStatus(int commentId, int code) {
 
+    }
+
+    public List<MsgBroad> queryByRootCId(int rootCid, PageRequest pageRequest) {
+        return msgBroadMapper.queryByRootCId(rootCid, new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+    }
+
+    public List<MsgBroad> wxlist(PageRequest pageRequest) {
+        return msgBroadMapper.wxlist(new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+    }
+
+    public List<MsgBroad> queryReplyByRootCids(List<Integer> ids) {
+
+        List<MsgBroad> msgBroads = msgBroadMapper.queryReplyByRootCids(ids);
+        if (CollectionUtils.isEmpty(msgBroads)) {
+            return Lists.newArrayList();
+        }
+        return msgBroads;
     }
 }

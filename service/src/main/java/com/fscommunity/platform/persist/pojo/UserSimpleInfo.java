@@ -44,6 +44,16 @@ public class UserSimpleInfo extends Bean {
      */
     private int goldCoin;
 
+    /**
+     * 用户姓名
+     */
+    private String userName;
+
+    /**
+     * 用户头像
+     */
+    private String userAvatar;
+
     public int getIntegral() {
         return integral;
     }
@@ -98,5 +108,21 @@ public class UserSimpleInfo extends Bean {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 }
