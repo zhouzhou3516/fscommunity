@@ -4,6 +4,7 @@ import com.fscommunity.platform.persist.dao.CommentMapper;
 import com.fscommunity.platform.persist.pojo.Comment;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.page.PageRequest;
 import java.util.Collections;
@@ -33,6 +34,9 @@ public class CommentService {
         List<Comment> comments = commentMapper
                 .getCmmtByArticleId(articleId, new RowBounds(pageRequest.getOffset(), pageRequest.getLimit())
                 );
+        if(CollectionUtils.isEmpty(comments)){
+            return Lists.newArrayList();
+        }
         for (Comment comment : comments) {
             comment.setContent(comment.getContent());
         }

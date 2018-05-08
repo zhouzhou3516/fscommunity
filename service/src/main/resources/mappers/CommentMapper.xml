@@ -71,10 +71,10 @@
                 AND target_id=#{articleId}
             </if>
             <if test="authStatus!=-1">
-                and auth_status = #{authStatus}
+                and is_showed = #{authStatus}
             </if>
             <if test="replyStatus !=-1">
-                and reply_status = #{replyStatus}
+                and is_replied = #{replyStatus}
             </if>
         </where>
         order by sid ASC, publish_time DESC
@@ -87,10 +87,10 @@
                 AND target_id=#{articleId}
             </if>
             <if test="authStatus!=-1">
-                and auth_status = #{authStatus}
+                and is_showed = #{authStatus}
             </if>
             <if test="replyStatus !=-1">
-                and reply_status = #{replyStatus}
+                and is_replied = #{replyStatus}
             </if>
         </where>
     </select>
@@ -142,8 +142,8 @@
     </update>
     <update id="updateAuthStatus" parameterType="java.util.Map">
         update comment
-        set is_showed=#{showed}
-        where id=#{id}
+        set is_showed=#{status}
+        where id=#{commentId}
     </update>
     <delete id="deleteById" parameterType="java.lang.Integer">
       DELETE FROM comment WHERE id= #{id,jdbcType=INTEGER}

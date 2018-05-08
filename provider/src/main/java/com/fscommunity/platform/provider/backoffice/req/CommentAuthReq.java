@@ -9,7 +9,7 @@ import com.lxx.app.common.util.pojo.Bean;
 public class CommentAuthReq extends Bean {
 
     private int articleId;
-    private int commentId;
+    private int id;
     private CommentAuthStatus authStatus;
 
     public int getArticleId() {
@@ -20,12 +20,12 @@ public class CommentAuthReq extends Bean {
         this.articleId = articleId;
     }
 
-    public int getCommentId() {
-        return commentId;
+    public int getId() {
+        return id;
     }
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public CommentAuthStatus getAuthStatus() {

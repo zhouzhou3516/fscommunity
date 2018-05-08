@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.UserAuthApplyDao">
+
+    <sql id="fields">
+        id,
+        id_card AS idCard,
+        real_name AS realName,
+        phone,
+        street,
+        community,
+        building,
+        unit,
+        room,
+        audit_status AS auditStatus
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+
+    <insert id="save" parameterType="com.fscommunity.platform.persist.pojo.UserAuthApply">
+        INSERT INTO user_auth_apply(
+        id_card ,
+        real_name ,
+        phone,
+        street,
+        community,
+        building,
+        unit,
+        room,
+        audit_status
+        ) VALUES (
+        #{idCard},
+        #{realName},
+        #{phone},
+        #{street},
+        #{community},
+        #{building},
+        #{unit},
+        #{room},
+        #{auditStatus}
+        )
+    </insert>
+
+    <select id="queryById" parameterType="java.lang.Integer"
+      resultType="com.fscommunity.platform.persist.pojo.UserAuthApply">
+        SELECT
+        <include refid="fields"/>
+        FROM user_auth_apply
+        WHERE id=#{id}
+    </select>
+    <select id="list" resultType="com.fscommunity.platform.persist.pojo.UserAuthApply">
+        select
+        <include refid="fields"/>
+        from user_auth_apply
+        <where>
+            <if test="auditStatus != null and auditStatus !=''">
+                and audit_status = #{auditStatus}
+            </if>
+        </where>
+        order by create_tieme
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select
+        count(1)
+        from user_auth_apply
+        <where>
+            <if test="auditStatus != null and auditStatus !=''">
+                and audit_status = #{auditStatus}
+            </if>
+        </where>
+    </select>
+
+</mapper>

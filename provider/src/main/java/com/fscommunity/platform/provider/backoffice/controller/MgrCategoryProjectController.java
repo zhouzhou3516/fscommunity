@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
+ * 社区咨询，党建工作，服务工作站 man 接口都用该controller
+ *
  * @author liqingzhou on 18/4/29
  */
 @Component

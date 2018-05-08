@@ -30,7 +30,7 @@ public class ConsultListeningInfo extends Bean {
     /**
      * 回复人useris
      */
-    private int repleyUserId;
+    private int replyUserId;
     /**
      * 回复内容
      */
@@ -116,12 +116,12 @@ public class ConsultListeningInfo extends Bean {
         this.videoUrl = videoUrl;
     }
 
-    public int getRepleyUserId() {
-        return repleyUserId;
+    public int getReplyUserId() {
+        return replyUserId;
     }
 
-    public void setRepleyUserId(int repleyUserId) {
-        this.repleyUserId = repleyUserId;
+    public void setReplyUserId(int replyUserId) {
+        this.replyUserId = replyUserId;
     }
 
     public Date getCreateTime() {

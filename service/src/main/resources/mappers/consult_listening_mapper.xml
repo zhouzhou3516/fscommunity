@@ -63,13 +63,13 @@
 
 
     <select id="countList" resultType="java.lang.Integer">
-        select count(1) from consult_listening;
+        select count(1) from consult_listening
         <where>
             <if test="channelType != null and channelType !=''">
-                channel_type like concat('%',#{channelType},'%')
+                AND channel_type =#{channelType}
             </if>
             <if test="consultType != null and consultType !=''">
-                consult_type like concat('%',#{consultType},'%')
+                and consult_type = #{consultType}
             </if>
         </where>
     </select>
@@ -79,10 +79,10 @@
         from consult_listening
         <where>
             <if test="channelType != null and channelType !=''">
-                channel_type like concat('%',#{channelType},'%')
+                AND channel_type =#{channelType}
             </if>
             <if test="consultType != null and consultType !=''">
-                consult_type like concat('%',#{consultType},'%')
+               and  consult_type = #{consultType}
             </if>
         </where>
     </select>

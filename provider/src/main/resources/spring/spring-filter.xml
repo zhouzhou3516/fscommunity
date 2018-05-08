@@ -12,30 +12,28 @@
     <!--</bean>-->
 
     <mvc:interceptors>
-       <!-- <mvc:interceptor>
-            <mvc:mapping path="/fscommunity11/**"/>
+        <mvc:interceptor>
+            <mvc:mapping path="/fscommunity/**"/>
             <mvc:exclude-mapping path="/fscommunity/wx/auth/code/callback"/>
             <mvc:exclude-mapping path="/fscommunity/wx/auth/redirect"/>
-           &lt;!&ndash; <mvc:exclude-mapping path="/ysgh/man/**"/>&ndash;&gt;
+            <mvc:exclude-mapping path="/fscommunity/man/**"/>
             <mvc:exclude-mapping path="/fscommunity/test/**"/>
             <bean class="com.fscommunity.platform.common.web.filter.WxOpenidAuthFilter"/>
-        </mvc:interceptor>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/ysgh/**"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/wx/auth/code/callback"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/wx/auth/redirect"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/wx/auth/openid"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/member/supple"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/member/enterprices"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/member/labors"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/common/verifyCode"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/member/verify"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/man/**"/>-->
-            <!--<mvc:exclude-mapping path="/ysgh/test/**"/>-->
-            <!--<bean class="com.ysgh.pro.service.impl.filter.WxWebAuthFilter"/>-->
-        <!--</mvc:interceptor>-->
+        </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/fscommunity/man11/**"/>
+            <mvc:mapping path="/fscommunity/**"/>
+            <mvc:exclude-mapping path="/fscommunity/wx/auth/code/callback"/>
+            <mvc:exclude-mapping path="/fscommunity/wx/auth/redirect"/>
+            <mvc:exclude-mapping path="/fscommunity/wx/auth/openid"/>
+            <mvc:exclude-mapping path="/fscommunity/user/auth"/>
+            <mvc:exclude-mapping path="/fscommunity/common/verifyCode"/>
+            <mvc:exclude-mapping path="/fscommunity/member/verify"/>
+            <mvc:exclude-mapping path="/fscommunity/man/**"/>
+            <mvc:exclude-mapping path="/fscommunity/test/**"/>
+            <bean class="com.fscommunity.platform.common.web.filter.WxWebAuthFilter"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/fscommunity/man/**"/>
             <mvc:exclude-mapping path="/fscommunity/man/auth/login"/>
             <bean class="com.fscommunity.platform.common.web.filter.ManAuthFilter"/>
         </mvc:interceptor>

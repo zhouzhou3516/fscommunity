@@ -7,6 +7,7 @@ import com.lxx.app.common.util.pojo.Bean;
  * @version 2018-04-14
  */
 public class UserSimpleInfo extends Bean {
+
     /**
      * 数据库唯一id标识
      */

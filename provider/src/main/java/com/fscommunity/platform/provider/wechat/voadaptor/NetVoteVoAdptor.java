@@ -23,7 +23,7 @@ public class NetVoteVoAdptor {
         NetVoteListItemVo vo = new NetVoteListItemVo();
         vo.setVoteHeader(voteArticle.getName());
         vo.setTag(voteArticle.getTag());
-        vo.setOverview(Base64Util.decode(voteArticle.getContent()));
+        vo.setOverview(voteArticle.getContent());
         vo.setPubDate(DateFormatUtil.format4y2M2d(vote.getCreateTime()));
         vo.setViewCount(voteArticle.getViews());
         vo.setVoteId(vote.getId());

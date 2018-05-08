@@ -1,5 +1,7 @@
 package com.fscommunity.platform.provider.wechat.controller;
 
+import com.fscommunity.platform.common.pojo.SessionUserInfo;
+import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.wechat.voadaptor.CommentVoAdaptor;
 import com.fscommunity.platform.service.CommentService;
@@ -22,13 +24,13 @@ public class CommentController {
 
     @Resource
     CommentService commentService;
+    @Resource
+    SessionHolder sessionHolder;
 
     @RequestMapping("/add")
     @JsonBody
     public void newComment(@RequestBody AddNewCommentReq req) {
-        //todo 获取当前用户
-        UserSimpleInfo userSimpleInfo = new UserSimpleInfo();
-        userSimpleInfo.setId(1);
-        commentService.add(CommentVoAdaptor.adaptToComment(req, userSimpleInfo));
+        SessionUserInfo userInfo = sessionHolder.currentUser();
+        commentService.add(CommentVoAdaptor.adaptToComment(req, userInfo));
     }
 }

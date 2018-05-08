@@ -168,4 +168,12 @@ public class UserInfoService {
     public int count(String fuzzyName, String phone, String auditStatus){
         return userInfoDao.count(fuzzyName, phone,auditStatus);
     }
+    public UserSimpleInfo querySimpleInfoById(Integer id){
+        return userInfoDao.querySimpleInfoById(id);
+    }
+
+    public UserInfo queryByIdCard(String idCard) {
+
+        return userInfoDao.queryByIdCard(idCard);
+    }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fscommunity.platform.persist.dao.NetVoteRecordDao">
+
+    <sql id="fields">
+    id,
+    vote_id AS voteId,
+    vote_item_id AS voteItemId,
+    user_id AS userId,
+    create_time AS createTime,
+    update_time AS updateTime
+    </sql>
+    <insert id="save" parameterType="com.fscommunity.platform.persist.pojo.NetVoteRecord">
+    insert into net_vote_record ( vote_id, vote_item_id,user_id)
+    values (#{voteId},#{voteItemId},#{userId})
+      ON DUPLICATE KEY UPDATE
+      vote_id=VALUES(vote_id),
+      vote_item_id=VALUES(vote_item_id),
+      user_id=VALUES(user_id)
+    </insert>
+
+
+
+    <select id="selectOne"
+      resultType="com.fscommunity.platform.persist.pojo.NetVoteRecord">
+        SELECT
+        <include refid="fields"/>
+        FROM net_vote_record
+        WHERE vote_id = #{voteId} and user_id = #{userId}
+    </select>
+
+</mapper>

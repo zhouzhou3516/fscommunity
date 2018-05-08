@@ -37,6 +37,11 @@ public class UserAddressInfo extends Bean {
      * 居住地址3
      */
     private String address3;
+    private String street;
+    private String community;
+    private String building;
+    private String unit;
+    private String room;
 
     public String getCountry() {
         return country;
@@ -84,5 +89,45 @@ public class UserAddressInfo extends Bean {
 
     public void setAddress3(String address3) {
         this.address3 = address3;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
     }
 }

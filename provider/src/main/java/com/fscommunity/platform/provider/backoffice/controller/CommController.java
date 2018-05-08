@@ -6,6 +6,7 @@ import com.fscommunity.platform.persist.pojo.Article;
 import com.fscommunity.platform.persist.pojo.Comment;
 import com.fscommunity.platform.persist.pojo.CommentAuthStatus;
 import com.fscommunity.platform.persist.pojo.CommentReplyStatus;
+import com.fscommunity.platform.persist.pojo.CommentType;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.backoffice.adapter.CommentVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.CommentAuthReq;
@@ -66,11 +67,12 @@ public class CommController {
         List<Comment> rows = commentService
                 .list(req.getArticleId(), authStatus, replyStatus,
                         new PageRequest(req.getCurrentPage(), req.getPageSize()));
-
+        // 过滤掉回复评论的回复
+        rows = rows.stream().filter(comment -> comment.getCommentType() == CommentType.COMMENT_ARTICLE).collect(
+                Collectors.toList());
         if (CollectionUtils.isEmpty(rows)) {
             return new PageResp(Collections.EMPTY_LIST, 0);
         }
-
         //  rows = rows.stream().filter(r->r.getIsShowed() == (req.isAuthStatus()?1:0)).collect(Collectors.toList());
         //评论用户
         List<Integer> userIds = rows.stream().map(Comment::getUserId).filter(id -> id != 0).distinct()
@@ -90,9 +92,7 @@ public class CommController {
         List<Integer> cids = rows.stream().map(r -> r.getTargetCid()).filter(cid -> cid != 0)
                 .collect(Collectors.toList());
         List<Comment> comments = commentService.queryCommentsByIds(cids);
-        if (CollectionUtils.isEmpty(comments)) {
-            throw new BizException("评论信息有误");
-        }
+
         Map<Integer, Comment> commentMap = comments.stream().collect(Collectors.toMap(Comment::getId, r -> r));
         int articleId = rows.get(0).getTargetId();
         Article article = articleService.selectById(articleId);
@@ -115,7 +115,7 @@ public class CommController {
     @RequestMapping("/auth")
     @JsonBody
     public void authComment(@RequestBody CommentAuthReq req) {
-        commentService.updateAuthStatus(req.getCommentId(), req.getAuthStatus().getCode());
+        commentService.updateAuthStatus(req.getId(), req.getAuthStatus().getCode());
     }
 
     @RequestMapping("/reply")
@@ -131,6 +131,7 @@ public class CommController {
         commentService.updateById(targetCmt);
         ManUser user = sessionHolder.currentManUser();
         Comment newCmt = CommentVoAdatpter.adaptToComment(targetCmt, req, user.getId());
+        newCmt.setIsShowed(1);
         commentService.add(newCmt);
     }
 

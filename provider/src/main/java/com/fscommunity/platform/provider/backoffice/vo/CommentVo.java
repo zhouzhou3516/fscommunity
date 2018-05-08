@@ -71,7 +71,7 @@ public class CommentVo implements Serializable {
     /**
      * 审核状态
      */
-    private boolean authStatus;
+    private int authStatus;
 
     public Integer getId() {
         return id;
@@ -153,11 +153,11 @@ public class CommentVo implements Serializable {
         this.commentType = commentType;
     }
 
-    public boolean isAuthStatus() {
+    public int getAuthStatus() {
         return authStatus;
     }
 
-    public void setAuthStatus(boolean authStatus) {
+    public void setAuthStatus(int authStatus) {
         this.authStatus = authStatus;
     }
 

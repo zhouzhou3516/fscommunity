@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 你说我听
  * @author liqingzhou on 18/4/28
  */
-@Component
-@RequestMapping("/fscommunity/listening")
-public class HeartListeningController {
+@Component("listeningController")
+@RequestMapping("/fscommunity/wechat/listening")
+public class ConsultListeningController {
 
     @Resource
     private AliOssMediaClient aliOssMediaClient;

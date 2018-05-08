@@ -6,7 +6,7 @@ package com.fscommunity.platform.persist.pojo;
 public enum ProjectType {
     SERVICE_STATION(0, "服务工作站"),
     PARTY_WORK(1, "党建工作"),
-    CONSULT(2, "社区咨询");
+    CONSULT(2, "社区资讯");
     private int idx;
     private String desc;
 

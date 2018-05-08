@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class MgrConsultListeningVo extends Bean {
 
+    private int id;
     /**
      * 所属栏目
      */
@@ -39,6 +40,14 @@ public class MgrConsultListeningVo extends Bean {
      * 视频
      */
     private String videoUrl;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getChannelType() {
         return channelType;

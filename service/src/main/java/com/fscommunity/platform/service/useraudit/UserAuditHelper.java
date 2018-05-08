@@ -3,12 +3,10 @@ package com.fscommunity.platform.service.useraudit;
 import com.fscommunity.platform.persist.pojo.UserAuditStatus;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.lxx.app.common.util.pojo.BizException;
-import org.springframework.stereotype.Service;
 
 /**
  * @author liqingzhou on 18/4/29
  */
-@Service
 public class UserAuditHelper {
 
     private UserInfo userInfo;

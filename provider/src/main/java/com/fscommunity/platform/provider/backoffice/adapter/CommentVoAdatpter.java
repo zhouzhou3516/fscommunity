@@ -35,7 +35,7 @@ public class CommentVoAdatpter {
         }
         vo.setContent(comment.getContent());
         vo.setPublishTime(comment.getPublishTime());
-        vo.setAuthStatus(comment.getIsShowed() != 0);
+        vo.setAuthStatus(comment.getIsShowed());
         return vo;
     }
 

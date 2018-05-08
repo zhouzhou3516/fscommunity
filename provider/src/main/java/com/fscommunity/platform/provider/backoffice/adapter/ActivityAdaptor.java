@@ -39,7 +39,7 @@ public class ActivityAdaptor {
     public static MgrActivityListItemVo adaptListItemVo(ActivityInfo info, Article article) {
         MgrActivityListItemVo vo = new MgrActivityListItemVo();
         vo.setId(info.getId());
-        vo.setActivityName(article.getName());
+        vo.setActivityName(info.getActivityDesc());
         vo.setActivityTime(info.getActivityTime());
         vo.setApplyStartTime(info.getApplyStartTime());
         vo.setApplyEndTime(info.getApplyEndTime());

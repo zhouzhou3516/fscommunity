@@ -7,9 +7,11 @@ import java.util.List;
  * @version 2018-04-15
  */
 public class NetVoteDetailVo {
+
     private int voteId;
     private String voteName;
     private String voteContent;
+    private boolean isVoted;
     private boolean expire;
     private List<NetVoteItemVo> items;
 
@@ -51,5 +53,13 @@ public class NetVoteDetailVo {
 
     public void setItems(List<NetVoteItemVo> items) {
         this.items = items;
+    }
+
+    public boolean isVoted() {
+        return isVoted;
+    }
+
+    public void setVoted(boolean voted) {
+        isVoted = voted;
     }
 }

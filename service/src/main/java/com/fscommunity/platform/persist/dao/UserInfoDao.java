@@ -31,7 +31,7 @@ public interface UserInfoDao {
     int updateBizInfo(UserInfo userInfo);
 
     List<UserSimpleInfo> querySimpleInfoByIds(List<Integer> ids);
-
+    UserSimpleInfo querySimpleInfoById(Integer id);
     int updateLevelByUserId(int id, UserLevel level);
 
     UserInfo queryUserByOpenId(String openId);
@@ -39,4 +39,6 @@ public interface UserInfoDao {
     List<UserInfo> list(String fuzzyName, String phone, String auditStatus, RowBounds rowBounds);
 
     int count(String fuzzyName, String phone, String auditStatus);
+
+    UserInfo queryByIdCard(String idCard);
 }

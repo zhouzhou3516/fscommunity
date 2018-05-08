@@ -1,22 +1,34 @@
 package com.fscommunity.platform.provider.wechat.controller;
 
+import com.fscommunity.platform.common.pojo.SessionUserInfo;
 import com.fscommunity.platform.common.util.UserIntergralCalulator;
 import com.fscommunity.platform.common.util.UserLevelCalulator;
+import com.fscommunity.platform.common.web.SessionHolder;
+import com.fscommunity.platform.persist.pojo.UserAuditStatus;
+import com.fscommunity.platform.persist.pojo.UserAuthApply;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSignInfo;
+import com.fscommunity.platform.provider.wechat.req.UserAuthReq;
 import com.fscommunity.platform.provider.wechat.vo.SignResultVo;
+import com.fscommunity.platform.provider.wechat.vo.UserAuthVo;
 import com.fscommunity.platform.provider.wechat.vo.UserDetailVo;
+import com.fscommunity.platform.provider.wechat.voadaptor.UserAuthApplyAdapter;
 import com.fscommunity.platform.provider.wechat.voadaptor.UserInfoVoAdaptor;
+import com.fscommunity.platform.service.UserAuthApplyService;
 import com.fscommunity.platform.service.UserInfoService;
 import com.fscommunity.platform.service.UserSignInfoService;
 import com.lxx.app.common.util.DateFormatUtil;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
+import java.lang.annotation.Target;
 import java.util.Date;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -29,20 +41,24 @@ public class UserCenterController {
 
     @Resource
     UserInfoService userInfoService;
-
     @Resource
     UserSignInfoService userSignInfoService;
+    @Resource
+    SessionHolder sessionHolder;
+    @Resource
+    UserAuthApplyService authApplyService;
 
 
     /**
      * 用户中心信息详情
+     *
      * @return 返回当前验证用户
      */
     @RequestMapping("/detail")
     @JsonBody
     public UserDetailVo queryUserDetail() {
-        //todo 从上下文中获取当前用户
-        UserInfo userInfo = userInfoService.queryUserById(1);
+        SessionUserInfo user = sessionHolder.currentUser();
+        UserInfo userInfo = userInfoService.queryUserById(user.getUserId());
         return UserInfoVoAdaptor.adaptToDetailVo(userInfo);
     }
 
@@ -52,9 +68,7 @@ public class UserCenterController {
     @RequestMapping("/sign")
     @JsonBody
     public SignResultVo userSign() {
-        //todo 从上下文中获取当前用户
-        //UserInfo info = sessionUserHolder.currentStaff();
-        UserInfo info = null;
+        SessionUserInfo info = sessionHolder.currentUser();
         //1. 校验今日签名是否完成
         UserSignInfo staffSignInfo = userSignInfoService
                 .queryStaffSign(1, DateFormatUtil.format4y2M2d(new Date()));
@@ -63,11 +77,11 @@ public class UserCenterController {
         }
 
         //2. 如果么有签名,则签名,并记录
-        UserSignInfo signInfo = buildSign(info.getId(), checkContinuous(info.getId()));
+        UserSignInfo signInfo = buildSign(info.getUserId(), checkContinuous(info.getUserId()));
         userSignInfoService.saveUserSign(signInfo);
 
         //3. 增加积分
-        UserInfo currentInfo = userInfoService.queryUserById(info.getId());
+        UserInfo currentInfo = userInfoService.queryUserById(info.getUserId());
         int newIntegral = currentInfo.getBizInfo().getIntegral() + signInfo.getEarnIntegral();
         userInfoService.updateIntegralByUserId(currentInfo.getId(), newIntegral);
 
@@ -98,8 +112,9 @@ public class UserCenterController {
 
     /**
      * 判断是否连续签到
+     *
      * @param userId 会员id
-     * @return 返回已连续签到天数,返回值-1代表没有连续签到, n代表已连续签到n天
+     * @return 返回已连续签到天数, 返回值-1代表没有连续签到, n代表已连续签到n天
      */
     private int checkContinuous(int userId) {
         int countStaffSign = userSignInfoService.countStaffSign(userId);
@@ -115,4 +130,46 @@ public class UserCenterController {
         }
         return 0;
     }
+
+    @RequestMapping("authApply")
+    @JsonBody
+    @Transactional(rollbackFor = Throwable.class)
+    public UserAuthVo auth(@RequestBody  UserAuthReq req) {
+        UserInfo user = userInfoService.queryByIdCard(req.getIdCard());
+        if (user == null) {
+            throw new BizException("没有您的信息,不能认证");
+        }
+        UserAuthApply apply = UserAuthApplyAdapter.adapter(req);
+        UserAuthVo vo = UserAuthApplyAdapter.adapterToVo(req);
+
+        if (!bizCheck(user, req)) {
+            apply.setAuditStatus(UserAuditStatus.UN_AUDIT);
+            authApplyService.save(apply);
+            user.setAuditStatus(UserAuditStatus.UN_AUDIT);
+            userInfoService.saveUserInfo(user);
+            vo.setUserAuditStatus(UserAuditStatus.UN_AUDIT);
+            return vo;
+        }
+        String openId = sessionHolder.currentOpenId();
+        user.setOpenId(openId);
+        user.setAuditStatus(UserAuditStatus.AUDITED);
+        userInfoService.saveUserInfo(user);
+        vo.setUserAuditStatus(UserAuditStatus.AUDITED);
+        return vo;
+    }
+
+    private boolean bizCheck(UserInfo user, UserAuthReq req) {
+        if (StringUtils.equals(req.getRealName(), user.getRealName())
+                && StringUtils.equals(req.getStreet(), user.getAddressInfo().getStreet())
+                && StringUtils.equals(req.getCommunity(), user.getAddressInfo().getCommunity())
+                && StringUtils.equals(req.getBuilding(), user.getAddressInfo().getBuilding())
+                && StringUtils.equals(req.getUnit(), user.getAddressInfo().getUnit())
+                && StringUtils.equals(req.getRoom(), user.getAddressInfo().getRoom())
+                ) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

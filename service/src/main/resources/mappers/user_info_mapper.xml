@@ -38,7 +38,8 @@
         real_name AS realName,
         cell_phone AS cellPhone,
         phone,
-        open_id AS openId
+        open_id AS openId,
+        audit_status AS auditStatus
     </sql>
 
     <insert id="saveUser" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
@@ -127,7 +128,13 @@
             #{item}
         </foreach>
     </select>
-
+    <select id="querySimpleInfoById" parameterType="java.lang.Integer"
+      resultType="com.fscommunity.platform.persist.pojo.UserSimpleInfo">
+        SELECT
+        <include refid="simpleFields"/>
+        FROM user_info
+        WHERE id=#{id}
+    </select>
     <select id="queryByRealName" parameterType="java.lang.String"
       resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         SELECT
@@ -136,7 +143,7 @@
         WHERE real_name=#{realName}
     </select>
 
-    <select id="queryUserInfoByOpenId" parameterType="java.lang.String"
+    <select id="queryUserByOpenId" parameterType="java.lang.String"
       resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         SELECT
         <include refid="fields"/>
@@ -175,6 +182,12 @@
                 and audit_status like concat('%',#{auditStatus},'%')
             </if>
         </where>
+    </select>
+    <select id="queryByIdCard" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE id_no=#{idCard} and id_card_type='ID'
     </select>
 
     <update id="updateBizInfo" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">

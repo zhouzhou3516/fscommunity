@@ -1,5 +1,7 @@
 package com.fscommunity.platform.provider.wechat.controller;
 
+import com.fscommunity.platform.common.pojo.SessionUserInfo;
+import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.MsgBroad;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.wechat.req.AddLeaveMsgReq;
@@ -31,18 +33,19 @@ public class MsgBroadController {
 
     @Autowired
     UserInfoService userInfoService;
+    @Resource
+    SessionHolder sessionHolder;
 
     @RequestMapping("/add")
     @JsonBody
     public void addNewMsg(@RequestBody AddLeaveMsgReq req) {
-        //todo 获取当前登录用户
-        UserSimpleInfo simpleInfo = new UserSimpleInfo();
-        simpleInfo.setId(1);
-
-        MsgBroad broad = MsgBroadVoAdatpter.adaptBroad(req, simpleInfo.getId());
+        SessionUserInfo userInfo = sessionHolder.currentUser();
+        MsgBroad broad = MsgBroadVoAdatpter.adaptBroad(req, userInfo.getUserId());
         MsgBroad savedBroad = msgBroadService.saveBroad(broad);
         msgBroadService.updateTreeCode(savedBroad.getTargetCid() == 0, savedBroad);
     }
+
+
 
 //    @RequestMapping("/list")
 //    @JsonBody

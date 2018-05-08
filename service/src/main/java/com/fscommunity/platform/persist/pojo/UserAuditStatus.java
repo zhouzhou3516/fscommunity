@@ -5,6 +5,7 @@ package com.fscommunity.platform.persist.pojo;
  * @version 2018-03-23
  */
 public enum UserAuditStatus {
+    UN_INIT(-1,"未导入"),
     INIT(0, "未注册"),
     UN_AUDIT(1, "待审核"),
     NOT_PASS(2, "审核不通过"),
