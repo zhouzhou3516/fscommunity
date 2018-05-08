@@ -4,28 +4,37 @@ import com.fscommunity.platform.common.constant.WxMediaType;
 import com.fscommunity.platform.common.util.AliOssMediaClient;
 import com.fscommunity.platform.common.web.AccessTokenCache;
 import com.fscommunity.platform.common.web.WxInvoker;
+import com.fscommunity.platform.provider.wechat.req.AddNewListingReq;
 import com.fscommunity.platform.provider.wechat.req.AddVoiceRequest;
 import com.fscommunity.platform.provider.wechat.vo.VoiceUrlVo;
+import com.fscommunity.platform.provider.wechat.voadaptor.ConsultListeningVoAdapt;
+import com.fscommunity.platform.service.ConsultListeningService;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import java.io.File;
 import javax.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 你说我听
+ *
  * @author liqingzhou on 18/4/28
  */
 @Component("listeningController")
 @RequestMapping("/fscommunity/wechat/listening")
 public class ConsultListeningController {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
     private AliOssMediaClient aliOssMediaClient;
     @Resource
     private WxInvoker wxInvoker;
     @Resource
     private AccessTokenCache accessTokenCache;
+    @Resource
+    private ConsultListeningService consultListeningService;
 
     /**
      * 交互
@@ -34,8 +43,6 @@ public class ConsultListeningController {
      * 3. 后端根据mediaId下载音频文件
      * 4. 后端上传音频文件到ali oss服务器
      * 5. 后端生成预览url反给微信前端
-     * @param request
-     * @return
      */
     @RequestMapping("/upload/voice")
     @JsonBody
@@ -47,6 +54,20 @@ public class ConsultListeningController {
         VoiceUrlVo voiceUrlVo = new VoiceUrlVo();
         voiceUrlVo.setVoiceUrl(presignedUrl);
         return voiceUrlVo;
+    }
+
+    @RequestMapping("/presignedUrl")
+    @JsonBody
+    public String testSnap(String objectName) {
+        String presignedUrl = aliOssMediaClient.queryPresignedUrl(aliOssMediaClient.submitVideoSnap(objectName));
+        logger.info("pre signed url:{}", presignedUrl);
+        return presignedUrl;
+    }
+
+    @RequestMapping("save")
+    public String addListing(AddNewListingReq req) {
+        consultListeningService.saveConsultListening(ConsultListeningVoAdapt.adapt(req));
+        return "success";
     }
 
 }

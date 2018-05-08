@@ -15,7 +15,7 @@ public class UserDetailVo {
     private String userId;
 
     /**
-     * 头像id
+     * 头像url
      */
     private String avatarUrl;
 

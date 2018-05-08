@@ -100,6 +100,33 @@
         #{createTime},
         #{updateTime}
         )
+      ON DUPLICATE KEY UPDATE
+      real_name=values(real_name),
+cell_phone=values(cell_phone),
+phone=values(phone),
+email=values(email),
+open_id=values(open_id),
+level=values(level),
+audit_status=values(audit_status),
+id_card_type=values(id_card_type),
+id_no=values(id_no),
+sex=values(sex),
+birthday=values(birthday),
+age=values(age),
+nation=values(nation),
+politice_status=values(politice_status),
+register_type=values(register_type),
+native_place=values(native_place),
+marital_status=values(marital_status),
+height=values(height),
+partymem_of_community=values(partymem_of_community),
+blood_type=values(blood_type),
+military_service=values(military_service),
+remark=values(remark),
+baseinfo=values(baseinfo),
+biz_info=values(biz_info),
+address_info=values(address_info)
+
     </insert>
 
     <select id="queryByFuzzyName" parameterType="java.lang.String"

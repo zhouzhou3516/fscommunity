@@ -1,6 +1,7 @@
 package com.fscommunity.platform.provider.wechat.voadaptor;
 
 import com.fscommunity.platform.persist.pojo.UserInfo;
+import com.fscommunity.platform.persist.pojo.WxUser;
 import com.fscommunity.platform.provider.wechat.req.UserAuthReq;
 import com.fscommunity.platform.provider.wechat.vo.UserDetailVo;
 import com.google.common.base.Preconditions;

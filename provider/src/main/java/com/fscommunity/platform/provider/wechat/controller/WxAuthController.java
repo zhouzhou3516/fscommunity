@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author lixiaoxiong
  * @version 2018-01-24
  */
-@RequestMapping("/ysgh/wx/auth")
+@RequestMapping("/fscommunity/wx/auth")
 @Controller
 public class WxAuthController {
 

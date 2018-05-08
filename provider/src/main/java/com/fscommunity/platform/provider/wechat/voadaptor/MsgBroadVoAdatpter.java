@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class MsgBroadVoAdatpter {
     public static MsgBroadVo adaptToMsgBroadVo(MsgBroad msg,String userAvatar, String userName,
-                                               String targetUname ,List<MgrMsgBroadVo> replyMsgList) {
+                                               String targetUname ,List<MsgBroadVo> replyMsgList) {
         MsgBroadVo msgVo = new MsgBroadVo(msg);
         msgVo.setUserAvatar(userAvatar);
         msgVo.setUserName(userName);

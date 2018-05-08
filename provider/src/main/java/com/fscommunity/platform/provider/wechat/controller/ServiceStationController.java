@@ -39,7 +39,7 @@ public class ServiceStationController {
     }
 
     /**
-     * @param id 公告id
+     * @param id 服务工作站内容id
      */
     @JsonBody
     @RequestMapping("detail")

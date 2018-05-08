@@ -6,9 +6,11 @@ import com.fscommunity.platform.common.util.UserLevelCalulator;
 import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.UserAuditStatus;
 import com.fscommunity.platform.persist.pojo.UserAuthApply;
+import com.fscommunity.platform.persist.pojo.UserBaseinfo;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSignInfo;
+import com.fscommunity.platform.persist.pojo.WxUser;
 import com.fscommunity.platform.provider.wechat.req.UserAuthReq;
 import com.fscommunity.platform.provider.wechat.vo.SignResultVo;
 import com.fscommunity.platform.provider.wechat.vo.UserAuthVo;
@@ -18,10 +20,10 @@ import com.fscommunity.platform.provider.wechat.voadaptor.UserInfoVoAdaptor;
 import com.fscommunity.platform.service.UserAuthApplyService;
 import com.fscommunity.platform.service.UserInfoService;
 import com.fscommunity.platform.service.UserSignInfoService;
+import com.fscommunity.platform.service.WxUserService;
 import com.lxx.app.common.util.DateFormatUtil;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.lang.annotation.Target;
 import java.util.Date;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +49,8 @@ public class UserCenterController {
     SessionHolder sessionHolder;
     @Resource
     UserAuthApplyService authApplyService;
+    @Resource
+    WxUserService wxUserService;
 
 
     /**
@@ -59,6 +63,7 @@ public class UserCenterController {
     public UserDetailVo queryUserDetail() {
         SessionUserInfo user = sessionHolder.currentUser();
         UserInfo userInfo = userInfoService.queryUserById(user.getUserId());
+       // WxUser wxUser = wxUserService.queryWxUserByOpenid(user.getOpenId());
         return UserInfoVoAdaptor.adaptToDetailVo(userInfo);
     }
 
@@ -151,11 +156,21 @@ public class UserCenterController {
             return vo;
         }
         String openId = sessionHolder.currentOpenId();
+        WxUser wxUser = wxUserService.queryWxUserByOpenid(openId);
         user.setOpenId(openId);
+        UserBaseinfo baseinfo = user.getBaseinfo();
+        baseinfo = updateBaseInfo(baseinfo,wxUser);
+        user.setBaseinfo(baseinfo);
         user.setAuditStatus(UserAuditStatus.AUDITED);
         userInfoService.saveUserInfo(user);
         vo.setUserAuditStatus(UserAuditStatus.AUDITED);
         return vo;
+    }
+
+    private UserBaseinfo updateBaseInfo(UserBaseinfo baseinfo, WxUser wxUser) {
+        baseinfo.setWxNickName(wxUser.getNickname());
+        baseinfo.setAvatarUrl(wxUser.getHeadimgurl());
+        return baseinfo;
     }
 
     private boolean bizCheck(UserInfo user, UserAuthReq req) {

@@ -4,6 +4,7 @@
 
     <sql id="fields">
     id,
+    target_id AS targetId,
     channel_type as channelType,
     consult_type as consultType,
     content as content,
@@ -19,6 +20,7 @@
     <insert id="saveConsultListening" parameterType="com.fscommunity.platform.persist.pojo.ConsultListeningInfo">
     insert into
     consult_listening (
+    target_id ,
     channel_type,
     consult_type,
     content,
@@ -31,6 +33,7 @@
     update_time)
     values
     (
+    #{targetId},
     #{channelType},
     #{consultType},
     #{content},
@@ -42,6 +45,7 @@
     #{createTime},
     #{updateTime})
       ON DUPLICATE KEY UPDATE
+      target_id=values(target_id),
       channel_type=VALUES(channel_type),
       consult_type=VALUES(consult_type),
       content=VALUES(content),

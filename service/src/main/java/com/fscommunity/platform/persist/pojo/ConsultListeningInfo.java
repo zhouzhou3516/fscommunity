@@ -19,6 +19,10 @@ public class ConsultListeningInfo extends Bean {
      */
     private String channelType;
     /**
+     * 所属栏目的目标id
+     */
+    private String targetId;
+    /**
      * 咨询类型
      */
     private String consultType;
@@ -66,6 +70,14 @@ public class ConsultListeningInfo extends Bean {
 
     public void setChannelType(String channelType) {
         this.channelType = channelType;
+    }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
     }
 
     public String getConsultType() {
