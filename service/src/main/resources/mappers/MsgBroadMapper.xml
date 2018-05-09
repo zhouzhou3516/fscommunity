@@ -119,14 +119,14 @@
                 and root_cid = #{rootCid}
             </if>
         </where>
-        order publish_time DESC
+        order by publish_time DESC
     </select>
     <select id="wxlist" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
         select
         <include refid="fields"/>
         from msgbroad
         WHERE is_reply=0
-        order publish_time DESC
+        order by publish_time DESC
     </select>
     <select id="queryReplyByRootCids" resultType="com.fscommunity.platform.persist.pojo.MsgBroad">
         SELECT

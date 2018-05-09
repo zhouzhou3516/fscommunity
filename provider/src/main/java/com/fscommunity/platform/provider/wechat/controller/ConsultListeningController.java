@@ -9,12 +9,14 @@ import com.fscommunity.platform.provider.wechat.req.AddVoiceRequest;
 import com.fscommunity.platform.provider.wechat.vo.VoiceUrlVo;
 import com.fscommunity.platform.provider.wechat.voadaptor.ConsultListeningVoAdapt;
 import com.fscommunity.platform.service.ConsultListeningService;
+import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import java.io.File;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -65,9 +67,15 @@ public class ConsultListeningController {
     }
 
     @RequestMapping("save")
-    public String addListing(AddNewListingReq req) {
-        consultListeningService.saveConsultListening(ConsultListeningVoAdapt.adapt(req));
-        return "success";
+    @JsonBody
+    public String addListing(@RequestBody AddNewListingReq req) {
+        try {
+            consultListeningService.saveConsultListening(ConsultListeningVoAdapt.adapt(req));
+            return "success";
+        }catch (Exception e) {
+            logger.error("你说我听，保存失败，req={}",req,e);
+            throw new BizException("保存失败");
+        }
     }
 
 }

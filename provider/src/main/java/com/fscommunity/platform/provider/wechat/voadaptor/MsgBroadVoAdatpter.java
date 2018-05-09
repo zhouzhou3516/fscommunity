@@ -36,6 +36,7 @@ public class MsgBroadVoAdatpter {
             broad.setTargetCid(0);
             broad.setTargetUid(0);
             broad.setIsReply(0);
+            broad.setRootCid(0);
         } else  {
             broad.setTargetCid(req.getReplyedId());
             broad.setTargetUid(req.getReplyedUserid());

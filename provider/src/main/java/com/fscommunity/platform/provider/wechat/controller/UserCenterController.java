@@ -144,6 +144,15 @@ public class UserCenterController {
         if (user == null) {
             throw new BizException("没有您的信息,不能认证");
         }
+        if(user.getAuditStatus() == UserAuditStatus.AUDITED){
+            throw new BizException("已经审核过，无需重复审核");
+        }
+        if(user.getAuditStatus() == UserAuditStatus.NOT_PASS){
+            throw new BizException("您审核未通过");
+        }
+        if(user.getAuditStatus() == UserAuditStatus.UN_AUDIT){
+            throw new BizException("审核中，请等待");
+        }
         UserAuthApply apply = UserAuthApplyAdapter.adapter(req);
         UserAuthVo vo = UserAuthApplyAdapter.adapterToVo(req);
 

@@ -12,7 +12,7 @@ public class AddNewListingReq extends Bean {
     /**
      * 所属栏目的目标id
      */
-    private String targetId;
+    private int targetId;
     /**
      * 所属栏目
      */
@@ -40,11 +40,11 @@ public class AddNewListingReq extends Bean {
      */
     private String videoUrl;
 
-    public String getTargetId() {
+    public int getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(String targetId) {
+    public void setTargetId(int targetId) {
         this.targetId = targetId;
     }
 

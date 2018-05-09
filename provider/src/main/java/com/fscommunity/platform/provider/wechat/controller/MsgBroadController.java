@@ -50,9 +50,13 @@ public class MsgBroadController {
         SessionUserInfo userInfo = sessionHolder.currentUser();
         MsgBroad broad = MsgBroadVoAdatpter.adaptBroad(req, userInfo.getUserId());
         // 维护留言跟节点
-        if (req.isNewMsg()) {
+        if (!req.isNewMsg()) {
             MsgBroad repliedMsg = msgBroadService.queryById(req.getReplyedId());
-            broad.setRootCid(repliedMsg.getRootCid());
+            if(repliedMsg.getIsReply()==1) {
+                broad.setRootCid(repliedMsg.getRootCid());
+            }else {
+                broad.setRootCid(repliedMsg.getId());
+            }
         }
         MsgBroad savedBroad = msgBroadService.saveBroad(broad);
         //msgBroadService.updateTreeCode(savedBroad.getTargetCid() == 0, savedBroad);

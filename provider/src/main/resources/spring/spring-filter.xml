@@ -25,7 +25,7 @@
             <mvc:exclude-mapping path="/fscommunity/wx/auth/code/callback"/>
             <mvc:exclude-mapping path="/fscommunity/wx/auth/redirect"/>
             <mvc:exclude-mapping path="/fscommunity/wx/auth/openid"/>
-            <mvc:exclude-mapping path="/fscommunity/user/auth"/>
+            <mvc:exclude-mapping path="/fscommunity/user/authApply"/>
             <mvc:exclude-mapping path="/fscommunity/common/verifyCode"/>
             <mvc:exclude-mapping path="/fscommunity/member/verify"/>
             <mvc:exclude-mapping path="/fscommunity/man/**"/>
