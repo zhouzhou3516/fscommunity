@@ -1,10 +1,11 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.CategoryProjectInfo;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author liqingzhou on 18/4/29.
@@ -24,6 +25,8 @@ public interface CategoryProjectDao {
 
     List<CategoryProjectInfo> list(@Param("projectType") String projectType, @Param("subType") String subType,
             RowBounds rowBounds);
+
+    List<CategoryProjectInfo> listTopArticleByProjectType(@Param("projectType") String projectType);
 
     /**
      * 置顶
