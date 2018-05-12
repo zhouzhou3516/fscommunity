@@ -1,5 +1,6 @@
 package com.fscommunity.platform.persist.dao;
 
+import com.fscommunity.platform.persist.pojo.CommunityInfo;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
@@ -47,4 +48,8 @@ public interface UserInfoDao {
               @Param("auditStatus") String auditStatus);
 
     UserInfo queryByIdCard(String idCard);
+
+    List<String> queryAllStreats();
+
+    List<CommunityInfo> queryCommunityInfoByStreat(String streat);
 }

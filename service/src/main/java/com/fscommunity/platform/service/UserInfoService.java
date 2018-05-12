@@ -2,16 +2,11 @@ package com.fscommunity.platform.service;
 
 import com.fscommunity.platform.persist.dao.UserInfoDao;
 import com.fscommunity.platform.persist.dao.WxUserDao;
-import com.fscommunity.platform.persist.pojo.UserInfo;
-import com.fscommunity.platform.persist.pojo.UserLevel;
-import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
-import com.fscommunity.platform.persist.pojo.WxUser;
+import com.fscommunity.platform.persist.pojo.*;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.pojo.BizException;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -19,6 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author lixiaoxiong
@@ -97,6 +94,14 @@ public class UserInfoService {
     public List<UserInfo> queryUserByRealName(String realName) {
         Preconditions.checkNotNull(!Strings.isNullOrEmpty(realName));
         return userInfoDao.queryByRealName(realName);
+    }
+
+    public List<String> queryAllStreats() {
+        return userInfoDao.queryAllStreats();
+    }
+
+    public List<CommunityInfo> queryCommunityByStreat(String streat) {
+        return userInfoDao.queryCommunityInfoByStreat(streat);
     }
 
     /**

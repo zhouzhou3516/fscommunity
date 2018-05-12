@@ -29,6 +29,11 @@
         baseinfo,
         biz_info AS bizInfo,
         address_info AS addressInfo,
+        streat,
+        community,
+        building,
+        unit,
+        room,
         create_time AS createTime,
         update_time AS updateTime
     </sql>
@@ -215,6 +220,16 @@ address_info=values(address_info)
         <include refid="fields"/>
         FROM user_info
         WHERE id_no=#{idCard} and id_card_type='ID'
+    </select>
+
+    <select id="queryAllStreats" resultType="java.lang.String">
+        select distinct(streat) from user_info;
+    </select>
+
+    <select id="queryCommunityInfoByStreat" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.CommunityInfo">
+        select community, building, unit, room
+        from user_info
+        where streat=#{streat}
     </select>
 
     <update id="updateBizInfo" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">
