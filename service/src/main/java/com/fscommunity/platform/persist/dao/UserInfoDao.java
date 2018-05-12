@@ -1,12 +1,14 @@
 package com.fscommunity.platform.persist.dao;
 
+import com.fscommunity.platform.persist.pojo.CommunityInfo;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
+
 
 /**
  * @author lixiaoxiong
@@ -37,9 +39,17 @@ public interface UserInfoDao {
 
     UserInfo queryUserByOpenId(@Param("openId") String openId);
 
-    List<UserInfo> list(@Param("fuzzyName")String fuzzyName,@Param("phone") String phone,@Param("auditStatus") String auditStatus, RowBounds rowBounds);
+    List<UserInfo> list(@Param("fuzzyName") String fuzzyName,
+        @Param("phone") String phone,
+        @Param("auditStatus") String auditStatus, RowBounds rowBounds);
 
-    int count(@Param("fuzzyName")String fuzzyName,@Param("phone") String phone,@Param("auditStatus") String auditStatus);
+    int count(@Param("fuzzyName") String fuzzyName,
+              @Param("phone") String phone,
+              @Param("auditStatus") String auditStatus);
 
-    UserInfo queryByIdCard(@Param("idCard") String idCard);
+    UserInfo queryByIdCard(String idCard);
+
+    List<String> queryAllStreats();
+
+    List<CommunityInfo> queryCommunityInfoByStreat(String streat);
 }

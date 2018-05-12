@@ -29,6 +29,11 @@
         baseinfo,
         biz_info AS bizInfo,
         address_info AS addressInfo,
+        streat,
+        community,
+        building,
+        unit,
+        room,
         create_time AS createTime,
         update_time AS updateTime
     </sql>
@@ -177,13 +182,13 @@ address_info=values(address_info)
         FROM user_info
         WHERE open_id=#{openId}
     </select>
-    <select id="list" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <select id="list" parameterType="java.util.Map" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         select
         <include refid="fields"/>
-        from activity
+        from user_info
         <where>
             <if test="fuzzyName != null and fuzzyName !=''">
-                AND activity_desc like concat('%',#{fuzzyName},'%')
+                AND real_name like concat('%',#{fuzzyName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
@@ -192,15 +197,15 @@ address_info=values(address_info)
                 and audit_status like concat('%',#{auditStatus},'%')
             </if>
         </where>
-        order by create_tiem
+        order by create_time
     </select>
-    <select id="count" resultType="java.lang.Integer">
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
         select
         count(1)
-        from activity
+        from user_info
         <where>
-            <if test="fuzzyName != null and fuzzyName !=''">
-                AND activity_desc like concat('%',#{fuzzyName},'%')
+            <if test="realName != null and realName !=''">
+                AND real_name like concat('%',#{realName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
@@ -215,6 +220,16 @@ address_info=values(address_info)
         <include refid="fields"/>
         FROM user_info
         WHERE id_no=#{idCard} and id_card_type='ID'
+    </select>
+
+    <select id="queryAllStreats" resultType="java.lang.String">
+        select distinct(streat) from user_info;
+    </select>
+
+    <select id="queryCommunityInfoByStreat" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.CommunityInfo">
+        select community, building, unit, room
+        from user_info
+        where streat=#{streat}
     </select>
 
     <update id="updateBizInfo" parameterType="com.fscommunity.platform.persist.pojo.UserInfo">

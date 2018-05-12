@@ -11,14 +11,15 @@ import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description
