@@ -227,7 +227,10 @@ address_info=values(address_info)
     </select>
 
     <select id="queryCommunityInfoByStreat" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.CommunityInfo">
-        select community, building, unit, room
+        select community as communityName,
+        building as buildNum,
+        unit as unitNum,
+        room as roomNum
         from user_info
         where streat=#{streat}
     </select>

@@ -1,7 +1,6 @@
 package com.fscommunity.platform.provider.backoffice.adapter;
 
 
-import com.fscommunity.platform.common.pojo.ManUser;
 import com.fscommunity.platform.persist.pojo.Article;
 import com.fscommunity.platform.provider.backoffice.req.AddNewArticleReq;
 import com.fscommunity.platform.provider.backoffice.vo.ArticleListItemVo;
@@ -20,11 +19,13 @@ import java.util.stream.Collectors;
  */
 public class ArticleVoAdatpter {
 
-    public static ArticleVo adaptToArticleVo(Article article, ManUser user) {
+    public static ArticleVo adaptToArticleVo(Article article) {
         ArticleVo vo = new ArticleVo(article);
         vo.setAuthorName(article.getAuthorName());
         vo.setCoverUrl(article.getCoverUrl());
         vo.setTag(article.getTag());
+        vo.setContent(article.getContent());
+        vo.setPublishTime(article.getPublishTime());
         return vo;
     }
 

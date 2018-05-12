@@ -74,6 +74,16 @@
         </where>
         order by create_time desc
     </select>
+
+    
+    <select id="listTopArticleByProjectType" resultType="com.fscommunity.platform.persist.pojo.CategoryProjectInfo"
+            parameterType="java.lang.String">
+        select
+        <include refid="fields"/>
+        from category_project
+        where project_type = #{projectType}
+    </select>
+
     <select id="listSticky" resultType="com.fscommunity.platform.persist.pojo.CategoryProjectInfo">
 
         select

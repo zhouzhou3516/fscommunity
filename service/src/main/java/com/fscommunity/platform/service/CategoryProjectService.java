@@ -2,12 +2,14 @@ package com.fscommunity.platform.service;
 
 import com.fscommunity.platform.persist.dao.CategoryProjectDao;
 import com.fscommunity.platform.persist.pojo.CategoryProjectInfo;
+import com.google.common.base.Strings;
 import com.lxx.app.common.util.page.PageRequest;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import java.util.List;
-import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author liqingzhou on 18/4/29.
@@ -28,6 +30,14 @@ public class CategoryProjectService {
 
     public List<CategoryProjectInfo> list(String projectType, String subType, PageRequest request) {
         return categoryProjectDao.list(projectType, subType, new RowBounds(request.getOffset(), request.getLimit()));
+    }
+
+    public List<CategoryProjectInfo> listTopByProjectType(String projectType) {
+        if (Strings.isNullOrEmpty(projectType)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return categoryProjectDao.listTopArticleByProjectType(projectType);
     }
 
     public int countCategoryProject(String projectType, String subType) {

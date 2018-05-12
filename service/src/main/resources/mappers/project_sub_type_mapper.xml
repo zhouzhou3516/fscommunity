@@ -38,7 +38,7 @@
         where id=#{id}
     </select>
 
-    <select id="list" resultType="com.fscommunity.platform.persist.pojo.ProjectSubTypeInfo">
+    <select id="list" parameterType="java.lang.String" resultType="com.fscommunity.platform.persist.pojo.ProjectSubTypeInfo">
         select
         <include refid="fields"/>
         from project_sub_type
@@ -46,7 +46,6 @@
             <if test="projectType != null and projectType !=''">
                 project_type = #{projectType}
             </if>
-
         </where>
         order by orders
     </select>
