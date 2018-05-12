@@ -180,10 +180,10 @@ address_info=values(address_info)
     <select id="list" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         select
         <include refid="fields"/>
-        from activity
+        from user_info
         <where>
             <if test="fuzzyName != null and fuzzyName !=''">
-                AND activity_desc like concat('%',#{fuzzyName},'%')
+                AND real_name like concat('%',#{fuzzyName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
@@ -192,15 +192,15 @@ address_info=values(address_info)
                 and audit_status like concat('%',#{auditStatus},'%')
             </if>
         </where>
-        order by create_tiem
+        order by create_time
     </select>
     <select id="count" resultType="java.lang.Integer">
         select
         count(1)
-        from activity
+        from user_info
         <where>
             <if test="fuzzyName != null and fuzzyName !=''">
-                AND activity_desc like concat('%',#{fuzzyName},'%')
+                AND real_name like concat('%',#{fuzzyName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
