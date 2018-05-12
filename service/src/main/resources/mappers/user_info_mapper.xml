@@ -182,8 +182,8 @@ address_info=values(address_info)
         <include refid="fields"/>
         from user_info
         <where>
-            <if test="fuzzyName != null and fuzzyName !=''">
-                AND real_name like concat('%',#{fuzzyName},'%')
+            <if test="realName != null and realName !=''">
+                AND real_name like concat('%',#{realName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
@@ -199,8 +199,8 @@ address_info=values(address_info)
         count(1)
         from user_info
         <where>
-            <if test="fuzzyName != null and fuzzyName !=''">
-                AND real_name like concat('%',#{fuzzyName},'%')
+            <if test="realName != null and realName !=''">
+                AND real_name like concat('%',#{realName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
