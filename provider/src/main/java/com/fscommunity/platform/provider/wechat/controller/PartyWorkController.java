@@ -4,17 +4,23 @@ import com.fscommunity.platform.persist.pojo.Article;
 import com.fscommunity.platform.persist.pojo.CategoryProjectInfo;
 import com.fscommunity.platform.persist.pojo.ProjectSubTypeInfo;
 import com.fscommunity.platform.persist.pojo.ProjectType;
+import com.fscommunity.platform.provider.backoffice.adapter.ArticleVoAdatpter;
+import com.fscommunity.platform.provider.backoffice.vo.ArticleVo;
+import com.fscommunity.platform.provider.wechat.req.PartyWorkArticleListReq;
 import com.fscommunity.platform.provider.wechat.vo.BaseListItemVo;
 import com.fscommunity.platform.provider.wechat.vo.ChannelSubTypeVo;
+import com.fscommunity.platform.provider.wechat.vo.PartyWorkArListVo;
 import com.fscommunity.platform.provider.wechat.vo.PartyWorkMainPageVo;
 import com.fscommunity.platform.provider.wechat.voadaptor.ChannelSubTypeVoAdapter;
 import com.fscommunity.platform.service.ArticleService;
 import com.fscommunity.platform.service.CategoryProjectService;
 import com.fscommunity.platform.service.ProjectSubTypeService;
 import com.lxx.app.common.util.DateFormatUtil;
+import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -76,6 +82,41 @@ public class PartyWorkController {
         }
         vo.setHotspots(vos);
         return vo;
+    }
+
+    @JsonBody
+    @RequestMapping("/list")
+    public PartyWorkArListVo listSubTypeArticleList(@RequestBody PartyWorkArticleListReq req) {
+        PartyWorkArListVo vo = new PartyWorkArListVo();
+        List<CategoryProjectInfo> list = categoryProjectService.list(ProjectType.PARTY_WORK.name(), req.getSubType(),
+                new PageRequest(req.getCurrentPage(), req.getPageSize()));
+
+        if (CollectionUtils.isEmpty(list)) {
+            return vo;
+        }
+
+        List<BaseListItemVo> vos = new ArrayList<>();
+        for (CategoryProjectInfo info : list) {
+            Article article = articleService.selectById(info.getArticleId());
+            if (article == null) {
+                continue;
+            }
+            vos.add(buildItemFromArticle(article));
+        }
+
+        vo.setList(vos);
+        vo.setTotalCount(categoryProjectService.countCategoryProject(ProjectType.PARTY_WORK.name(),
+            req.getSubType()));
+        return vo;
+    }
+
+    @RequestMapping("/detail")
+    @JsonBody
+    public ArticleVo info(int id) {
+        Article article = articleService.selectById(id);
+        //增加一次阅读数
+        articleService.incrArtileViewsById(id);
+        return ArticleVoAdatpter.adaptToArticleVo(article);
     }
 
     private BaseListItemVo buildItemFromArticle(Article article) {

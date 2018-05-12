@@ -15,13 +15,14 @@ import com.google.common.base.Strings;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.util.List;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description
@@ -78,7 +79,7 @@ public class ArticleController {
         Article article = articleService.selectById(id);
         //增加一次阅读数
         articleService.incrArtileViewsById(id);
-        return ArticleVoAdatpter.adaptToArticleVo(article, manUserService.queryUserById(article.getAuthorId()));
+        return ArticleVoAdatpter.adaptToArticleVo(article);
     }
 
     @RequestMapping("/update")
