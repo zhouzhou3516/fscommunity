@@ -177,13 +177,13 @@ address_info=values(address_info)
         FROM user_info
         WHERE open_id=#{openId}
     </select>
-    <select id="list" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
+    <select id="list" parameterType="java.util.Map" resultType="com.fscommunity.platform.persist.pojo.UserInfo">
         select
         <include refid="fields"/>
         from user_info
         <where>
-            <if test="realName != null and realName !=''">
-                AND real_name like concat('%',#{realName},'%')
+            <if test="fuzzyName != null and fuzzyName !=''">
+                AND real_name like concat('%',#{fuzzyName},'%')
             </if>
             <if test="phone != null and phone !=''">
                 and cell_phone like concat('%',#{phone},'%')
@@ -194,7 +194,7 @@ address_info=values(address_info)
         </where>
         order by create_time
     </select>
-    <select id="count" resultType="java.lang.Integer">
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
         select
         count(1)
         from user_info

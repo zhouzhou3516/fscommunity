@@ -3,9 +3,11 @@ package com.fscommunity.platform.persist.dao;
 import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author lixiaoxiong
@@ -36,9 +38,13 @@ public interface UserInfoDao {
 
     UserInfo queryUserByOpenId(String openId);
 
-    List<UserInfo> list(String fuzzyName, String phone, String auditStatus, RowBounds rowBounds);
+    List<UserInfo> list(@Param("fuzzyName") String fuzzyName,
+        @Param("phone") String phone,
+        @Param("auditStatus") String auditStatus, RowBounds rowBounds);
 
-    int count(String fuzzyName, String phone, String auditStatus);
+    int count(@Param("fuzzyName") String fuzzyName,
+              @Param("phone") String phone,
+              @Param("auditStatus") String auditStatus);
 
     UserInfo queryByIdCard(String idCard);
 }
