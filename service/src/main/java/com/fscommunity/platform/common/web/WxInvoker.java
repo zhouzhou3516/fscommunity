@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fscommunity.platform.common.constant.WxMediaType;
 import com.fscommunity.platform.common.pojo.WxAccessToken;
 import com.fscommunity.platform.common.pojo.WxJsapiTicket;
+import com.fscommunity.platform.common.pojo.WxUploadMediaResponse;
 import com.fscommunity.platform.common.pojo.WxUserExt;
 import com.fscommunity.platform.common.pojo.WxWebAuthErrorResp;
 import com.fscommunity.platform.common.pojo.WxWebAuthToken;
@@ -13,10 +14,12 @@ import com.fscommunity.platform.service.WxTokenService;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
+import com.lxx.app.common.util.http.base.MultipartData;
 import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.util.pojo.BizException;
 import java.io.File;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -54,6 +58,7 @@ public class WxInvoker {
     private final static String APP_ID = "wxad8fb528b56bdf2e";
     private final static String APP_SECRET = "2857a9393c04903e60d97f597da53efd";
     private static final String DOWNLOAD_MEDIA_URL = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
+    private static final String UPLOAD_MEDIA_URL = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s";
 
     @Resource
     HttpClientUtil httpClientUtil;
@@ -247,6 +252,27 @@ public class WxInvoker {
         }
         return null;
     }
+
+//    public WxUploadMediaResponse uploadWxMedia(String accessToken, WxMediaType type,File file) {
+//        String url = String.format(UPLOAD_MEDIA_URL, accessToken, type);
+//        MultipartData<File> fileMultipartData = new MultipartData<File>(file,"audio/mpeg");
+//
+//        Map<String,MultipartData> param = Maps.newHashMap();
+//        param.put("","");
+//        ListenableFuture<AsyncHttpResponse> future = httpClientUtil.asyncPostFile(url,);
+//        ListenableFuture<WxUploadMediaResponse> wxfuture= Futures.transform(future,
+//                (Function<AsyncHttpResponse, WxUploadMediaResponse>) input -> decode(input, url,
+//                        new TypeReference<WxUploadMediaResponse>() {
+//                        }));
+//        try {
+//            return wxfuture.get(10, TimeUnit.SECONDS);
+//        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+//            logger.error("上传多媒体文件异常", e);
+//        }
+//        return null;
+//    }
+
+
 
     private ListenableFuture<File> downloadWxMediaRemote(String accessToken, String mediaId, WxMediaType type) {
         String url = String.format(DOWNLOAD_MEDIA_URL, accessToken, mediaId);

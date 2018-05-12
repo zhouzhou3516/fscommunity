@@ -7,6 +7,7 @@ import com.lxx.app.common.util.http.base.AsyncHandlerBase;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
 import com.lxx.app.common.util.http.base.ClientConfig;
 import com.lxx.app.common.util.http.base.HttpRequest;
+import com.lxx.app.common.util.http.base.MultipartData;
 import com.lxx.app.common.util.http.base.SyncHttpResponse;
 import com.lxx.app.common.util.http.base.builder.EntityRequestBuilder;
 import com.lxx.app.common.util.http.base.builder.RequestBuilder;
@@ -22,6 +23,17 @@ import org.apache.http.impl.client.CloseableHttpClient;
 
 public class DefaultHttpClient implements HttpClient {
 
+    private volatile ApacheClientProvider syncProvider;
+    private volatile AsyncClientProvider asyncProvider;
+    public DefaultHttpClient() {
+        this(new ClientConfig());
+    }
+
+    public DefaultHttpClient(ClientConfig config) {
+        syncProvider = new ApacheClientProvider(config);
+        asyncProvider = new AsyncClientProvider(config);
+    }
+
     private static AsyncHandler createDefHandler() {
         return new AsyncHandlerBase() {
             @Override
@@ -34,18 +46,6 @@ public class DefaultHttpClient implements HttpClient {
 
             }
         };
-    }
-
-    private volatile ApacheClientProvider syncProvider;
-    private volatile AsyncClientProvider asyncProvider;
-
-    public DefaultHttpClient() {
-        this(new ClientConfig());
-    }
-
-    public DefaultHttpClient(ClientConfig config) {
-        syncProvider = new ApacheClientProvider(config);
-        asyncProvider = new AsyncClientProvider(config);
     }
 
     @Override
@@ -69,6 +69,8 @@ public class DefaultHttpClient implements HttpClient {
     public SyncHttpResponse syncPost(String url, byte[] bodyData) throws IOException {
         return syncRequest(RequestBuilder.createPost(url).setBody(bodyData).build());
     }
+
+
 
     @Override
     public SyncHttpResponse syncRequest(HttpRequest request) throws IOException {
@@ -132,7 +134,12 @@ public class DefaultHttpClient implements HttpClient {
             AsyncHandler handler) {
         return asyncRequest(RequestBuilder.createPost(url).setBody(bodyData).build(), handler);
     }
-
+    @Override
+    public ListenableFuture<AsyncHttpResponse> asyncPostFile(String url, Map<String, MultipartData> multipartParam) {
+        EntityRequestBuilder post = RequestBuilder.createPost(url);
+        multipartParam.entrySet().forEach(e -> post.addFileData(e.getKey(), e.getValue()));
+        return asyncRequest(post.build());
+    }
     /**
      * 回调 trace 结构
      * http_async / 业务线程 1

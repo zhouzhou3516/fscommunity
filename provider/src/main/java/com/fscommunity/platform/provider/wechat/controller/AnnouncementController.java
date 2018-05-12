@@ -21,13 +21,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author liqingzhou on 18/5/3
  */
-@Component
+@Controller
 @RequestMapping("/fscommunity/wechat/announce")
 public class AnnouncementController {
 

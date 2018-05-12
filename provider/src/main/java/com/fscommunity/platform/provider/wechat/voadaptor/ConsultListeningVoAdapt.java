@@ -10,16 +10,16 @@ import com.lxx.app.common.util.json.JsonUtil;
 public class ConsultListeningVoAdapt {
 
 
-    public static ConsultListeningInfo adapt(AddNewListingReq req) {
+    public static ConsultListeningInfo adapt(AddNewListingReq req, String voiceUrl, String videoUrl) {
         ConsultListeningInfo info = new ConsultListeningInfo();
         info.setTargetId(req.getTargetId());
         info.setChannelType(req.getChannelType());
         info.setConsultType(req.getConsultType());
         info.setContent(req.getContent());
         info.setReplyContent("");
-        info.setVoiceUrl(req.getVoiceUrl());
+        info.setVoiceUrl(voiceUrl);
         info.setImgUrls(JsonUtil.of(req.getImgUrls()));
-        info.setVideoUrl(req.getVideoUrl());
+        info.setVideoUrl(videoUrl);
         return info;
     }
 }

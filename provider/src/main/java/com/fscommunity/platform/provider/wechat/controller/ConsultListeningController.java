@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author liqingzhou on 18/4/28
  */
-@Component("listeningController")
+@Controller("listeningController")
 @RequestMapping("/fscommunity/wechat/listening")
 public class ConsultListeningController {
 
@@ -48,7 +49,7 @@ public class ConsultListeningController {
      */
     @RequestMapping("/upload/voice")
     @JsonBody
-    public VoiceUrlVo uploadVoice(AddVoiceRequest request) {
+    public VoiceUrlVo uploadVoice(@RequestBody AddVoiceRequest request) {
         String token = accessTokenCache.getToken();
         File file = wxInvoker.dowloadWxMedia(token, request.getMediaId(), WxMediaType.valueOf(request.getType()));
         aliOssMediaClient.uploadVoice(file);
@@ -70,10 +71,16 @@ public class ConsultListeningController {
     @JsonBody
     public String addListing(@RequestBody AddNewListingReq req) {
         try {
-            consultListeningService.saveConsultListening(ConsultListeningVoAdapt.adapt(req));
+            String token = accessTokenCache.getToken();
+            File file = wxInvoker.dowloadWxMedia(token, req.getVoiceWxMediaId(), WxMediaType.VOICE);
+            aliOssMediaClient.uploadVoice(file);
+            String voiceUrl = aliOssMediaClient.queryPresignedUrl(file.getName());
+            String videoUrl = aliOssMediaClient.queryPresignedUrl(req.getVideoOssObjectName());
+            consultListeningService.saveConsultListening(ConsultListeningVoAdapt.adapt(req, voiceUrl, videoUrl));
+            // wx notify
             return "success";
-        }catch (Exception e) {
-            logger.error("你说我听，保存失败，req={}",req,e);
+        } catch (Exception e) {
+            logger.error("你说我听，保存失败，req={}", req, e);
             throw new BizException("保存失败");
         }
     }
