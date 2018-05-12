@@ -20,6 +20,10 @@ public class CategoryProjectInfo extends Bean {
      * 通知公告标题
      */
     private String title;
+    /**
+     * 置顶状态
+     */
+    private int stickyStatus;
     private Date createTime;
     private Date updateTime;
 
@@ -61,6 +65,14 @@ public class CategoryProjectInfo extends Bean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getStickyStatus() {
+        return stickyStatus;
+    }
+
+    public void setStickyStatus(int stickyStatus) {
+        this.stickyStatus = stickyStatus;
     }
 
     public Date getCreateTime() {

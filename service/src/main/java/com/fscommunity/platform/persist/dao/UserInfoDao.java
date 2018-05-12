@@ -4,6 +4,7 @@ import com.fscommunity.platform.persist.pojo.UserInfo;
 import com.fscommunity.platform.persist.pojo.UserLevel;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -22,23 +23,23 @@ public interface UserInfoDao {
      * @param fuzzyName 名字的关键字或者全名
      * @return 返回符合条件的结果
      */
-    List<UserInfo> queryByFuzzyName(String fuzzyName);
+    List<UserInfo> queryByFuzzyName(@Param("fuzzyName") String fuzzyName);
 
-    UserInfo queryByUserId(int id);
+    UserInfo queryByUserId(@Param("id") int id);
 
-    List<UserInfo> queryByRealName(String realName);
+    List<UserInfo> queryByRealName(@Param("realName") String realName);
 
     int updateBizInfo(UserInfo userInfo);
 
     List<UserSimpleInfo> querySimpleInfoByIds(List<Integer> ids);
-    UserSimpleInfo querySimpleInfoById(Integer id);
-    int updateLevelByUserId(int id, UserLevel level);
+    UserSimpleInfo querySimpleInfoById(@Param("id") Integer id);
+    int updateLevelByUserId(@Param("id") int id, @Param("level") UserLevel level);
 
-    UserInfo queryUserByOpenId(String openId);
+    UserInfo queryUserByOpenId(@Param("openId") String openId);
 
-    List<UserInfo> list(String fuzzyName, String phone, String auditStatus, RowBounds rowBounds);
+    List<UserInfo> list(@Param("fuzzyName")String fuzzyName,@Param("phone") String phone,@Param("auditStatus") String auditStatus, RowBounds rowBounds);
 
-    int count(String fuzzyName, String phone, String auditStatus);
+    int count(@Param("fuzzyName")String fuzzyName,@Param("phone") String phone,@Param("auditStatus") String auditStatus);
 
-    UserInfo queryByIdCard(String idCard);
+    UserInfo queryByIdCard(@Param("idCard") String idCard);
 }

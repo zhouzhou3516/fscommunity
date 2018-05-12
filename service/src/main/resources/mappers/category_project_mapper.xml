@@ -8,6 +8,7 @@
     project_type as projectType,
     sub_type AS subType,
     title as title,
+    sticky_status AS stickyStatus,
     create_time as createTime,
     update_time as updateTime
     </sql>
@@ -18,19 +19,23 @@
     project_type,
     sub_type,
     article_id,
-    title
+    title,
+    sticky_status
     )
     values
     (
     #{projectType},
     #{subType},
     #{articleId},
-    #{title})
+    #{title},
+    #{stickyStatus}
+    )
       ON DUPLICATE KEY UPDATE
       project_type=values(project_type),
       sub_type=values(sub_type),
       title=VALUES(title),
       article_id=VALUES(article_id)
+
     </insert>
 
     <select id="queryById" parameterType="java.lang.Integer"
@@ -52,7 +57,7 @@
             </if>
 
         </where>
-        ;
+
     </select>
     <select id="list" resultType="com.fscommunity.platform.persist.pojo.CategoryProjectInfo">
         select
@@ -67,6 +72,21 @@
             </if>
 
         </where>
+        order by create_time desc
+    </select>
+    <select id="listSticky" resultType="com.fscommunity.platform.persist.pojo.CategoryProjectInfo">
+
+        select
+        <include refid="fields"/>
+        from category_project
+        <where>
+            <if test="projectType != null and projectType !=''">
+                and  project_type = #{projectType}
+            </if>
+                and  sticky_status = 1
+
+        </where>
+        order by create_time desc
     </select>
     <update id="updateCategoryProject" parameterType="com.fscommunity.platform.persist.pojo.CategoryProjectInfo">
         update category_project
@@ -81,6 +101,13 @@
 
         </set>
         where id=#{id}
+    </update>
+    <update id="stick">
+        update category_project
+        <set>
+            sticky_status=#{status}
+        </set>
+        where id=#{projectId}
     </update>
     <delete id="delById" parameterType="java.lang.Integer">
         delete from category_project

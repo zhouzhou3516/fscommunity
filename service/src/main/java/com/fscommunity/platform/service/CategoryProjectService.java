@@ -3,6 +3,7 @@ package com.fscommunity.platform.service;
 import com.fscommunity.platform.persist.dao.CategoryProjectDao;
 import com.fscommunity.platform.persist.pojo.CategoryProjectInfo;
 import com.lxx.app.common.util.page.PageRequest;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import java.util.List;
 import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
@@ -39,5 +40,13 @@ public class CategoryProjectService {
 
     public void del(int activityId) {
         categoryProjectDao.delById(activityId);
+    }
+
+    public void sticky(int projectId, int status) {
+         categoryProjectDao.stick( projectId,status);
+    }
+
+    public List<CategoryProjectInfo> listSticky(String projectType,PageRequest request){
+        return categoryProjectDao.listSticky(projectType,new RowBounds(request.getOffset(),request.getLimit()));
     }
 }

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 社区咨询，党建工作，服务工作站 man 接口都用该controller
+ * 社区咨询，党建工作，服务工作站 的 man 接口都用该controller
  *
  * @author liqingzhou on 18/4/29
  */
@@ -94,6 +94,7 @@ public class MgrCategoryProjectController {
         ProjectSubTypeInfo info = new ProjectSubTypeInfo();
         info.setProjectType(req.getProjectType());
         info.setSubType(req.getSubType());
+        info.setOrders(req.getOrders());
         subTypeService.saveProjectSubType(info);
     }
 
@@ -107,6 +108,24 @@ public class MgrCategoryProjectController {
         return list.stream().map(projectSubTypeInfo -> new ProjectSubTypeVo(projectSubTypeInfo.getSubType()))
                 .collect(Collectors.toList());
 
+    }
+
+    /**
+     * status:1置顶 0取消置顶
+     * @param
+     */
+    @RequestMapping("stickypost")
+    @JsonBody
+    public void stickyPost(int projectId,int status){
+
+        CategoryProjectInfo projectInfo = categoryProjectService.queryById(projectId);
+        if(projectInfo == null){
+            throw new BizException("置顶内容不存在");
+        }
+        if(projectInfo.getStickyStatus() == status){
+            return ;
+        }
+        categoryProjectService.sticky(projectId, status);
     }
 
 

@@ -19,11 +19,11 @@ public interface MsgBroadMapper {
     int lockForUpdate(int id);
     int updateIsReplied(@Param("id") int id);
 
-    List<MsgBroad> list(int authStatus, int replyStatus, RowBounds rowBounds);
+    List<MsgBroad> list(@Param("authStatus") int authStatus, @Param("replyStatus") int replyStatus, RowBounds rowBounds);
 
-    int countList(Integer authStatus, Integer replyStatus);
+    int countList(@Param("authStatus") int authStatus, @Param("replyStatus") int replyStatus);
 
-    int updateAuthStatus(@Param("id") int id,@Param("status") int authStatus);
+    int updateAuthStatus(@Param("id") Integer id,@Param("status") Integer authStatus);
 
     List<MsgBroad> queryByRootCId(@Param("rootCid") int targetId, RowBounds rowBounds);
     List<MsgBroad> wxlist( RowBounds rowBounds);

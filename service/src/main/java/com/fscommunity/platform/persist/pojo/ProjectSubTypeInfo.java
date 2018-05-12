@@ -15,6 +15,8 @@ public class ProjectSubTypeInfo extends Bean {
     private ProjectType projectType;
     // 具体类型
     private String subType;
+    // 排序
+    private int orders;
 
     private Date createTime;
     private Date updateTime;
@@ -41,6 +43,14 @@ public class ProjectSubTypeInfo extends Bean {
 
     public void setSubType(String subType) {
         this.subType = subType;
+    }
+
+    public int getOrders() {
+        return orders;
+    }
+
+    public void setOrders(int orders) {
+        this.orders = orders;
     }
 
     public Date getCreateTime() {

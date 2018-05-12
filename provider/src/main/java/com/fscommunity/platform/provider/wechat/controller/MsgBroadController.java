@@ -83,11 +83,17 @@ public class MsgBroadController {
         Map<Integer, List<MsgBroad>> map = replys.stream().collect(Collectors.groupingBy(m -> m.getRootCid()));
         List<MsgBroadVo> retVos = rows.stream().map(msgBroad -> {
             MsgBroadVo vo = new MsgBroadVo(msgBroad);
-            UserSimpleInfo userSimpleInfo = userMap.get(vo.getTargetUid());
-            vo.setTargetUname(userSimpleInfo.getUserName());
+            UserSimpleInfo userSimpleInfo = userMap.get(msgBroad.getUserId());
+            vo.setUserName(userSimpleInfo.getUserName());
             vo.setUserAvatar(userSimpleInfo.getUserAvatar());
             List<MsgBroad> list = map.getOrDefault(vo.getId(), Lists.newArrayList());
-            List<MsgBroadVo> vos = list.stream().map(rpy -> new MsgBroadVo(rpy)).collect(Collectors.toList());
+            List<MsgBroadVo> vos = list.stream().map(rpy -> {
+                MsgBroadVo rply = new MsgBroadVo(rpy);
+                rply.setUserName(userMap.get(rply.getUserId()).getUserName());
+                rply.setUserAvatar(userMap.get(rply.getUserId()).getUserAvatar());
+                rply.setTargetUname(vo.getUserName());
+                return rply;
+            }).collect(Collectors.toList());
             vo.setReplyMsg(vos);
             return vo;
         }).collect(Collectors.toList());

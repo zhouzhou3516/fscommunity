@@ -6,6 +6,7 @@
     id,
     project_type as projectType,
     sub_type AS subType,
+    orders,
     create_time as createTime,
     update_time as updateTime
     </sql>
@@ -14,16 +15,19 @@
     insert into
     project_sub_type (
     project_type,
-    sub_type
+    sub_type,
+    orders
     )
     values
     (
     #{projectType},
-    #{subType}
+    #{subType},
+    #{orders}
     )
       ON DUPLICATE KEY UPDATE
       project_type=values(project_type),
-      sub_type=values(sub_type)
+      sub_type=values(sub_type),
+      orders=values(orders)
     </insert>
 
     <select id="queryById" parameterType="java.lang.Integer"
@@ -44,21 +48,9 @@
             </if>
 
         </where>
+        order by orders
     </select>
-    <update id="updateProjectSubType" parameterType="com.fscommunity.platform.persist.pojo.ProjectSubTypeInfo">
-        update project_sub_type
-        <set>
-            article_id=#{articleId},
-            <if test="title != null and title != ''">
-                title=#{title},
-            </if>
-            <if test="subType != null and subType != ''">
-                sub_type=#{subType},
-            </if>
 
-        </set>
-        where id=#{id}
-    </update>
     <delete id="delById" parameterType="java.lang.Integer">
         delete from project_sub_type
         where id=#{id}

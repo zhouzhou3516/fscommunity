@@ -73,6 +73,8 @@ public class ActivityController {
     public ActivityDetailVo queryDetail(int activityId) {
         ActivityInfo activityInfo = activityService.queryById(activityId);
         Article article = articleService.selectById(activityInfo.getArticleId());
+        //update article views
+        articleService.updateViewsById(article.getId(),article.getViews()+1);
         return ActivityWechatAdaptor.adaptToDetail(activityInfo, article);
     }
 

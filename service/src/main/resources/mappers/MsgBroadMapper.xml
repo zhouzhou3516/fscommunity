@@ -66,24 +66,24 @@
         from msgbroad
         <where>
             <if test="authStatus!=-1">
-                and auth_status = #{authStatus}
+                and is_showed = #{authStatus}
             </if>
             <if test="replyStatus !=-1">
-                and reply_status = #{replyStatus}
+                and is_replied = #{replyStatus}
             </if>
         </where>
         order by sid ASC, publish_time DESC
     </select>
     <select id="countList" resultType="java.lang.Integer">
         select
-        <include refid="fields"/>
+       count(1)
         from msgbroad
         <where>
             <if test="authStatus!=-1">
-                and auth_status = #{authStatus}
+                and is_showed = #{authStatus}
             </if>
             <if test="replyStatus !=-1">
-                and reply_status = #{replyStatus}
+                and is_replied = #{replyStatus}
             </if>
         </where>
     </select>

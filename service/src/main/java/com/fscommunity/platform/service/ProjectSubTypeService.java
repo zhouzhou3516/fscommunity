@@ -29,10 +29,6 @@ public class ProjectSubTypeService {
         return projectSubTypeDao.list(projectType);
     }
 
-    public int updateProjectSubType(ProjectSubTypeInfo info) {
-        return projectSubTypeDao.updateProjectSubType(info);
-    }
-
     public void del(int activityId) {
         projectSubTypeDao.delById(activityId);
     }

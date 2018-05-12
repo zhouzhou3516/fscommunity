@@ -3,17 +3,24 @@ package com.fscommunity.platform.provider.backoffice.controller;
 import com.fscommunity.platform.common.pojo.ManUser;
 import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.MsgBroad;
+import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.backoffice.adapter.MgrMsgBroadVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.CommentAuthReq;
 import com.fscommunity.platform.provider.backoffice.req.MsgBroadListQueryReq;
 import com.fscommunity.platform.provider.backoffice.req.NewCommentReplyReq;
+import com.fscommunity.platform.provider.backoffice.vo.MgrMsgBroadVo;
 import com.fscommunity.platform.service.MsgBroadService;
+import com.fscommunity.platform.service.UserInfoService;
+import com.google.common.collect.Lists;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,6 +44,8 @@ public class MsgBroadMgrController {
 
     @Resource
     private SessionHolder sessionHolder;
+    @Resource
+    private UserInfoService userInfoService;
 
     @RequestMapping("/reply")
     @JsonBody
@@ -56,12 +65,19 @@ public class MsgBroadMgrController {
 
     @RequestMapping("/list")
     @JsonBody
-    public PageResp list(MsgBroadListQueryReq req) {
+    public PageResp list(@RequestBody  MsgBroadListQueryReq req) {
         List<MsgBroad> rows = msgBroadService.list(req.getAuthStatus(), req.getReplyStatus(),
                 new PageRequest(Integer.valueOf(req.getCurrentPage()), Integer.valueOf(req.getPageSize()))
         );
+        if(CollectionUtils.isEmpty(rows)){
+            return new PageResp(Lists.newArrayList(),0);
+        }
         int count = msgBroadService.countList(req.getAuthStatus(), req.getReplyStatus());
-        PageResp resp = new PageResp<>(rows, count);
+        List<Integer> uIds = rows.stream().map(r -> r.getUserId()).distinct().collect(Collectors.toList());
+        List<UserSimpleInfo> users = userInfoService.querySimpleUsersByIds(uIds);
+        Map<Integer, UserSimpleInfo> userMap = users.stream().collect(Collectors.toMap(u -> u.getId(), u -> u));
+        List<MgrMsgBroadVo> vos = MgrMsgBroadVoAdatpter.adaptToMgrMsgBroadVos(rows,userMap);
+        PageResp resp = new PageResp<>(vos, count);
         return resp;
     }
 

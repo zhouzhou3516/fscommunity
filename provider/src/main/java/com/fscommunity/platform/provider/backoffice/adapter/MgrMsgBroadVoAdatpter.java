@@ -1,9 +1,13 @@
 package com.fscommunity.platform.provider.backoffice.adapter;
 
 import com.fscommunity.platform.persist.pojo.MsgBroad;
+import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.backoffice.req.NewCommentReplyReq;
 import com.fscommunity.platform.provider.backoffice.vo.MgrMsgBroadVo;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -12,13 +16,16 @@ import java.util.Date;
  */
 public class MgrMsgBroadVoAdatpter {
 
-    public static MgrMsgBroadVo adaptToMgrMsgBroadVo(MsgBroad msgBroad, String userAvatar, String userName,
-            String targetUname) {
+    public static MgrMsgBroadVo adaptToMgrMsgBroadVo(MsgBroad msgBroad, UserSimpleInfo user,
+            UserSimpleInfo targetUser) {
         MgrMsgBroadVo msgVo = new MgrMsgBroadVo(msgBroad);
-        msgVo.setUserAvatar(userAvatar);
-        msgVo.setUserName(userName);
-        msgVo.setTargetUname(targetUname);
-        return null;
+        msgVo.setUserAvatar(user.getUserAvatar());
+        msgVo.setUserName(user.getUserName());
+        // 如果是回复
+        if(msgBroad.getIsReply()==1) {
+            msgVo.setTargetUname(targetUser.getUserName());
+        }
+        return msgVo;
     }
 
     public static MsgBroad adaptToBroad(MsgBroad targetMsgBroad, NewCommentReplyReq req, int userId) {
@@ -33,5 +40,11 @@ public class MgrMsgBroadVoAdatpter {
         msgBroad.setUserId(userId);
         return msgBroad;
 
+    }
+
+    public static List<MgrMsgBroadVo> adaptToMgrMsgBroadVos(List<MsgBroad> rows, Map<Integer, UserSimpleInfo> userMap) {
+        return rows.stream()
+                .map(r -> adaptToMgrMsgBroadVo(r, userMap.get(r.getUserId()), userMap.get(r.getTargetUid()))).collect(
+                        Collectors.toList());
     }
 }

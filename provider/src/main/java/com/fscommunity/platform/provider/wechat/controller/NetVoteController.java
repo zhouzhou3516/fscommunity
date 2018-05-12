@@ -93,14 +93,20 @@ public class NetVoteController {
         }
         Date current = new Date();
         vo.setExpire(false);
-        if (current.before(DateFormatUtil.parse4y2M2d(netVote.getStartDate())) ||
-                current.after(DateFormatUtil.parse4y2M2d(netVote.getEndDate()))) {
+        try {
+            if (current.before(DateFormatUtil.parse4y2M2d(netVote.getStartDate())) ||
+                    current.after(DateFormatUtil.parse4y2M2d(netVote.getEndDate()))) {
+                vo.setExpire(true);
+            }
+        }catch (Exception e){
             vo.setExpire(true);
         }
 
         List<VoteItem> voteItems = netVoteItemService.queryItemsByVoteId(netVote.getId());
         List<NetVoteItemVo> itemVos = NetVoteVoAdptor.adaptToItemVos(voteItems);
         vo.setItems(itemVos);
+        //update article views
+        articleService.updateViewsById(article.getId(),article.getViews()+1);
         return vo;
     }
 

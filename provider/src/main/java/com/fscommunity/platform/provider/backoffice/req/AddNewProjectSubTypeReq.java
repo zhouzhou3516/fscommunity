@@ -11,6 +11,7 @@ public class AddNewProjectSubTypeReq extends Bean {
 
     private ProjectType projectType;
     private String subType;
+    private int orders;
 
     public ProjectType getProjectType() {
         return projectType;
@@ -26,5 +27,13 @@ public class AddNewProjectSubTypeReq extends Bean {
 
     public void setSubType(String subType) {
         this.subType = subType;
+    }
+
+    public int getOrders() {
+        return orders;
+    }
+
+    public void setOrders(int orders) {
+        this.orders = orders;
     }
 }

@@ -25,4 +25,10 @@ public interface CategoryProjectDao {
     List<CategoryProjectInfo> list(@Param("projectType") String projectType, @Param("subType") String subType,
             RowBounds rowBounds);
 
+    /**
+     * 置顶
+     */
+    void stick(@Param("projectId") int projectId, @Param("status") int status);
+
+    List<CategoryProjectInfo> listSticky(String projectType, RowBounds rowBounds);
 }

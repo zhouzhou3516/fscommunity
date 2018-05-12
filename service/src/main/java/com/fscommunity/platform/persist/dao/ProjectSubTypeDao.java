@@ -18,7 +18,6 @@ public interface ProjectSubTypeDao {
 
     int delById(int id);
 
-    int updateProjectSubType(ProjectSubTypeInfo info);
 
     List<ProjectSubTypeInfo> list(@Param("projectType") String projectType);
 
