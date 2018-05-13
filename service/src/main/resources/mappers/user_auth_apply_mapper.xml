@@ -39,7 +39,14 @@
         #{unit},
         #{room},
         #{auditStatus}
-        )
+        ) ON duplicate KEY UPDATE
+        audit_status=VALUES(audit_status),
+        street=VALUES(street),
+        community=VALUES(community),
+        building=VALUES(building),
+        unit=VALUES(unit),
+        room=VALUES(room),
+        update_time=now()
     </insert>
 
     <select id="queryById" parameterType="java.lang.Integer"

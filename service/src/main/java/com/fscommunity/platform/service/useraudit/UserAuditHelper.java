@@ -42,6 +42,7 @@ public class UserAuditHelper {
                 break;
             case AUDITED:
                 abstractAuditState.auditPass();
+                break;
             default:
                 throw new BizException("不合法操作:" + auditStatus);
         }

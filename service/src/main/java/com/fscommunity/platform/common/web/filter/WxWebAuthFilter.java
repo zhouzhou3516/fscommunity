@@ -13,15 +13,16 @@ import com.fscommunity.platform.service.WxUserService;
 import com.google.common.collect.Maps;
 import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.util.pojo.APIResponse;
-import java.util.Map;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @author lixiaoxiong
@@ -67,8 +68,12 @@ public class WxWebAuthFilter implements HandlerInterceptor {
         String openid = CookieManager.SESSION.getCookieValue();
         UserInfo info = userInfoService.queryUserInfoByOpenId(openid);
         if(info == null){
-            info = new UserInfo();
-            info.setAuditStatus(UserAuditStatus.UN_INIT);
+//            info = new UserInfo();
+//            info.setAuditStatus(UserAuditStatus.UN_INIT);
+            ErrorMsgInfo error = errorCodeMap.get(UserAuditStatus.UN_INIT);
+            JsonUtil.instance().writeValue(response.getWriter(),
+                    APIResponse.error(error.getCode(), error.getMsg()));
+            return false;
         }
         if (info.getAuditStatus() != UserAuditStatus.AUDITED) {
             ErrorMsgInfo error = errorCodeMap.get(info.getAuditStatus());

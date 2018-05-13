@@ -1,32 +1,29 @@
 package com.fscommunity.platform.provider.backoffice.controller;
 
-import com.fscommunity.platform.common.pojo.ManUser;
 import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.MsgBroad;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
 import com.fscommunity.platform.provider.backoffice.adapter.MgrMsgBroadVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.CommentAuthReq;
 import com.fscommunity.platform.provider.backoffice.req.MsgBroadListQueryReq;
-import com.fscommunity.platform.provider.backoffice.req.NewCommentReplyReq;
 import com.fscommunity.platform.provider.backoffice.vo.MgrMsgBroadVo;
 import com.fscommunity.platform.service.MsgBroadService;
 import com.fscommunity.platform.service.UserInfoService;
 import com.google.common.collect.Lists;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
-import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description 留言板controller
@@ -47,20 +44,20 @@ public class MsgBroadMgrController {
     @Resource
     private UserInfoService userInfoService;
 
-    @RequestMapping("/reply")
-    @JsonBody
-    @Transactional
-    public void replyComment(@RequestBody NewCommentReplyReq req) {
-        MsgBroad targetCmt = msgBroadService.queryById(req.getTargetId());
-        if (targetCmt.getIsReplied() == 1) {
-            throw new BizException("已经被评论过");
-        }
-        // 更新被评论的评论状态为已评论
-        msgBroadService.updateIsReplied(targetCmt.getId());
-        ManUser user = sessionHolder.currentManUser();
-        MsgBroad newBmsgBroad = MgrMsgBroadVoAdatpter.adaptToBroad(targetCmt, req, user.getId());
-        msgBroadService.saveBroad(newBmsgBroad);
-    }
+//    @RequestMapping("/reply")
+//    @JsonBody
+//    @Transactional
+//    public void replyComment(@RequestBody NewCommentReplyReq req) {
+//        MsgBroad targetCmt = msgBroadService.queryById(req.getTargetId());
+//        if (targetCmt.getIsReplied() == 1) {
+//            throw new BizException("已经被评论过");
+//        }
+//        // 更新被评论的评论状态为已评论
+//        msgBroadService.updateIsReplied(targetCmt.getId());
+//        ManUser user = sessionHolder.currentManUser();
+//        MsgBroad newBmsgBroad = MgrMsgBroadVoAdatpter.adaptToBroad(targetCmt, req, user.getId());
+//        msgBroadService.saveBroad(newBmsgBroad);
+//    }
 
 
     @RequestMapping("/list")

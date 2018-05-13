@@ -30,6 +30,7 @@ public class MgrMsgBroadVoAdatpter {
 
     public static MsgBroad adaptToBroad(MsgBroad targetMsgBroad, NewCommentReplyReq req, int userId) {
         MsgBroad msgBroad = new MsgBroad();
+        msgBroad.setRootCid(targetMsgBroad.getRootCid());
         msgBroad.setContent(req.getReplyContent());
         msgBroad.setIsReply(1);
         msgBroad.setIsReplied(0);

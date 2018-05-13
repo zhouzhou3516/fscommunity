@@ -1,10 +1,11 @@
 package com.fscommunity.platform.persist.dao;
 
 import com.fscommunity.platform.persist.pojo.MsgBroad;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Description
@@ -23,10 +24,11 @@ public interface MsgBroadMapper {
 
     int countList(@Param("authStatus") int authStatus, @Param("replyStatus") int replyStatus);
 
-    int updateAuthStatus(@Param("id") Integer id,@Param("status") Integer authStatus);
+    int updateAuthStatus(@Param("id") Integer id,@Param("authStatus") Integer authStatus);
 
     List<MsgBroad> queryByRootCId(@Param("rootCid") int targetId, RowBounds rowBounds);
     List<MsgBroad> wxlist( RowBounds rowBounds);
+    Integer countMsg();
 
     List<MsgBroad> queryReplyByRootCids(List<Integer> ids);
 

@@ -8,14 +8,40 @@ import com.lxx.app.common.util.pojo.Bean;
  * @version 2018-03-23
  */
 public class MgrUserInfoVo extends Bean{
-
+    private int id;
     private String realName;
     private String cellPhone;
     private UserAuditStatus auditStatus;
     private String auditDesc;
+    private String street;
+    private String community;
     private String building;
     private String unit;
-    private String root;//室
+    private String room;//室
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getRealName() {
         return realName;
@@ -65,11 +91,11 @@ public class MgrUserInfoVo extends Bean{
         this.unit = unit;
     }
 
-    public String getRoot() {
-        return root;
+    public String getRoom() {
+        return room;
     }
 
-    public void setRoot(String root) {
-        this.root = root;
+    public void setRoom(String room) {
+        this.room = room;
     }
 }

@@ -5,12 +5,14 @@ import com.fscommunity.platform.persist.pojo.MsgBroad;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.lxx.app.common.util.page.PageRequest;
-import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author liqingzhou on 18/4/30.
@@ -79,7 +81,7 @@ public class MsgBroadService {
 
 
     public void updateAuthStatus(int commentId, int code) {
-
+        msgBroadMapper.updateAuthStatus(commentId, code);
     }
 
     public List<MsgBroad> queryByRootCId(int rootCid, PageRequest pageRequest) {
@@ -88,6 +90,19 @@ public class MsgBroadService {
 
     public List<MsgBroad> wxlist(PageRequest pageRequest) {
         return msgBroadMapper.wxlist(new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+    }
+
+    public List<MsgBroad> wxlistOfAuthSucc(PageRequest pageRequest) {
+        List<MsgBroad> wxlist = msgBroadMapper.wxlist(new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+        return wxlist.stream().filter(broad -> broad.getIsShowed() == 1).collect(Collectors.toList());
+    }
+
+    public int countMsg() {
+        Integer integer = msgBroadMapper.countMsg();
+        if (integer == null) {
+            integer = 0;
+        }
+        return integer;
     }
 
     public List<MsgBroad> queryReplyByRootCids(List<Integer> ids) {

@@ -16,9 +16,12 @@ public class MgrUserInfoVoAdaptor {
         vo.setAuditDesc(userInfo.getAuditStatus().getDesc());
         vo.setRealName(userInfo.getRealName());
         vo.setCellPhone(userInfo.getCellPhone());
-        vo.setBuilding(userInfo.getAddressInfo().getAddress1());
-        vo.setUnit(userInfo.getAddressInfo().getAddress2());
-        vo.setRoot(userInfo.getAddressInfo().getAddress3());
+        vo.setBuilding(userInfo.getBuilding());
+        vo.setUnit(userInfo.getUnit());
+        vo.setRoom(userInfo.getRoom());
+        vo.setId(userInfo.getId());
+        vo.setStreet(userInfo.getStreat());
+        vo.setCommunity(userInfo.getCommunity());
         return vo;
     }
 

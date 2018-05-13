@@ -143,24 +143,26 @@ public class UserCenterController {
         if(user.getAuditStatus() == UserAuditStatus.AUDITED){
             throw new BizException("已经审核过，无需重复审核");
         }
-        if(user.getAuditStatus() == UserAuditStatus.NOT_PASS){
-            return APIResponse.error(102, "您审核未通过");
-        }
+//        if(user.getAuditStatus() == UserAuditStatus.NOT_PASS){
+//            return APIResponse.error(102, "您审核未通过");
+//        }
         if(user.getAuditStatus() == UserAuditStatus.UN_AUDIT){
             throw new BizException("审核中，请等待");
         }
         UserAuthApply apply = UserAuthApplyAdapter.adapter(req);
         UserAuthVo vo = UserAuthApplyAdapter.adapterToVo(req);
 
+        String openId = sessionHolder.currentOpenId();
         if (!bizCheck(user, req)) {
             apply.setAuditStatus(UserAuditStatus.UN_AUDIT);
             authApplyService.save(apply);
             user.setAuditStatus(UserAuditStatus.UN_AUDIT);
+            user.setOpenId(openId);
             userInfoService.saveUserInfo(user);
             vo.setUserAuditStatus(UserAuditStatus.UN_AUDIT);
-            return APIResponse.success(vo);
+            return APIResponse.error(10000, "您信息与后台不匹配，需要管理员审核");
         }
-        String openId = sessionHolder.currentOpenId();
+
         WxUser wxUser = wxUserService.queryWxUserByOpenid(openId);
         user.setOpenId(openId);
         UserBaseinfo baseinfo = user.getBaseinfo();
