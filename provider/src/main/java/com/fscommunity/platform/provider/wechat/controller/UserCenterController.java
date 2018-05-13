@@ -16,6 +16,7 @@ import com.fscommunity.platform.service.UserInfoService;
 import com.fscommunity.platform.service.UserSignInfoService;
 import com.fscommunity.platform.service.WxUserService;
 import com.lxx.app.common.util.DateFormatUtil;
+import com.lxx.app.common.util.pojo.APIResponse;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
 import org.apache.commons.lang3.StringUtils;
@@ -134,7 +135,7 @@ public class UserCenterController {
     @RequestMapping("authApply")
     @JsonBody
     @Transactional(rollbackFor = Throwable.class)
-    public UserAuthVo auth(@RequestBody  UserAuthReq req) {
+    public APIResponse<UserAuthVo> auth(@RequestBody  UserAuthReq req) {
         UserInfo user = userInfoService.queryByIdCard(req.getIdCard());
         if (user == null) {
             throw new BizException("没有您的信息,不能认证");
@@ -143,7 +144,7 @@ public class UserCenterController {
             throw new BizException("已经审核过，无需重复审核");
         }
         if(user.getAuditStatus() == UserAuditStatus.NOT_PASS){
-            throw new BizException("您审核未通过");
+            return APIResponse.error(102, "您审核未通过");
         }
         if(user.getAuditStatus() == UserAuditStatus.UN_AUDIT){
             throw new BizException("审核中，请等待");
@@ -157,7 +158,7 @@ public class UserCenterController {
             user.setAuditStatus(UserAuditStatus.UN_AUDIT);
             userInfoService.saveUserInfo(user);
             vo.setUserAuditStatus(UserAuditStatus.UN_AUDIT);
-            return vo;
+            return APIResponse.success(vo);
         }
         String openId = sessionHolder.currentOpenId();
         WxUser wxUser = wxUserService.queryWxUserByOpenid(openId);
@@ -168,7 +169,7 @@ public class UserCenterController {
         user.setAuditStatus(UserAuditStatus.AUDITED);
         userInfoService.saveUserInfo(user);
         vo.setUserAuditStatus(UserAuditStatus.AUDITED);
-        return vo;
+        return APIResponse.success(vo);
     }
 
     private UserBaseinfo updateBaseInfo(UserBaseinfo baseinfo, WxUser wxUser) {
