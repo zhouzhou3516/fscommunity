@@ -131,6 +131,12 @@ public class UserInfo extends Bean {
 
     private UserBizInfo bizInfo= new UserBizInfo();
 
+    private String streat;
+    private String community;
+    private String building;
+    private String unit;
+    private String room;
+
     private Date createTime;
 
     private Date updateTime;
@@ -358,5 +364,45 @@ public class UserInfo extends Bean {
 
     public void setLevel(UserLevel level) {
         this.level = level;
+    }
+
+    public String getStreat() {
+        return streat;
+    }
+
+    public void setStreat(String streat) {
+        this.streat = streat;
+    }
+
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
     }
 }

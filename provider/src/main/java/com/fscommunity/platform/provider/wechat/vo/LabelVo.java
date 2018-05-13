@@ -8,16 +8,16 @@ import java.util.List;
  * @version 2018-05-12
  */
 public class LabelVo {
-    private String label;
+    private String text;
     private String value;
     private List<LabelVo> subLabels = new ArrayList<>();
 
-    public String getLabel() {
-        return label;
+    public String getText() {
+        return text;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getValue() {

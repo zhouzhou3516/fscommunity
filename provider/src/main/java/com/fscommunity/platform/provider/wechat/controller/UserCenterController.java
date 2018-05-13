@@ -4,13 +4,7 @@ import com.fscommunity.platform.common.pojo.SessionUserInfo;
 import com.fscommunity.platform.common.util.UserIntergralCalulator;
 import com.fscommunity.platform.common.util.UserLevelCalulator;
 import com.fscommunity.platform.common.web.SessionHolder;
-import com.fscommunity.platform.persist.pojo.UserAuditStatus;
-import com.fscommunity.platform.persist.pojo.UserAuthApply;
-import com.fscommunity.platform.persist.pojo.UserBaseinfo;
-import com.fscommunity.platform.persist.pojo.UserInfo;
-import com.fscommunity.platform.persist.pojo.UserLevel;
-import com.fscommunity.platform.persist.pojo.UserSignInfo;
-import com.fscommunity.platform.persist.pojo.WxUser;
+import com.fscommunity.platform.persist.pojo.*;
 import com.fscommunity.platform.provider.wechat.req.UserAuthReq;
 import com.fscommunity.platform.provider.wechat.vo.SignResultVo;
 import com.fscommunity.platform.provider.wechat.vo.UserAuthVo;
@@ -24,14 +18,15 @@ import com.fscommunity.platform.service.WxUserService;
 import com.lxx.app.common.util.DateFormatUtil;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.util.Date;
-import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @author lixiaoxiong
@@ -184,11 +179,11 @@ public class UserCenterController {
 
     private boolean bizCheck(UserInfo user, UserAuthReq req) {
         if (StringUtils.equals(req.getRealName(), user.getRealName())
-                && StringUtils.equals(req.getStreet(), user.getAddressInfo().getStreet())
-                && StringUtils.equals(req.getCommunity(), user.getAddressInfo().getCommunity())
-                && StringUtils.equals(req.getBuilding(), user.getAddressInfo().getBuilding())
-                && StringUtils.equals(req.getUnit(), user.getAddressInfo().getUnit())
-                && StringUtils.equals(req.getRoom(), user.getAddressInfo().getRoom())
+                && StringUtils.equals(req.getStreet(), user.getStreat())
+                && StringUtils.equals(req.getCommunity(), user.getCommunity())
+                && StringUtils.equals(req.getBuilding(), user.getBuilding())
+                && StringUtils.equals(req.getUnit(), user.getUnit())
+                && StringUtils.equals(req.getRoom(), user.getRoom())
                 ) {
             return true;
         }

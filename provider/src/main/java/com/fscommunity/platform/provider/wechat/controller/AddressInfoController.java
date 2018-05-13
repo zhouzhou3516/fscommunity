@@ -56,14 +56,14 @@ public class AddressInfoController {
         Map<String, LabelVo> unitsMap = new HashMap<>();
         for (String key : unitRoomMap.keySet()) {
             LabelVo unit = new LabelVo();
-            unit.setLabel(key);
+            unit.setText(key);
             unit.setValue(key);
 
             Collection<String> rooms = unitRoomMap.get(key);
             for (String room : rooms) {
                 LabelVo roomLabel = new LabelVo();
                 roomLabel.setValue(room);
-                roomLabel.setLabel(room);
+                roomLabel.setText(room);
                 unit.getSubLabels().add(roomLabel);
             }
             unitsMap.put(key, unit);
@@ -73,7 +73,7 @@ public class AddressInfoController {
         Map<String, LabelVo> buildsMap = new HashMap<>();
         for (String key : buildingUnitMap.keySet()) {
             LabelVo building = new LabelVo();
-            building.setLabel(key);
+            building.setText(key);
             building.setValue(key);
 
             Collection<String> units = buildingUnitMap.get(key);
@@ -87,7 +87,7 @@ public class AddressInfoController {
         Map<String, LabelVo> commsMap = new HashMap<>();
         for (String key : commBuildingMap.keySet()) {
             LabelVo comm = new LabelVo();
-            comm.setLabel(key);
+            comm.setText(key);
             comm.setValue(key);
 
             Collection<String> builds = commBuildingMap.get(key);
@@ -101,7 +101,7 @@ public class AddressInfoController {
         Map<String, LabelVo> streatsMap = new HashMap<>();
         for (String key : streatCommMap.keySet()) {
             LabelVo streatLabel = new LabelVo();
-            streatLabel.setLabel(key);
+            streatLabel.setText(key);
             streatLabel.setValue(key);
 
             Collection<String> comms = streatCommMap.get(key);
