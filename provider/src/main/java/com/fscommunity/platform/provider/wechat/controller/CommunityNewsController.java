@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -74,7 +75,7 @@ public class CommunityNewsController {
 
     @JsonBody
     @RequestMapping("listByType")
-    public BaseListVo listByType(String type, int currentPage, int pageSize) {
+    public BaseListVo listByType( String type, int currentPage, int pageSize) {
         List<CategoryProjectInfo> infos = categoryProjectService
                 .list(ProjectType.CONSULT.name(), type, new PageRequest(currentPage, pageSize));
         BaseListVo vo = new BaseListVo();
