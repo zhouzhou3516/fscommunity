@@ -30,6 +30,7 @@
             <mvc:exclude-mapping path="/fscommunity/member/verify"/>
             <mvc:exclude-mapping path="/fscommunity/man/**"/>
             <mvc:exclude-mapping path="/fscommunity/test/**"/>
+            <mvc:exclude-mapping path="/fscommunity/wechat/address/comms"/>
             <bean class="com.fscommunity.platform.common.web.filter.WxWebAuthFilter"/>
         </mvc:interceptor>
         <mvc:interceptor>
