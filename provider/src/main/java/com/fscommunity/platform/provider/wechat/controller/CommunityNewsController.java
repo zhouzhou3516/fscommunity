@@ -53,6 +53,7 @@ public class CommunityNewsController {
     private UserInfoService userInfoService;
 
     @RequestMapping("/list")
+    @JsonBody
     public CommunityNewsListVo list(int currentPage, int pageSize) {
         List<CategoryProjectInfo> list = categoryProjectService.listSticky(
                 ProjectType.CONSULT.name(), new PageRequest(currentPage, pageSize));
