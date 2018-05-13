@@ -28,9 +28,10 @@ public class AddNewListingReq extends Bean {
     private String content;
 
     /**
-     * 语音留言
+     * 微信语音mediaId
      */
-    private String voiceUrl;
+    private String voiceWxMediaId;
+
     /**
      * 上传图片,最多三个
      */
@@ -38,7 +39,7 @@ public class AddNewListingReq extends Bean {
     /**
      * 视频
      */
-    private String videoUrl;
+    private String videoOssObjectName;
 
     public int getTargetId() {
         return targetId;
@@ -72,12 +73,12 @@ public class AddNewListingReq extends Bean {
         this.content = content;
     }
 
-    public String getVoiceUrl() {
-        return voiceUrl;
+    public String getVoiceWxMediaId() {
+        return voiceWxMediaId;
     }
 
-    public void setVoiceUrl(String voiceUrl) {
-        this.voiceUrl = voiceUrl;
+    public void setVoiceWxMediaId(String voiceWxMediaId) {
+        this.voiceWxMediaId = voiceWxMediaId;
     }
 
     public List<String> getImgUrls() {
@@ -88,11 +89,11 @@ public class AddNewListingReq extends Bean {
         this.imgUrls = imgUrls;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
+    public String getVideoOssObjectName() {
+        return videoOssObjectName;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
+    public void setVideoOssObjectName(String videoOssObjectName) {
+        this.videoOssObjectName = videoOssObjectName;
     }
 }

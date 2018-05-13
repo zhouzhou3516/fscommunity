@@ -3,6 +3,7 @@ package com.fscommunity.platform.provider.wechat.vo;
 import com.fscommunity.platform.persist.pojo.AgendaRoomInfo;
 import com.fscommunity.platform.persist.pojo.AnnouncementInfo;
 import com.fscommunity.platform.persist.pojo.Article;
+import com.fscommunity.platform.persist.pojo.CategoryProjectInfo;
 import com.fscommunity.platform.persist.pojo.Comment;
 import com.fscommunity.platform.persist.pojo.CommentType;
 import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
@@ -20,20 +21,22 @@ public class BasesDetailVoAdapter {
             List<Comment> comments, List<UserSimpleInfo> simpleInfos) {
         BaseContentDetailVo vo = new BaseContentDetailVo();
         vo.setArticleId(article.getId());
-        vo.setTitle(info.getTitle());
         vo.setContent(article.getContent());
+        vo.setTitle(article.getName());
         vo.setComments(adaptComments(comments, simpleInfos));
         return vo;
     }
+
     public static BaseContentDetailVo adaptAgendaRoom(AgendaRoomInfo info, Article article,
             List<Comment> comments, List<UserSimpleInfo> simpleInfos) {
         BaseContentDetailVo vo = new BaseContentDetailVo();
+        vo.setTitle(article.getName());
         vo.setArticleId(article.getId());
-        vo.setTitle(info.getTitle());
         vo.setContent(article.getContent());
         vo.setComments(adaptComments(comments, simpleInfos));
         return vo;
     }
+
     private static List<WxCommentVo> adaptComments(List<Comment> comments,
             List<UserSimpleInfo> simpleInfos) {
         Map<Integer, UserSimpleInfo> simpleInfoMap = simpleInfos.stream()
@@ -57,4 +60,13 @@ public class BasesDetailVoAdapter {
     }
 
 
+    public static BaseContentDetailVo adaptNews(CategoryProjectInfo info, Article article, List<Comment> comments,
+            List<UserSimpleInfo> simpleInfos) {
+        BaseContentDetailVo vo = new BaseContentDetailVo();
+        vo.setTitle(article.getName());
+        vo.setContent(article.getContent());
+        vo.setArticleId(article.getId());
+        vo.setComments(adaptComments(comments, simpleInfos));
+        return vo;
+    }
 }

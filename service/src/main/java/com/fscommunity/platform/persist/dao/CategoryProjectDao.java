@@ -33,5 +33,5 @@ public interface CategoryProjectDao {
      */
     void stick(@Param("projectId") int projectId, @Param("status") int status);
 
-    List<CategoryProjectInfo> listSticky(String projectType, RowBounds rowBounds);
+    List<CategoryProjectInfo> listSticky(@Param("projectType") String projectType, RowBounds rowBounds);
 }

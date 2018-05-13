@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.lxx.app.common.util.http.base.AsyncHandler;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
 import com.lxx.app.common.util.http.base.HttpRequest;
+import com.lxx.app.common.util.http.base.MultipartData;
 import com.lxx.app.common.util.http.base.SyncHttpResponse;
 import java.io.Closeable;
 import java.io.IOException;
@@ -20,7 +21,6 @@ public interface HttpClient extends Closeable {
     SyncHttpResponse syncPost(String url, byte[] bodyData) throws IOException;
 
     SyncHttpResponse syncRequest(HttpRequest request) throws IOException;
-
     // async
 
     ListenableFuture<AsyncHttpResponse> asyncGet(String url);
@@ -45,4 +45,6 @@ public interface HttpClient extends Closeable {
     ListenableFuture<AsyncHttpResponse> asyncRequest(HttpRequest request);
 
     ListenableFuture<AsyncHttpResponse> asyncRequest(HttpRequest request, AsyncHandler handler);
+
+    ListenableFuture<AsyncHttpResponse> asyncPostFile(String url, Map<String, MultipartData> fileParam);
 }

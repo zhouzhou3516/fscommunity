@@ -4,7 +4,9 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.lxx.app.common.util.http.DefaultHttpClient;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
 import com.lxx.app.common.util.http.base.ClientConfig;
+import com.lxx.app.common.util.http.base.MultipartData;
 import com.lxx.app.common.util.json.JsonUtil;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,5 +36,9 @@ public class HttpClientUtil {
 
     public ListenableFuture<AsyncHttpResponse> syncPost(String url, Object param) {
         return httpclient.asyncPost(url, JsonUtil.of(param));
+    }
+
+    public ListenableFuture<AsyncHttpResponse> asyncPostFile(String url, Map<String, MultipartData> multipartParam) {
+        return httpclient.asyncPostFile(url, multipartParam);
     }
 }
