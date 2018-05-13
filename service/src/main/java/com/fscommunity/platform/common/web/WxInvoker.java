@@ -2,11 +2,7 @@ package com.fscommunity.platform.common.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fscommunity.platform.common.constant.WxMediaType;
-import com.fscommunity.platform.common.pojo.WxAccessToken;
-import com.fscommunity.platform.common.pojo.WxJsapiTicket;
-import com.fscommunity.platform.common.pojo.WxUserExt;
-import com.fscommunity.platform.common.pojo.WxWebAuthErrorResp;
-import com.fscommunity.platform.common.pojo.WxWebAuthToken;
+import com.fscommunity.platform.common.pojo.*;
 import com.fscommunity.platform.common.util.HttpClientUtil;
 import com.fscommunity.platform.persist.pojo.WxUser;
 import com.fscommunity.platform.service.WxTokenService;
@@ -19,6 +15,12 @@ import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
 import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.util.pojo.BizException;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,11 +29,6 @@ import java.text.MessageFormat;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import javax.annotation.Resource;
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 /**
  * @author lixiaoxiong
@@ -221,7 +218,7 @@ public class WxInvoker {
             codeUrl.append(OPEN_BASE_URL).append(URL_SEP)
                     .append("appid=").append(APP_ID).append(URL_PARAM_SEP)
                     .append("redirect_uri=").append(URLEncoder
-                    .encode("http://www.community-cloud.cn/ysgh/wx/auth/code/callback", Charsets.UTF_8.name()))
+                    .encode("http://www.community-cloud.cn/fscommunity/wx/auth/code/callback", Charsets.UTF_8.name()))
                     .append(URL_PARAM_SEP)
                     .append("response_type=code").append(URL_PARAM_SEP)
                     .append("scope=").append("snsapi_userinfo").append(URL_PARAM_SEP)

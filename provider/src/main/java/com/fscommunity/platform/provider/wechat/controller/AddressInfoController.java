@@ -33,7 +33,8 @@ public class AddressInfoController {
 
     @RequestMapping("/comms")
     @JsonBody
-    public List<LabelVo> queryCommunityByStreat(String streat) {
+    public List<LabelVo> queryCommunityByStreat() {
+        String streat = "星城街道";
         List<CommunityInfo> infoList = userInfoService.queryCommunityByStreat(streat);
         if (CollectionUtils.isEmpty(infoList)) {
             return new ArrayList<LabelVo>() {
