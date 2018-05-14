@@ -72,7 +72,7 @@ public class UserCenterController {
         SessionUserInfo info = sessionHolder.currentUser();
         //1. 校验今日签名是否完成
         UserSignInfo staffSignInfo = userSignInfoService
-                .queryStaffSign(1, DateFormatUtil.format4y2M2d(new Date()));
+                .queryStaffSign(info.getUserId(), DateFormatUtil.format4y2M2d(new Date()));
         if (staffSignInfo != null) {
             throw new BizException("今天已经签到完成");
         }
