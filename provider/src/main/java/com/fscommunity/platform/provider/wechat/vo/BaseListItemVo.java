@@ -7,7 +7,7 @@ import com.lxx.app.common.util.pojo.Bean;
  */
 public class BaseListItemVo extends Bean {
 
-    private int id;//article id
+    private int id;
     private String title;
     private String articleName;
     private String shortContent;

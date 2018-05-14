@@ -6,10 +6,11 @@ import com.fscommunity.platform.persist.pojo.Article;
 import com.fscommunity.platform.persist.pojo.CategoryProjectInfo;
 import com.fscommunity.platform.provider.wechat.vo.BaseListItemVo;
 import com.lxx.app.common.util.DateFormatUtil;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author liqingzhou on 18/5/3
@@ -29,7 +30,7 @@ public class BaseListItemVoWechatAdapter {
     private static BaseListItemVo adaptToListItemVo(AnnouncementInfo info, Article article) {
         BaseListItemVo vo = new BaseListItemVo();
         vo.setTitle(info.getTitle());
-        vo.setId(info.getArticleId());
+        vo.setId(info.getId());
         vo.setArticleName(article.getName());
         vo.setCoverUrl(article.getCoverUrl());
         vo.setViewCount(article.getViews());
