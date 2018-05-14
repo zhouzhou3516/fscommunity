@@ -39,6 +39,8 @@ public class UserDetailVo {
      */
     private int integral;
 
+    private String signRule;
+
     /**
      * 系统消息
      */
@@ -58,6 +60,14 @@ public class UserDetailVo {
      * 收到的评论(数据结构待定)
      */
     private List<String> recvComments = new ArrayList<>();
+
+    public String getSignRule() {
+        return signRule;
+    }
+
+    public void setSignRule(String signRule) {
+        this.signRule = signRule;
+    }
 
     public String getUserId() {
         return userId;
