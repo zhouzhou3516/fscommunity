@@ -31,6 +31,7 @@ public class BaseListItemVoWechatAdapter {
         BaseListItemVo vo = new BaseListItemVo();
         vo.setTitle(info.getTitle());
         vo.setId(info.getId());
+        vo.setArticleId(info.getArticleId());
         vo.setArticleName(article.getName());
         vo.setCoverUrl(article.getCoverUrl());
         vo.setViewCount(article.getViews());

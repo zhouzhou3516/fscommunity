@@ -8,6 +8,7 @@ import com.lxx.app.common.util.pojo.Bean;
 public class BaseListItemVo extends Bean {
 
     private int id;
+    private int articleId;
     private String title;
     private String articleName;
     private String shortContent;
@@ -78,5 +79,13 @@ public class BaseListItemVo extends Bean {
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public int getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 }

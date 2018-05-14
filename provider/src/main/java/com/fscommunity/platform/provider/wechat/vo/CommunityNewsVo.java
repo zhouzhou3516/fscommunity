@@ -9,6 +9,7 @@ import java.util.Date;
 public class CommunityNewsVo extends Bean {
 
     private int communityNewsId;
+    private int articleId;
     private String type;
     private String title;
     private String content;
@@ -79,5 +80,13 @@ public class CommunityNewsVo extends Bean {
 
     public void setReplyCount(int replyCount) {
         this.replyCount = replyCount;
+    }
+
+    public int getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 }

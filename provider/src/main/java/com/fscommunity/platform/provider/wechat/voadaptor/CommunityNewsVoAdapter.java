@@ -11,6 +11,7 @@ public class CommunityNewsVoAdapter {
 
     public static CommunityNewsVo adapt(CategoryProjectInfo topNews, Article topArticle, int replyCount) {
         CommunityNewsVo vo = new CommunityNewsVo();
+        vo.setArticleId(topNews.getArticleId());
         vo.setCommunityNewsId(topNews.getId());
         vo.setTitle(topNews.getTitle());
         vo.setType(topNews.getSubType());

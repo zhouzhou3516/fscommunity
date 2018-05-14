@@ -128,6 +128,7 @@ public class PartyWorkController {
         vo.setTag(article.getTag());
         vo.setCoverUrl(article.getCoverUrl());
         vo.setViewCount(article.getViews());
+        vo.setArticleId(article.getId());
         return vo;
     }
 }
