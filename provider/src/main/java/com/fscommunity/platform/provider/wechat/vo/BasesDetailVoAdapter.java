@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public class BasesDetailVoAdapter {
 
-    public static BaseContentDetailVo adaptAnnounce(AnnouncementInfo info, Article article,
+    public static BaseContentDetailVo adaptAnnounce( Article article,
             List<Comment> comments, List<UserSimpleInfo> simpleInfos) {
         BaseContentDetailVo vo = new BaseContentDetailVo();
         vo.setArticleId(article.getId());
@@ -27,7 +27,7 @@ public class BasesDetailVoAdapter {
         return vo;
     }
 
-    public static BaseContentDetailVo adaptAgendaRoom(AgendaRoomInfo info, Article article,
+    public static BaseContentDetailVo adaptAgendaRoom( Article article,
             List<Comment> comments, List<UserSimpleInfo> simpleInfos) {
         BaseContentDetailVo vo = new BaseContentDetailVo();
         vo.setTitle(article.getName());

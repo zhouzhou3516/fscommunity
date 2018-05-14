@@ -64,13 +64,13 @@ public class AnnouncementController {
     @JsonBody
     @RequestMapping("detail")
     public BaseContentDetailVo detailVo(int id) {
-        AnnouncementInfo info = announcementService.queryById(id);
-        Article article = articleService.selectById(info.getArticleId());
+       // AnnouncementInfo info = announcementService.queryById(id);
+        Article article = articleService.selectById(id);
         List<Comment> comments = commentService.getByArticleId(article.getId(), new PageRequest(1, 500));
         List<Integer> userIds = comments.stream().map(comment -> comment.getUserId()).distinct()
                 .collect(Collectors.toList());
         List<UserSimpleInfo> simpleInfos = userInfoService.querySimpleUsersByIds(userIds);
-        BaseContentDetailVo detailVo = BasesDetailVoAdapter.adaptAnnounce(info, article, comments, simpleInfos);
+        BaseContentDetailVo detailVo = BasesDetailVoAdapter.adaptAnnounce( article, comments, simpleInfos);
         //update article views
         articleService.updateViewsById(article.getId(),article.getViews()+1);
         return detailVo;
