@@ -70,7 +70,8 @@ public class BaseListItemVoWechatAdapter {
 
     private static BaseListItemVo adaptToNewsListItemVo(CategoryProjectInfo info, Article article) {
         BaseListItemVo vo = new BaseListItemVo();
-        vo.setId(info.getArticleId());
+        vo.setId(info.getId());
+        vo.setArticleId(info.getArticleId());
         vo.setTitle(info.getTitle());
         vo.setArticleName(article.getName());
         vo.setCoverUrl(article.getCoverUrl());

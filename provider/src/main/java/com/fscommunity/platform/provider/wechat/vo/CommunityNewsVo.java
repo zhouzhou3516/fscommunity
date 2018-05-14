@@ -12,7 +12,7 @@ public class CommunityNewsVo extends Bean {
     private int articleId;
     private String type;
     private String title;
-    private String content;
+    private String shortContent;
     private String coverUrl;
     private Date publishTime;
     private int viewCount;
@@ -42,12 +42,12 @@ public class CommunityNewsVo extends Bean {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getShortContent() {
+        return shortContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setShortContent(String shortContent) {
+        this.shortContent = shortContent;
     }
 
     public String getCoverUrl() {

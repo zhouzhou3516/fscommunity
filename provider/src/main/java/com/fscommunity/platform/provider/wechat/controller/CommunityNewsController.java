@@ -54,9 +54,9 @@ public class CommunityNewsController {
 
     @RequestMapping("/list")
     @JsonBody
-    public CommunityNewsListVo list(int currentPage, int pageSize) {
+    public CommunityNewsListVo list() {
         List<CategoryProjectInfo> list = categoryProjectService.listSticky(
-                ProjectType.CONSULT.name(), new PageRequest(currentPage, pageSize));
+                ProjectType.CONSULT.name(), new PageRequest(1, 1000));
         Map<String, List<CategoryProjectInfo>> map = Safes.of(list).stream()
                 .collect(Collectors.groupingBy(CategoryProjectInfo::getSubType));
 
