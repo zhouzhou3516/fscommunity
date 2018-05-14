@@ -9,8 +9,8 @@ import com.fscommunity.platform.provider.backoffice.vo.ArticleVo;
 import com.fscommunity.platform.provider.wechat.req.PartyWorkArticleListReq;
 import com.fscommunity.platform.provider.wechat.vo.BaseListItemVo;
 import com.fscommunity.platform.provider.wechat.vo.ChannelSubTypeVo;
+import com.fscommunity.platform.provider.wechat.vo.LabelVo;
 import com.fscommunity.platform.provider.wechat.vo.PartyWorkArListVo;
-import com.fscommunity.platform.provider.wechat.vo.PartyWorkMainPageVo;
 import com.fscommunity.platform.provider.wechat.voadaptor.ChannelSubTypeVoAdapter;
 import com.fscommunity.platform.service.ArticleService;
 import com.fscommunity.platform.service.CategoryProjectService;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author chao.zhu
@@ -56,32 +55,51 @@ public class PartyWorkController {
         return ChannelSubTypeVoAdapter.adapt(list);
     }
 
+//    @JsonBody
+//    @RequestMapping("/index")
+//    public PartyWorkMainPageVo index() {
+//        PartyWorkMainPageVo vo = new PartyWorkMainPageVo();
+//        List<ProjectSubTypeInfo> types = subTypeService.list(ProjectType.PARTY_WORK.name());
+//        if (CollectionUtils.isEmpty(types)) {
+//            return vo;
+//        }
+//
+//        //1. 办事指南
+//        vo.setGuides(types.stream().map(ProjectSubTypeInfo::getSubType)
+//            .collect(Collectors.toList()));
+//
+//        //2. 热点追踪
+//        List<CategoryProjectInfo> infos = categoryProjectService.listTopByProjectType(ProjectType.PARTY_WORK.name());
+//        List<BaseListItemVo> vos = new ArrayList<>();
+//        for (CategoryProjectInfo info : infos) {
+//            Article article = articleService.selectById(info.getArticleId());
+//            if (article == null) {
+//                continue;
+//            }
+//
+//            vos.add(buildItemFromArticle(article));
+//        }
+//        vo.setHotspots(vos);
+//        return vo;
+//    }
+
     @JsonBody
     @RequestMapping("/index")
-    public PartyWorkMainPageVo index() {
-        PartyWorkMainPageVo vo = new PartyWorkMainPageVo();
+    public List<LabelVo> queryTypes() {
+        List<LabelVo> vos = new ArrayList<>();
         List<ProjectSubTypeInfo> types = subTypeService.list(ProjectType.PARTY_WORK.name());
         if (CollectionUtils.isEmpty(types)) {
-            return vo;
+            return vos;
         }
 
-        //1. 办事指南
-        vo.setGuides(types.stream().map(ProjectSubTypeInfo::getSubType)
-            .collect(Collectors.toList()));
-
-        //2. 热点追踪
-        List<CategoryProjectInfo> infos = categoryProjectService.listTopByProjectType(ProjectType.PARTY_WORK.name());
-        List<BaseListItemVo> vos = new ArrayList<>();
-        for (CategoryProjectInfo info : infos) {
-            Article article = articleService.selectById(info.getArticleId());
-            if (article == null) {
-                continue;
-            }
-
-            vos.add(buildItemFromArticle(article));
+        for (ProjectSubTypeInfo typeInfo : types) {
+            LabelVo vo = new LabelVo();
+            vo.setText(typeInfo.getSubType());
+            vo.setValue(typeInfo.getSubType());
+            vos.add(vo);
         }
-        vo.setHotspots(vos);
-        return vo;
+
+        return vos;
     }
 
     @JsonBody
