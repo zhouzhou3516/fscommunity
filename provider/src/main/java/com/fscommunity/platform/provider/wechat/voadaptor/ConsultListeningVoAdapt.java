@@ -2,13 +2,14 @@ package com.fscommunity.platform.provider.wechat.voadaptor;
 
 import com.fscommunity.platform.persist.pojo.ConsultListeningInfo;
 import com.fscommunity.platform.provider.wechat.req.AddNewListingReq;
-import com.lxx.app.common.util.json.JsonUtil;
+import com.google.common.base.Joiner;
 
 /**
  * @author liqingzhou on 18/5/8
  */
 public class ConsultListeningVoAdapt {
 
+    private static final Joiner COMM_JOINER  = Joiner.on(",");
 
     public static ConsultListeningInfo adapt(AddNewListingReq req, String voiceUrl, String videoUrl) {
         ConsultListeningInfo info = new ConsultListeningInfo();
@@ -18,7 +19,8 @@ public class ConsultListeningVoAdapt {
         info.setContent(req.getContent());
         info.setReplyContent("");
         info.setVoiceUrl(voiceUrl);
-        info.setImgUrls(JsonUtil.of(req.getImgUrls()));
+        String join = COMM_JOINER.join(req.getImgUrls());
+        info.setImgUrls(join);
         info.setVideoUrl(videoUrl);
         return info;
     }

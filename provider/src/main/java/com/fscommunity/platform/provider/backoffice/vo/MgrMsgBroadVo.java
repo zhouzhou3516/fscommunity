@@ -4,7 +4,6 @@ import com.fscommunity.platform.persist.pojo.MsgBroad;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Description 留言板
@@ -67,6 +66,16 @@ public class MgrMsgBroadVo implements Serializable {
      */
     private Integer isShowed;
 
+    private String authStatus;
+
+    public String getAuthStatus() {
+        return authStatus;
+    }
+
+    public void setAuthStatus(String authStatus) {
+        this.authStatus = authStatus;
+    }
+
     public MgrMsgBroadVo(MsgBroad msgBroad) {
         this.id = msgBroad.getId();
         this.content = msgBroad.getContent();
@@ -76,6 +85,7 @@ public class MgrMsgBroadVo implements Serializable {
         this.targetUid = msgBroad.getTargetUid();
         this.isReply = msgBroad.getIsReply();
         this.isShowed = msgBroad.getIsShowed();
+        this.authStatus = msgBroad.getIsShowed() == 1? "已审核通过" : "未审核通过";
     }
 
     public Integer getId() {

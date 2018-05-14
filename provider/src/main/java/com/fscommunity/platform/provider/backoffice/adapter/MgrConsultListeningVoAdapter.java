@@ -3,9 +3,10 @@ package com.fscommunity.platform.provider.backoffice.adapter;
 import com.fscommunity.platform.persist.pojo.ConsultListeningInfo;
 import com.fscommunity.platform.provider.backoffice.vo.MgrConsultListeningVo;
 import com.google.common.base.Splitter;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author liqingzhou on 18/5/1
@@ -16,8 +17,8 @@ public class MgrConsultListeningVoAdapter {
 
     public static MgrConsultListeningVo adaptToVo(ConsultListeningInfo info) {
         MgrConsultListeningVo vo = new MgrConsultListeningVo();
-        vo.setChannelType(info.getChannelType());
-        vo.setConsultType(info.getConsultType());
+        vo.setChannelType(info.getChannelType().getDesc());
+        vo.setConsultType(info.getConsultType().getDesc());
         vo.setContent(info.getContent());
         vo.setReplyContent(info.getReplyContent());
         vo.setVoiceUrl(info.getVoiceUrl());

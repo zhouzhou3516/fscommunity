@@ -2,12 +2,7 @@ package com.fscommunity.platform.provider.backoffice.controller;
 
 import com.fscommunity.platform.common.pojo.ManUser;
 import com.fscommunity.platform.common.web.SessionHolder;
-import com.fscommunity.platform.persist.pojo.Article;
-import com.fscommunity.platform.persist.pojo.Comment;
-import com.fscommunity.platform.persist.pojo.CommentAuthStatus;
-import com.fscommunity.platform.persist.pojo.CommentReplyStatus;
-import com.fscommunity.platform.persist.pojo.CommentType;
-import com.fscommunity.platform.persist.pojo.UserSimpleInfo;
+import com.fscommunity.platform.persist.pojo.*;
 import com.fscommunity.platform.provider.backoffice.adapter.CommentVoAdatpter;
 import com.fscommunity.platform.provider.backoffice.req.CommentAuthReq;
 import com.fscommunity.platform.provider.backoffice.req.NewCommentReplyReq;
@@ -19,12 +14,6 @@ import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +23,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author chao.zhu
@@ -115,7 +111,7 @@ public class CommController {
     @RequestMapping("/auth")
     @JsonBody
     public void authComment(@RequestBody CommentAuthReq req) {
-        commentService.updateAuthStatus(req.getId(), req.getAuthStatus().getCode());
+        commentService.updateAuthStatus(req.getCommentId(), req.getAuthStatus().getCode());
     }
 
     @RequestMapping("/reply")

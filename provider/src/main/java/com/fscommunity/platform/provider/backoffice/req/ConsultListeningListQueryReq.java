@@ -7,10 +7,19 @@ import com.lxx.app.common.util.pojo.Bean;
  */
 public class ConsultListeningListQueryReq extends Bean {
 
+    private int targetId;
     private String channelType;// @refer ChannelType
     private String consultType;
     private int currentPage;
     private int pageSize;
+
+    public int getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
+    }
 
     public String getChannelType() {
         return channelType;

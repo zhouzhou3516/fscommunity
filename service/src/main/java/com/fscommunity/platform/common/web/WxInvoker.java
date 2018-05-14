@@ -2,12 +2,6 @@ package com.fscommunity.platform.common.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fscommunity.platform.common.constant.WxMediaType;
-import com.fscommunity.platform.common.pojo.WxAccessToken;
-import com.fscommunity.platform.common.pojo.WxJsapiTicket;
-import com.fscommunity.platform.common.pojo.WxUploadMediaResponse;
-import com.fscommunity.platform.common.pojo.WxUserExt;
-import com.fscommunity.platform.common.pojo.WxWebAuthErrorResp;
-import com.fscommunity.platform.common.pojo.WxWebAuthToken;
 import com.fscommunity.platform.common.pojo.*;
 import com.fscommunity.platform.common.util.HttpClientUtil;
 import com.fscommunity.platform.persist.pojo.WxUser;
@@ -15,12 +9,10 @@ import com.fscommunity.platform.service.WxTokenService;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.lxx.app.common.util.Base64Util;
 import com.lxx.app.common.util.http.base.AsyncHttpResponse;
-import com.lxx.app.common.util.http.base.MultipartData;
 import com.lxx.app.common.util.json.JsonUtil;
 import com.lxx.app.common.util.pojo.BizException;
 import org.apache.commons.io.FileUtils;
@@ -34,7 +26,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -280,7 +271,7 @@ public class WxInvoker {
         String url = String.format(DOWNLOAD_MEDIA_URL, accessToken, mediaId);
         ListenableFuture<AsyncHttpResponse> future = httpClientUtil.syncGet(url);
         return Futures.transform(future, (Function<AsyncHttpResponse, File>) input -> {
-            File file = new File(mediaId + "." + type.getExtName());
+            File file = new File("/tmp/" + mediaId + "." + type.getExtName());
             try {
                 FileUtils.writeByteArrayToFile(file, input.getBodyAsBytes());
             } catch (IOException e) {

@@ -3,17 +3,17 @@ package com.fscommunity.platform.provider.backoffice.controller;
 import com.fscommunity.platform.common.pojo.ManUser;
 import com.fscommunity.platform.common.web.SessionHolder;
 import com.fscommunity.platform.persist.pojo.ConsultListeningInfo;
+import com.fscommunity.platform.persist.pojo.ConsultType;
 import com.fscommunity.platform.provider.backoffice.adapter.MgrConsultListeningVoAdapter;
 import com.fscommunity.platform.provider.backoffice.req.ConsultListeningListQueryReq;
 import com.fscommunity.platform.provider.backoffice.req.NewListeningReplyReq;
 import com.fscommunity.platform.provider.backoffice.vo.MgrConsultListeningVo;
+import com.fscommunity.platform.provider.wechat.vo.LabelVo;
 import com.fscommunity.platform.service.ConsultListeningService;
 import com.lxx.app.common.util.page.PageRequest;
 import com.lxx.app.common.util.page.PageResp;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.util.List;
-import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liqingzhou on 18/5/1.
@@ -64,6 +68,19 @@ public class MgrConsultListeningController {
             user.setId(1);
         }
         consultListeningService.reply(req.getId(), req.getReplyContent(), user.getId());
+    }
+
+    @RequestMapping("/types")
+    @JsonBody
+    public List<LabelVo> consultTypes() {
+        List<LabelVo> vos = new ArrayList<>();
+        for (ConsultType type : ConsultType.values()) {
+            LabelVo vo = new LabelVo();
+            vo.setText(type.getDesc());
+            vo.setValue(type.name());
+            vos.add(vo);
+        }
+        return vos;
     }
 
 }

@@ -17,7 +17,7 @@ public class ConsultListeningInfo extends Bean {
     /**
      * 所属栏目
      */
-    private String channelType;
+    private ChannelType channelType;
     /**
      * 所属栏目的目标id
      */
@@ -25,7 +25,7 @@ public class ConsultListeningInfo extends Bean {
     /**
      * 咨询类型
      */
-    private String consultType;
+    private ConsultType consultType;
 
     /**
      * 咨询内容
@@ -64,11 +64,12 @@ public class ConsultListeningInfo extends Bean {
         this.id = id;
     }
 
-    public String getChannelType() {
+
+    public ChannelType getChannelType() {
         return channelType;
     }
 
-    public void setChannelType(String channelType) {
+    public void setChannelType(ChannelType channelType) {
         this.channelType = channelType;
     }
 
@@ -78,14 +79,6 @@ public class ConsultListeningInfo extends Bean {
 
     public void setTargetId(int targetId) {
         this.targetId = targetId;
-    }
-
-    public String getConsultType() {
-        return consultType;
-    }
-
-    public void setConsultType(String consultType) {
-        this.consultType = consultType;
     }
 
     public String getContent() {
@@ -150,5 +143,13 @@ public class ConsultListeningInfo extends Bean {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public ConsultType getConsultType() {
+        return consultType;
+    }
+
+    public void setConsultType(ConsultType consultType) {
+        this.consultType = consultType;
     }
 }

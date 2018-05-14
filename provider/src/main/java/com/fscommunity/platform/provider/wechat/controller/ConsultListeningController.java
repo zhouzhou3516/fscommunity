@@ -4,21 +4,26 @@ import com.fscommunity.platform.common.constant.WxMediaType;
 import com.fscommunity.platform.common.util.AliOssMediaClient;
 import com.fscommunity.platform.common.web.AccessTokenCache;
 import com.fscommunity.platform.common.web.WxInvoker;
+import com.fscommunity.platform.persist.pojo.ConsultType;
 import com.fscommunity.platform.provider.wechat.req.AddNewListingReq;
 import com.fscommunity.platform.provider.wechat.req.AddVoiceRequest;
+import com.fscommunity.platform.provider.wechat.vo.LabelVo;
 import com.fscommunity.platform.provider.wechat.vo.VoiceUrlVo;
 import com.fscommunity.platform.provider.wechat.voadaptor.ConsultListeningVoAdapt;
 import com.fscommunity.platform.service.ConsultListeningService;
+import com.google.common.base.Strings;
 import com.lxx.app.common.util.pojo.BizException;
 import com.lxx.app.common.web.spring.annotation.JsonBody;
-import java.io.File;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 你说我听
@@ -72,10 +77,19 @@ public class ConsultListeningController {
     public String addListing(@RequestBody AddNewListingReq req) {
         try {
             String token = accessTokenCache.getToken();
-            File file = wxInvoker.dowloadWxMedia(token, req.getVoiceWxMediaId(), WxMediaType.VOICE);
-            aliOssMediaClient.uploadVoice(file);
-            String voiceUrl = aliOssMediaClient.queryPresignedUrl(file.getName());
-            String videoUrl = aliOssMediaClient.queryPresignedUrl(req.getVideoOssObjectName());
+
+            String voiceUrl = "";
+            if (!Strings.isNullOrEmpty(req.getVoiceWxMediaId())) {
+                File file = wxInvoker.dowloadWxMedia(token, req.getVoiceWxMediaId(), WxMediaType.VOICE);
+                aliOssMediaClient.uploadVoice(file);
+                voiceUrl = aliOssMediaClient.queryPresignedUrl(file.getName());
+            }
+
+            String videoUrl = "";
+            if (!Strings.isNullOrEmpty(req.getVideoOssObjectName())) {
+                videoUrl = aliOssMediaClient.queryPresignedUrl(req.getVideoOssObjectName());
+            }
+
             consultListeningService.saveConsultListening(ConsultListeningVoAdapt.adapt(req, voiceUrl, videoUrl));
             // wx notify
             return "success";
@@ -85,4 +99,16 @@ public class ConsultListeningController {
         }
     }
 
+    @RequestMapping("/types")
+    @JsonBody
+    public List<LabelVo> consultTypes() {
+        List<LabelVo> vos = new ArrayList<>();
+        for (ConsultType type : ConsultType.values()) {
+            LabelVo vo = new LabelVo();
+            vo.setText(type.getDesc());
+            vo.setValue(type.name());
+            vos.add(vo);
+        }
+        return vos;
+    }
 }

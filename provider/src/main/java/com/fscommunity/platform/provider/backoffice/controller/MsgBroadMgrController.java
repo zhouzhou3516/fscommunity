@@ -44,21 +44,6 @@ public class MsgBroadMgrController {
     @Resource
     private UserInfoService userInfoService;
 
-//    @RequestMapping("/reply")
-//    @JsonBody
-//    @Transactional
-//    public void replyComment(@RequestBody NewCommentReplyReq req) {
-//        MsgBroad targetCmt = msgBroadService.queryById(req.getTargetId());
-//        if (targetCmt.getIsReplied() == 1) {
-//            throw new BizException("已经被评论过");
-//        }
-//        // 更新被评论的评论状态为已评论
-//        msgBroadService.updateIsReplied(targetCmt.getId());
-//        ManUser user = sessionHolder.currentManUser();
-//        MsgBroad newBmsgBroad = MgrMsgBroadVoAdatpter.adaptToBroad(targetCmt, req, user.getId());
-//        msgBroadService.saveBroad(newBmsgBroad);
-//    }
-
 
     @RequestMapping("/list")
     @JsonBody
@@ -80,8 +65,9 @@ public class MsgBroadMgrController {
 
     @RequestMapping("/auth")
     @JsonBody
-    public void authMsgBroad(@RequestBody CommentAuthReq req) {
-        msgBroadService.updateAuthStatus(req.getId(), req.getAuthStatus().getCode());
+    public String authMsgBroad(@RequestBody CommentAuthReq req) {
+        msgBroadService.updateAuthStatus(req.getCommentId(), req.getAuthStatus().getCode());
+        return req.getAuthStatus().getDesc();
     }
 //
 
